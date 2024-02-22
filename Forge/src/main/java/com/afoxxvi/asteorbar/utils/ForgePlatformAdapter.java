@@ -2,6 +2,7 @@ package com.afoxxvi.asteorbar.utils;
 
 import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.entity.AsteorBarRenderType;
+import com.afoxxvi.asteorbar.internal.InternalNetworkHandler;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -37,5 +38,10 @@ public class ForgePlatformAdapter implements PlatformAdapter {
         }
         // if not using third adapter, the game will crash if appleskin is not loaded
         return AppleSkinAdapter.getInstance().getAppleSkinFoodValues(player);
+    }
+
+    @Override
+    public void sendUseSkillPacket(int skillIndex) {
+        InternalNetworkHandler.CHANNEL.sendToServer(new InternalNetworkHandler.UseSkillPacket(skillIndex));
     }
 }

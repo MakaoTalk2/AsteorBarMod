@@ -19,4 +19,6 @@ public interface PlatformAdapter {
 
     record AppleSkinFoodValues(int hungerIncrement, float saturationIncrement, float healthIncrement) {
     }
+
+    void sendUseSkillPacket(int skillIndex);
 }

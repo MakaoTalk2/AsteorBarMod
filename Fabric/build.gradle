@@ -81,7 +81,7 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
-    archivesBaseName = "${project.mod_id}-fabric-${project.minecraft_version}-${project.mod_version}"
+    archivesBaseName = "${project.mod_id}-internal-fabric-${project.minecraft_version}-${project.mod_version}"
     // Loom will automatically attach sourcesJar to a RemapSourcesJar task and to the "build" task
     // if it is present.
     // If you remove this line, sources will not be generated.

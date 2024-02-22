@@ -1,6 +1,7 @@
 package com.afoxxvi.asteorbar.overlay;
 
 import com.afoxxvi.asteorbar.AsteorBar;
+import com.afoxxvi.asteorbar.internal.InternalInfo;
 import com.afoxxvi.asteorbar.overlay.parts.*;
 import com.afoxxvi.asteorbar.utils.GuiHelper;
 import com.afoxxvi.asteorbar.utils.Pair;
@@ -19,6 +20,11 @@ public class Overlays {
     public static final int STYLE_BOTTOM_LEFT = 5;
     public static final int STYLE_BOTTOM_RIGHT = 6;
     public static final int NUM_STYLES = 7;
+    public static final int INTERNAL_STYLE_NONE = 0;
+    public static final int INTERNAL_STYLE_ABOVE_HOT_BAR_LONG = 1;
+    public static final int INTERNAL_STYLE_ABOVE_HOT_BAR_SHORT = 2;
+    public static final int INTERNAL_STYLE_VERTICAL_ALONGSIDE_BOTTOM = 3;
+    public static final int NUM_INTERNAL_STYLES = 4;
     public static final PlayerHealthOverlay PLAYER_HEALTH = new PlayerHealthOverlay();
     public static final FoodLevelOverlay FOOD_LEVEL = new FoodLevelOverlay();
     public static final AirLevelOverlay AIR_LEVEL = new AirLevelOverlay();
@@ -33,6 +39,9 @@ public class Overlays {
     public static int length = 10;
     public static int leftHeight = 39;
     public static int rightHeight = 39;
+    public static int leftShift = 92;
+    public static int rightShift = 92;
+    public static int height = 36;
     public static final int ALIGN_LEFT = 0;
     public static final int ALIGN_CENTER = 1;
     public static final int ALIGN_RIGHT = 2;
@@ -135,9 +144,14 @@ public class Overlays {
         horizontal = AsteorBar.config.cornerHorizontalPadding();
         length = AsteorBar.config.cornerBarLength();
         style = AsteorBar.config.overlayLayoutStyle();
+        if (InternalInfo.activated) {
+            style = AsteorBar.config.internalOverlayStyle();
+        }
         stringRenders.clear();
         leftHeight = 39;
         rightHeight = 39;
+        leftShift = 92;
+        rightShift = 92;
     }
 
     public static void renderString(GuiGraphics guiGraphics) {

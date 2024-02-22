@@ -2,6 +2,8 @@ package com.afoxxvi.asteorbar.listener;
 
 import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.AsteorBarForge;
+import com.afoxxvi.asteorbar.internal.ManaOverlay;
+import com.afoxxvi.asteorbar.internal.SkillOverlay;
 import com.afoxxvi.asteorbar.key.KeyBinding;
 import com.afoxxvi.asteorbar.overlay.ForgeRenderGui;
 import com.afoxxvi.asteorbar.overlay.parts.MainOverlay;
@@ -17,6 +19,7 @@ public class ModEventListener {
     @SubscribeEvent
     public static void registerOverlay(RegisterGuiOverlaysEvent event) {
         AsteorBarForge.LOGGER.info("Registering Overlays");
+        event.registerBelow(VanillaGuiOverlay.PLAYER_HEALTH.id(), "skill", new ForgeRenderGui(new SkillOverlay()));
         event.registerBelow(VanillaGuiOverlay.PLAYER_HEALTH.id(), "main", new ForgeRenderGui(new MainOverlay()));
     }
 

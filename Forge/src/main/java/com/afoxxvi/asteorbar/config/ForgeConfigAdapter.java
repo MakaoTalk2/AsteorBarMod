@@ -7,6 +7,8 @@ import net.minecraftforge.common.ForgeConfigSpec;
 public class ForgeConfigAdapter implements ConfigAdapter {
     public static class Config {
         public static ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
+        public static final ForgeConfigSpec.IntValue INTERNAL_OVERLAY_LAYOUT_STYLE;
+        public static final ForgeConfigSpec.IntValue INTERNAL_BAR_WIDTH;
         //overlay config
         public static final ForgeConfigSpec.BooleanValue ENABLE_OVERLAY;
         public static final ForgeConfigSpec.IntValue OVERLAY_LAYOUT_STYLE;
@@ -114,6 +116,16 @@ public class ForgeConfigAdapter implements ConfigAdapter {
 
 
         static {
+            BUILDER.push("internal");
+            INTERNAL_OVERLAY_LAYOUT_STYLE = BUILDER
+                    .comment("The layout style of the overlay. 0: none, 1: above hot bar long, 2: above hot bar short, 3: vertical alongside bottom")
+                    .translation("text.autoconfig.asteorbar.option.internal.internalOverlayLayoutStyle")
+                    .defineInRange("internalOverlayLayoutStyle", DefaultConfigAdapter.I.internalOverlayStyle(), 0, Overlays.NUM_INTERNAL_STYLES - 1);
+            INTERNAL_BAR_WIDTH = BUILDER
+                    .comment("The width of the bars if using internal vertical layout.")
+                    .translation("text.autoconfig.asteorbar.option.internal.internalBarWidth")
+                    .defineInRange("internalBarWidth", DefaultConfigAdapter.I.internalBarWidth(), 1, 100);
+            BUILDER.pop();
             BUILDER.push("overlay");
             ENABLE_OVERLAY = BUILDER
                     .comment(ConfigComment.enableOverlay)
@@ -553,6 +565,22 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     public void overlayLayoutStyle(int style) {
         Config.OVERLAY_LAYOUT_STYLE.set(style);
         Config.OVERLAY_LAYOUT_STYLE.save();
+    }
+
+    @Override
+    public int internalOverlayStyle() {
+        return Config.INTERNAL_OVERLAY_LAYOUT_STYLE.get();
+    }
+
+    @Override
+    public void internalOverlayStyle(int style) {
+        Config.INTERNAL_OVERLAY_LAYOUT_STYLE.set(style);
+        Config.INTERNAL_OVERLAY_LAYOUT_STYLE.save();
+    }
+
+    @Override
+    public int internalBarWidth() {
+        return Config.INTERNAL_BAR_WIDTH.get();
     }
 
     @Override

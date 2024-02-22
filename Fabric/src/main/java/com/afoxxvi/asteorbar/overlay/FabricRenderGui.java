@@ -1,12 +1,17 @@
 package com.afoxxvi.asteorbar.overlay;
 
 import com.afoxxvi.asteorbar.overlay.parts.ToughAsNailsOverlay;
+import com.afoxxvi.asteorbar.internal.ManaOverlay;
+import com.afoxxvi.asteorbar.internal.SkillOverlay;
 import net.minecraft.client.gui.Gui;
 
 public class FabricRenderGui extends RenderGui {
     private final Gui gui;
 
     public static final ToughAsNailsOverlay TOUGH_AS_NAILS = new ToughAsNailsOverlay();
+
+    public static final ManaOverlay MANA_OVERLAY = new ManaOverlay();
+    public static final SkillOverlay SKILL_OVERLAY = new SkillOverlay();
 
     public FabricRenderGui(Gui gui) {
         this.gui = gui;

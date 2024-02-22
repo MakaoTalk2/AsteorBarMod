@@ -1,6 +1,7 @@
 package com.afoxxvi.asteorbar;
 
 import com.afoxxvi.asteorbar.config.ForgeConfigAdapter;
+import com.afoxxvi.asteorbar.internal.InternalNetworkHandler;
 import com.afoxxvi.asteorbar.network.NetworkHandler;
 import com.afoxxvi.asteorbar.utils.ForgePlatformAdapter;
 import com.mojang.logging.LogUtils;
@@ -23,6 +24,7 @@ public class AsteorBarForge {
         MinecraftForge.EVENT_BUS.register(this);
         MinecraftForge.EVENT_BUS.register(NetworkHandler.class);
         NetworkHandler.init();
+        InternalNetworkHandler.init();
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, ForgeConfigAdapter.Config.CONFIG);
         AsteorBar.platformAdapter = new ForgePlatformAdapter();
         AsteorBar.config = new ForgeConfigAdapter();

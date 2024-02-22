@@ -33,6 +33,22 @@ public class FabricConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public int internalOverlayStyle() {
+        return config.internal.internalOverlayStyle;
+    }
+
+    @Override
+    public void internalOverlayStyle(int style) {
+        config.internal.internalOverlayStyle = style;
+        holder.save();
+    }
+
+    @Override
+    public int internalBarWidth() {
+        return config.internal.internalBarWidth;
+    }
+
+    @Override
     public double overlayTextScale() {
         return config.overlay.overlayTextScale;
     }
@@ -550,6 +566,9 @@ public class FabricConfigAdapter implements ConfigAdapter {
 
     @Config(name = AsteorBar.MOD_ID)
     public static class AsteorBarConfig implements ConfigData {
+
+        @ConfigEntry.Gui.CollapsibleObject
+        InternalConfig internal = new InternalConfig();
         @ConfigEntry.Gui.CollapsibleObject
         OverlayConfig overlay = new OverlayConfig();
         @ConfigEntry.Gui.CollapsibleObject
@@ -557,6 +576,14 @@ public class FabricConfigAdapter implements ConfigAdapter {
         @ConfigEntry.Gui.CollapsibleObject
         HookConfig hook = new HookConfig();
 
+
+        static class InternalConfig {
+            @Comment("The internal style of the overlay. 0: none, 1: above hot bar long, 2: above hot bar short, 3: vertical alongside bottom")
+            public int internalOverlayStyle = DefaultConfigAdapter.I.internalOverlayStyle();
+
+            @Comment("The width of the bars if using internal layout. Affected bars: health, mana.")
+            public int internalBarWidth = DefaultConfigAdapter.I.internalBarWidth();
+        }
         //overlay config
         static class OverlayConfig {
             @Comment(ConfigComment.enableOverlay)

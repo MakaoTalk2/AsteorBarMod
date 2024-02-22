@@ -1,5 +1,6 @@
 package com.afoxxvi.asteorbar;
 
+import com.afoxxvi.asteorbar.internal.InternalNetworkHandler;
 import com.afoxxvi.asteorbar.key.KeyBinding;
 import com.afoxxvi.asteorbar.network.NetworkHandler;
 import net.fabricmc.api.ClientModInitializer;
@@ -10,10 +11,13 @@ public class AsteorBarFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         NetworkHandler.init();
+        InternalNetworkHandler.init();
         KeyBindingHelper.registerKeyBinding(KeyBinding.TOGGLE_OVERLAY);
         KeyBindingHelper.registerKeyBinding(KeyBinding.TOGGLE_MOB_BAR);
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             KeyBinding.handleKeyInput();
+            AsteorBar.tick++;
+            AsteorBar.castSkill = false;
         });
     }
 }

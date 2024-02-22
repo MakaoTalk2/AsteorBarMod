@@ -14,6 +14,9 @@ public class AsteorBar {
     public static ConfigAdapter config = new DefaultConfigAdapter();
     public static Compatibility compatibility = new Compatibility();
 
+    public static long tick = 0;
+    public static boolean castSkill = false;
+
     public static PlatformAdapter platformAdapter = new PlatformAdapter() {
         @Override
         public boolean isBoss(LivingEntity livingEntity) {
@@ -38,6 +41,11 @@ public class AsteorBar {
         @Override
         public AppleSkinFoodValues getAppleSkinFoodValues(Player player) {
             return new AppleSkinFoodValues(0, 0, 0);
+        }
+
+        @Override
+        public void sendUseSkillPacket(int skillIndex) {
+
         }
     };
 

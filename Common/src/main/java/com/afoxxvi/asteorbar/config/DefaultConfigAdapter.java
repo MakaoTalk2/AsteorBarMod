@@ -24,6 +24,21 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public int internalOverlayStyle() {
+        return 2;
+    }
+
+    @Override
+    public void internalOverlayStyle(int style) {
+
+    }
+
+    @Override
+    public int internalBarWidth() {
+        return 12;
+    }
+
+    @Override
     public double overlayTextScale() {
         return 1.0;
     }

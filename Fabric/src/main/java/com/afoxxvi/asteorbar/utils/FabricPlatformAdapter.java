@@ -2,6 +2,8 @@ package com.afoxxvi.asteorbar.utils;
 
 import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.entity.AsteorBarRenderType;
+import com.afoxxvi.asteorbar.internal.InternalNetworkHandler;
+import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.tags.FluidTags;
@@ -38,5 +40,10 @@ public class FabricPlatformAdapter implements PlatformAdapter {
         }
         // if not using third adapter, the game will crash if appleskin is not loaded
         return AppleSkinAdapter.getInstance().getAppleSkinFoodValues(player);
+    }
+
+    @Override
+    public void sendUseSkillPacket(int skillIndex) {
+        InternalNetworkHandler.sendUseSkillPacket(skillIndex);
     }
 }

@@ -2,6 +2,7 @@ package com.afoxxvi.asteorbar.utils;
 
 public class Utils {
     public static String formatNumber(double val) {
+        if (val >= 100) return String.format("%.0f", val);
         String str = String.format("%.1f", val);
         if (str.endsWith(".0")) {
             str = str.substring(0, str.length() - 2);
@@ -40,5 +41,12 @@ public class Utils {
         short b = (short) ((color & 0xFF) * multi / 255);
         short a = (short) ((color >> 24 & 0xFF));
         return (a << 24) | (r << 16) | (g << 8) | b;
+    }
+
+    public static int modifyAlpha(int color, int alpha) {
+        short r = (short) ((color >> 16 & 0xFF));
+        short g = (short) ((color >> 8 & 0xFF));
+        short b = (short) ((color & 0xFF));
+        return (alpha << 24) | (r << 16) | (g << 8) | b;
     }
 }

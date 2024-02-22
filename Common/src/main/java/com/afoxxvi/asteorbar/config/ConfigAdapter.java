@@ -9,6 +9,12 @@ public interface ConfigAdapter {
 
     void overlayLayoutStyle(int style);
 
+    int internalOverlayStyle();
+
+    void internalOverlayStyle(int style);
+
+    int internalBarWidth();
+
     double overlayTextScale();
 
     int fullFoodLevelValue();
