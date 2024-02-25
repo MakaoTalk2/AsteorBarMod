@@ -42,6 +42,6 @@ public class ForgePlatformAdapter implements PlatformAdapter {
 
     @Override
     public void sendUseSkillPacket(int skillIndex) {
-        InternalNetworkHandler.CHANNEL.sendToServer(new InternalNetworkHandler.UseSkillPacket(skillIndex));
+        InternalNetworkHandler.INTERNAL.sendToServer(new InternalNetworkHandler.UseSkillPacket(skillIndex));
     }
 }
