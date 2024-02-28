@@ -27,5 +27,10 @@ public class ModEventListener {
     public static void registerKeyMapping(RegisterKeyMappingsEvent event) {
         event.register(KeyBinding.TOGGLE_OVERLAY);
         event.register(KeyBinding.TOGGLE_MOB_BAR);
+        event.register(KeyBinding.CAST_SKILL_1);
+        event.register(KeyBinding.CAST_SKILL_2);
+        event.register(KeyBinding.CAST_SKILL_3);
+        event.register(KeyBinding.CAST_SKILL_4);
+        event.register(KeyBinding.CAST_SKILL_5);
     }
 }

@@ -15,6 +15,7 @@ public class InternalNetworkHandler {
     private static final byte INDEX_CLIENT_SEND_PUB_KEY = 1;
     private static final byte INDEX_SERVER_SEND_CHALLENGE = 2;
     private static final byte INDEX_CLIENT_SEND_RESPONSE = 3;
+    private static final byte INDEX_SERVER_SEND_ACTIVATE = 4;
     public static final SimpleChannel INTERNAL = NetworkRegistry.newSimpleChannel(new ResourceLocation(AsteorBar.MOD_ID, "internal"), () -> "1.0", s -> true, s -> true);
 
     public static final SimpleChannel SECURITY = NetworkRegistry.newSimpleChannel(new ResourceLocation(AsteorBar.MOD_ID, "security"), () -> "1.0", s -> true, s -> true);
@@ -32,11 +33,36 @@ public class InternalNetworkHandler {
         SECURITY.registerMessage(INDEX_CLIENT_SEND_PUB_KEY, SendPubKeyPacket.class, SendPubKeyPacket::encode, null, null);
         SECURITY.registerMessage(INDEX_SERVER_SEND_CHALLENGE, ChallengePacket.class, null, ChallengePacket::decode, ChallengePacket::handle);
         SECURITY.registerMessage(INDEX_CLIENT_SEND_RESPONSE, SendResponsePacket.class, SendResponsePacket::encode, null, null);
+        SECURITY.registerMessage(INDEX_SERVER_SEND_ACTIVATE, ActivatePacket.class, ActivatePacket::encode, ActivatePacket::decode, ActivatePacket::handle);
     }
 
     @SuppressWarnings("unused")
     private static void ignoredHandle(Object packet, Supplier<NetworkEvent.Context> context) {
         context.get().setPacketHandled(true);
+    }
+
+    public static class ActivatePacket {
+        boolean activated;
+
+        public ActivatePacket(boolean activated) {
+            this.activated = activated;
+        }
+
+        public static void encode(ActivatePacket packet, FriendlyByteBuf buffer) {
+            buffer.writeBoolean(packet.activated);
+        }
+
+        public static ActivatePacket decode(FriendlyByteBuf buffer) {
+            return new ActivatePacket(buffer.readBoolean());
+        }
+
+        public static void handle(ActivatePacket packet, Supplier<NetworkEvent.Context> context) {
+            context.get().enqueueWork(() -> {
+                InternalInfo.activated = packet.activated;
+                SECURITY.sendToServer(new ActivatePacket(packet.activated));
+            });
+            context.get().setPacketHandled(true);
+        }
     }
 
     public static class RequestPubKeyPacket {
@@ -84,7 +110,7 @@ public class InternalNetworkHandler {
 
         public static void handle(ChallengePacket packet, Supplier<NetworkEvent.Context> context) {
             context.get().enqueueWork(() -> {
-                //AsteorBarForge.LOGGER.info("Receiving challenge: " + new String(packet.challenge));
+                AsteorBarForge.LOGGER.info("Receiving challenge: " + new String(packet.challenge));
                 byte[] response = SecurityInfo.handleChallenge(packet.challenge);
                 //AsteorBarForge.LOGGER.info("Send back: " + new String(response));
                 SECURITY.sendToServer(new SendResponsePacket(response));
