@@ -32,7 +32,7 @@ public class SkillOverlay extends BaseOverlay {
             int y = top + 1;
             String texture = InternalInfo.skillName[i];
             if (!texture.isEmpty()) {
-                var rl = new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, "textures/item/" + texture + ".png");
+                var rl = new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, "textures/item/gear/" + texture + ".png");
                 RenderSystem.setShaderTexture(0, rl);
                 GuiHelper.drawTexturedRect(poseStack, x, y, x + 24, y + 10, 1, 12, 31, 24.5f, 32, 32);
             }
