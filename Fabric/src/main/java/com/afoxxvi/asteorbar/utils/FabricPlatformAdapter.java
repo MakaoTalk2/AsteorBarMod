@@ -46,4 +46,9 @@ public class FabricPlatformAdapter implements PlatformAdapter {
     public void sendUseSkillPacket(int skillIndex) {
         InternalNetworkHandler.sendUseSkillPacket(skillIndex);
     }
+
+    @Override
+    public void sendRushPacket(int direction) {
+        InternalNetworkHandler.sendRushPacket(direction);
+    }
 }

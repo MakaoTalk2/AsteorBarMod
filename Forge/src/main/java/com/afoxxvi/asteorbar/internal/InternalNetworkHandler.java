@@ -28,6 +28,7 @@ public class InternalNetworkHandler {
         INTERNAL.registerMessage(4, Object.class, null, InternalInfo::decodeToggle, InternalNetworkHandler::ignoredHandle);
 
         INTERNAL.registerMessage(128, UseSkillPacket.class, UseSkillPacket::encode, null, null);
+        INTERNAL.registerMessage(129, RushPacket.class, RushPacket::encode, null, null);
 
         SECURITY.registerMessage(INDEX_SERVER_REQUEST_PUB_KEY, RequestPubKeyPacket.class, null, RequestPubKeyPacket::decode, RequestPubKeyPacket::handle);
         SECURITY.registerMessage(INDEX_CLIENT_SEND_PUB_KEY, SendPubKeyPacket.class, SendPubKeyPacket::encode, null, null);
@@ -140,6 +141,18 @@ public class InternalNetworkHandler {
 
         public static void encode(UseSkillPacket packet, FriendlyByteBuf buffer) {
             buffer.writeByte(packet.index);
+        }
+    }
+
+    public static class RushPacket {
+        int direction;
+
+        public RushPacket(int direction) {
+            this.direction = direction;
+        }
+
+        public static void encode(RushPacket packet, FriendlyByteBuf buffer) {
+            buffer.writeByte(packet.direction);
         }
     }
 }

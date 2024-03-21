@@ -18,6 +18,7 @@ public class AsteorBarFabricClient implements ClientModInitializer {
             KeyBinding.handleKeyInput();
             AsteorBar.tick++;
             AsteorBar.castSkill = false;
+            AsteorBar.rush = false;
         });
     }
 }

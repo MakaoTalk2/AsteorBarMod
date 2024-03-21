@@ -31,6 +31,12 @@ public class ModEventListener {
         event.register(KeyBinding.CAST_SKILL_2);
         event.register(KeyBinding.CAST_SKILL_3);
         event.register(KeyBinding.CAST_SKILL_4);
-        event.register(KeyBinding.CAST_SKILL_5);
+        event.register(KeyBinding.CAST_ACTIVE_SKILL_WHEEL);
+        event.register(KeyBinding.CAST_QUICK_SKILL_WHEEL);
+        event.register(KeyBinding.RUSH_FORWARD);
+        event.register(KeyBinding.RUSH_BACKWARD);
+        event.register(KeyBinding.RUSH_LEFT);
+        event.register(KeyBinding.RUSH_RIGHT);
+        event.register(KeyBinding.RUSH_INSTANT);
     }
 }

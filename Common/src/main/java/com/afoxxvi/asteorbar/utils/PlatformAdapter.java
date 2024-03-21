@@ -21,4 +21,6 @@ public interface PlatformAdapter {
     }
 
     void sendUseSkillPacket(int skillIndex);
+
+    void sendRushPacket(int direction);
 }

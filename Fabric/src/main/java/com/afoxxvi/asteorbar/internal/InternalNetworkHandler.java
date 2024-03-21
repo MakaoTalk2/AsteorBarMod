@@ -32,4 +32,11 @@ public class InternalNetworkHandler {
         buf.writeByte(skillIndex);
         ClientPlayNetworking.send(CHANNEL, buf);
     }
+
+    public static void sendRushPacket(int direction) {
+        FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
+        buf.writeByte(129);
+        buf.writeByte(direction);
+        ClientPlayNetworking.send(CHANNEL, buf);
+    }
 }

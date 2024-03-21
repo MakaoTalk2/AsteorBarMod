@@ -16,6 +16,7 @@ public class AsteorBar {
 
     public static long tick = 0;
     public static boolean castSkill = false;
+    public static boolean rush = false;
 
     public static PlatformAdapter platformAdapter = new PlatformAdapter() {
         @Override
@@ -45,6 +46,11 @@ public class AsteorBar {
 
         @Override
         public void sendUseSkillPacket(int skillIndex) {
+
+        }
+
+        @Override
+        public void sendRushPacket(int direction) {
 
         }
     };

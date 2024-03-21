@@ -24,6 +24,7 @@ public class ForgeEventListener {
         if (!Minecraft.getInstance().isPaused()) {
             AsteorBar.tick++;
             AsteorBar.castSkill = false;
+            AsteorBar.rush = false;
         }
     }
 
