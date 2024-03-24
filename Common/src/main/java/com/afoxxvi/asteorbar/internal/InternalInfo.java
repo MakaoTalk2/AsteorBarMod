@@ -10,6 +10,11 @@ public class InternalInfo {
     public static boolean activated = false;
     //activate end
 
+    //asteor start
+    public static short mod_version = 0;
+    public static short resource_pack_version = 0;
+    //asteor end
+
     //status start
     public static short skillShow = 0;
     public static long[] skillGlint = new long[16];
@@ -29,6 +34,9 @@ public class InternalInfo {
     public static byte manaType = 0;
     public static int exp = 0;
     public static int expRequire = 0;
+    public static short energy = 0;
+    public static short energyMax = 0;
+    public static long energyGlint = 0;
     //helmet end
 
     //toggle start
@@ -112,6 +120,8 @@ public class InternalInfo {
      * manaType: byte
      * exp: int
      * expRequire: int
+     * energy: short
+     * energyMax: short
      */
     public static Object decodeHelmet(FriendlyByteBuf buffer) {
         try {
@@ -124,6 +134,12 @@ public class InternalInfo {
             manaType = buffer.readByte();
             exp = buffer.readInt();
             expRequire = buffer.readInt();
+            energy = buffer.readShort();
+            energyMax = buffer.readShort();
+            var energyGlint = buffer.readBoolean();
+            if (energyGlint) {
+                InternalInfo.energyGlint = AsteorBar.tick;
+            }
         } catch (Exception ignored) {
         }
         return object;

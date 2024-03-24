@@ -21,10 +21,10 @@ public class Overlays {
     public static final int STYLE_BOTTOM_RIGHT = 6;
     public static final int NUM_STYLES = 7;
     public static final int INTERNAL_STYLE_NONE = 0;
-    public static final int INTERNAL_STYLE_ABOVE_HOT_BAR_LONG = 1;
+    public static final int INTERNAL_STYLE_ABOVE_HOT_BAR_NORMAL = 1;
     public static final int INTERNAL_STYLE_ABOVE_HOT_BAR_SHORT = 2;
     public static final int INTERNAL_STYLE_VERTICAL_ALONGSIDE_BOTTOM = 3;
-    public static final int NUM_INTERNAL_STYLES = 4;
+    public static final int NUM_INTERNAL_STYLES = 2;
     public static final PlayerHealthOverlay PLAYER_HEALTH = new PlayerHealthOverlay();
     public static final FoodLevelOverlay FOOD_LEVEL = new FoodLevelOverlay();
     public static final AirLevelOverlay AIR_LEVEL = new AirLevelOverlay();

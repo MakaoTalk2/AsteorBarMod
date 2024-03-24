@@ -2,12 +2,18 @@ package com.afoxxvi.asteorbar.listener;
 
 import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.AsteorBarForge;
+import com.afoxxvi.asteorbar.internal.EnergyOverlay;
 import com.afoxxvi.asteorbar.internal.ManaOverlay;
 import com.afoxxvi.asteorbar.internal.SkillOverlay;
 import com.afoxxvi.asteorbar.key.KeyBinding;
 import com.afoxxvi.asteorbar.overlay.ForgeRenderGui;
 import com.afoxxvi.asteorbar.overlay.parts.MainOverlay;
+import com.afoxxvi.asteorbar.overlay.parts.ToughAsNailsOverlay;
+import com.afoxxvi.asteorbar.tooltip.CenterTextTooltip;
+import com.afoxxvi.asteorbar.tooltip.IndicatorTooltip;
+import com.afoxxvi.asteorbar.tooltip.SeparatorTooltip;
 import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.client.event.RegisterClientTooltipComponentFactoriesEvent;
 import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.client.gui.overlay.VanillaGuiOverlay;
@@ -38,5 +44,17 @@ public class ModEventListener {
         event.register(KeyBinding.RUSH_LEFT);
         event.register(KeyBinding.RUSH_RIGHT);
         event.register(KeyBinding.RUSH_INSTANT);
+        event.register(KeyBinding.SCROLL_TOOLTIP_UP);
+        event.register(KeyBinding.SCROLL_TOOLTIP_DOWN);
+        event.register(KeyBinding.SCROLL_TOOLTIP_LEFT);
+        event.register(KeyBinding.SCROLL_TOOLTIP_RIGHT);
+        event.register(KeyBinding.SCROLL_TOOLTIP_RESET);
+    }
+
+    @SubscribeEvent
+    public static void onRegisterClientTooltipComponentFactoriesEvent(RegisterClientTooltipComponentFactoriesEvent event) {
+        event.register(SeparatorTooltip.class, x -> x);
+        event.register(CenterTextTooltip.class, x -> x);
+        event.register(IndicatorTooltip.class, x -> x);
     }
 }

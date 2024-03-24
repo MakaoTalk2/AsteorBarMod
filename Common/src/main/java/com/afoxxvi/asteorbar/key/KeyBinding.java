@@ -3,6 +3,7 @@ package com.afoxxvi.asteorbar.key;
 import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.internal.InternalInfo;
 import com.afoxxvi.asteorbar.overlay.Overlays;
+import com.afoxxvi.asteorbar.tooltip.Tooltips;
 import net.minecraft.client.KeyMapping;
 import org.lwjgl.glfw.GLFW;
 
@@ -25,6 +26,12 @@ public class KeyBinding {
     public static final KeyMapping RUSH_LEFT = new KeyMapping("asteorbar.key.rush_left", GLFW.GLFW_KEY_A, "asteorbar.key.category");
     public static final KeyMapping RUSH_RIGHT = new KeyMapping("asteorbar.key.rush_right", GLFW.GLFW_KEY_D, "asteorbar.key.category");
     public static final KeyMapping RUSH_INSTANT = new KeyMapping("asteorbar.key.rush_instant", GLFW.GLFW_KEY_LEFT_ALT, "asteorbar.key.category");
+
+    public static final KeyMapping SCROLL_TOOLTIP_UP = new KeyMapping("asteorbar.key.scroll_tooltip_up", GLFW.GLFW_KEY_PAGE_UP, "asteorbar.key.category");
+    public static final KeyMapping SCROLL_TOOLTIP_DOWN = new KeyMapping("asteorbar.key.scroll_tooltip_down", GLFW.GLFW_KEY_PAGE_DOWN, "asteorbar.key.category");
+    public static final KeyMapping SCROLL_TOOLTIP_LEFT = new KeyMapping("asteorbar.key.scroll_tooltip_left", GLFW.GLFW_KEY_HOME, "asteorbar.key.category");
+    public static final KeyMapping SCROLL_TOOLTIP_RIGHT = new KeyMapping("asteorbar.key.scroll_tooltip_right", GLFW.GLFW_KEY_END, "asteorbar.key.category");
+    public static final KeyMapping SCROLL_TOOLTIP_RESET = new KeyMapping("asteorbar.key.scroll_tooltip_reset", GLFW.GLFW_KEY_ENTER, "asteorbar.key.category");
 
     private static final List<KeyState> KEY_STATES = new ArrayList<>();
     private static final KeyState ACTIVE_SKILL_WHEEL_STATE = register(CAST_ACTIVE_SKILL_WHEEL);

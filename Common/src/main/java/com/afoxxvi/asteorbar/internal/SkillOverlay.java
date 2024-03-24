@@ -12,54 +12,63 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 
 public class SkillOverlay extends BaseOverlay {
-    private static final ResourceLocation SKILL_TEXTURE = new ResourceLocation(AsteorBar.MOD_ID, "textures/gui/skill.png");
-
     @Override
     public void renderOverlay(RenderGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         if (!InternalInfo.activated) {
             return;
         }
-        int left = screenWidth / 2 - 91;
-        int top = screenHeight - 35;
-        gui.leftHeight(6);
-        gui.rightHeight(6);
-        RenderSystem.setShaderTexture(0, SKILL_TEXTURE);
+        gui.leftHeight(-7);
+        gui.rightHeight(-7);
         RenderSystem.enableBlend();
-        GuiHelper.drawTexturedRect(poseStack, left, top, 9, 0, 182, 12);
-        for (int i = 0; i < 7; i++) {
+        RenderSystem.setShaderTexture(0, new ResourceLocation("minecraft", "textures/gui/widgets.png"));
+        int middle = screenWidth / 2;
+        for (int i = 0; i < 4; i++) {
+            int x = middle - 91 - 29 - 21 * 4 + i * 21;
+            int y = screenHeight - 23;
+            GuiHelper.drawTexturedRect(poseStack, x, y, 24, 22, 29, 24);
+        }
+        for (int i = 0; i < 5; i++) {
+            if ((InternalInfo.skillShow & (1 << (i + 4))) == 0) continue;
+            int x = middle + 91 + i * 21;
+            int y = screenHeight - 23;
+            GuiHelper.drawTexturedRect(poseStack, x, y, 53, 22, 29, 24);
+        }
+        //RenderSystem.setShaderTexture(0, SKILL_TEXTURE);
+        //GuiHelper.drawTexturedRect(poseStack, left, top, 9, 0, 182, 12);
+        for (int i = 0; i < 9; i++) {
             if ((InternalInfo.skillShow & (1 << i)) == 0) continue;
-            int x = left + 1 + i * 26;
-            int y = top + 1;
+            int x = i < 4 ? (middle - 91 - 26 - 21 * 4 + i * 21) : (middle + 91 + 10 + (i - 4) * 21);
+            int y = screenHeight - 19;
             String texture = InternalInfo.skillName[i];
             if (!texture.isEmpty()) {
                 var rl = new ResourceLocation(ResourceLocation.DEFAULT_NAMESPACE, "textures/item/gear/" + texture + ".png");
                 RenderSystem.setShaderTexture(0, rl);
-                GuiHelper.drawTexturedRect(poseStack, x, y, x + 24, y + 10, 1, 12, 31, 24.5f, 32, 32);
+                GuiHelper.drawTexturedRect(poseStack, x, y, x + 16, y + 16, 0, 0, 32, 32, 32, 32);
             }
             if (Minecraft.getInstance().options.renderDebug) {
-                Overlays.addStringRender(x + 12, y + 1, 0xFFFFFF, texture, Overlays.ALIGN_CENTER, true);
+                Overlays.addStringRender(x + 8, y + 6, 0xFFFFFF, texture, Overlays.ALIGN_CENTER, true);
             }
             if (AsteorBar.tick - InternalInfo.skillGlint[i] < 20) {
                 int color = Utils.modifyAlpha(InternalInfo.skillGlintColor[i], (int) (0x7F * (1.0 - (AsteorBar.tick - InternalInfo.skillGlint[i]) / 20.0)));
-                GuiHelper.drawSolidColor(poseStack, x, y, x + 24, y + 10, color);
+                GuiHelper.drawSolidColor(poseStack, x, y, x + 16, y + 16, color);
             }
             if ((InternalInfo.toggle & (1 << i)) != 0) {
                 int color = Utils.modifyAlpha(0x4caf50, (int) (0x7F * (1.0 - 0.8 * Math.abs(20 - AsteorBar.tick % 40) / 20.0)));
-                GuiHelper.drawSolidColor(poseStack, x, y, x + 24, y + 10, color);
+                GuiHelper.drawSolidColor(poseStack, x, y, x + 16, y + 16, color);
             }
             int cooldown = InternalInfo.skillCooldown[i];
             if (cooldown < Byte.MAX_VALUE) {
-                var len = cooldown * 24 / Byte.MAX_VALUE;
-                GuiHelper.drawSolidColor(poseStack, x, y, x + 24, y + 10, 0x40D0D0D0);
-                GuiHelper.drawSolidColor(poseStack, x + len, y, x + 24, y + 10, 0x40D0D0D0);
+                var len = cooldown * 16 / Byte.MAX_VALUE;
+                GuiHelper.drawSolidColor(poseStack, x, y + 8, x + 16, y + 16, 0x40D0D0D0);
+                GuiHelper.drawSolidColor(poseStack, x + len, y + 8, x + 16, y + 16, 0x40D0D0D0);
                 //GuiHelper.drawSolidColor(poseStack, x, y + 9, x + 24, y + 10, 0xFF000000);
                 //GuiHelper.drawSolidColor(poseStack, x, y + 9, x + len, y + 10, 0xFFD0D0D0);
             }
             int mana = InternalInfo.skillMana[i];
             if (mana < Byte.MAX_VALUE) {
-                var len = mana * 24 / Byte.MAX_VALUE;
-                GuiHelper.drawSolidColor(poseStack, x, y, x + 24, y + 10, 0x4000FFFF);
-                GuiHelper.drawSolidColor(poseStack, x + len, y, x + 24, y + 10, 0x4000FFFF);
+                var len = mana * 16 / Byte.MAX_VALUE;
+                GuiHelper.drawSolidColor(poseStack, x, y, x + 16, y + 8, 0x4000FFFF);
+                GuiHelper.drawSolidColor(poseStack, x + len, y, x + 16, y + 8, 0x4000FFFF);
                 //GuiHelper.drawSolidColor(poseStack, x, y, x + 24, y + 1, 0xFF000000);
                 //GuiHelper.drawSolidColor(poseStack, x, y, x + len, y + 1, 0xFF00FFFF);
             }

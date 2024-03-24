@@ -8,17 +8,13 @@ import com.afoxxvi.asteorbar.utils.Utils;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 
-public class ManaOverlay extends BaseOverlay {
-
-    private void draw(PoseStack poseStack, int left, int top, int right, int bottom, boolean highlight, int manaType, double manaLevel, boolean flip) {
-        draw(poseStack, left, top, right, bottom, highlight, manaType, manaLevel, flip, false);
+public class EnergyOverlay extends BaseOverlay {
+    private void draw(PoseStack poseStack, int left, int top, int right, int bottom, boolean highlight, double manaLevel, boolean flip) {
+        draw(poseStack, left, top, right, bottom, highlight, manaLevel, flip, false);
     }
 
-    private void draw(PoseStack poseStack, int left, int top, int right, int bottom, boolean highlight, int manaType, double manaLevel, boolean flip, boolean vertical) {
-        int color = 0xff1976d2;
-        if (manaType == 1) {
-            color = 0xff5e35b1;
-        }
+    private void draw(PoseStack poseStack, int left, int top, int right, int bottom, boolean highlight, double manaLevel, boolean flip, boolean vertical) {
+        int color = 0xffe67f09;
         int dark = Utils.mixColor(0xFF000000, color, 0.5);
         int light = Utils.mixColor(0xFFFFFFFF, color, 0.5);
         int empty = Utils.mixColor(0xFF000000, color, 0.75);
@@ -32,13 +28,13 @@ public class ManaOverlay extends BaseOverlay {
             drawEmptyFillVertical(poseStack, left + 1, top + 1, right - 1, bottom - 1, empty);
             drawFillVertical(poseStack, left + 1, top + 1, right - 1, bottom - 1, height, color);
             int lineHeight = (int) (Minecraft.getInstance().font.lineHeight * AsteorBar.config.overlayTextScale());
-            Overlays.addStringRender((left + right) / 2, (bottom + top - lineHeight) / 2, 0xFFFFFF, String.format("%.0f", InternalInfo.mana * 0.1), Overlays.ALIGN_CENTER, true);
-            Overlays.addStringRender((left + right) / 2, bottom - lineHeight - 2, 0xFFFFFF, String.format("%.0f", InternalInfo.manaMax * 0.1), Overlays.ALIGN_CENTER, false, true, 0);
+            Overlays.addStringRender((left + right) / 2, (bottom + top - lineHeight) / 2, 0xFFFFFF, String.format("%.0f", InternalInfo.energy * 0.1), Overlays.ALIGN_CENTER, true);
+            Overlays.addStringRender((left + right) / 2, bottom - lineHeight - 2, 0xFFFFFF, String.format("%.0f", InternalInfo.energyMax * 0.1), Overlays.ALIGN_CENTER, false, true, 0);
         } else {
             int width = (int) ((right - left - 2) * manaLevel);
             drawEmptyFill(poseStack, left + 1, top + 1, right - 1, bottom - 1, empty);
             drawFillFlip(poseStack, left + 1, top + 1, right - 1, bottom - 1, width, color, flip);
-            Overlays.addStringRender((left + right) / 2, top - 2, 0xFFFFFF, String.format("%.0f/%.0f", InternalInfo.mana * 0.1, InternalInfo.manaMax * 0.1), Overlays.ALIGN_CENTER, true);
+            Overlays.addStringRender((left + right) / 2, top - 2, 0xFFFFFF, String.format("%.0f/%.0f", InternalInfo.energy * 0.1, InternalInfo.energyMax * 0.1), Overlays.ALIGN_CENTER, true);
         }
     }
 
@@ -47,15 +43,14 @@ public class ManaOverlay extends BaseOverlay {
         if (!InternalInfo.activated) {
             return;
         }
-        double manaLevel = (double) (InternalInfo.mana) / Math.max(1.0, InternalInfo.manaMax);
-        boolean highlight = AsteorBar.tick - InternalInfo.manaGlint < 4;
-        int manaType = InternalInfo.manaType;
+        double energyLevel = (double) (InternalInfo.energy) / Math.max(1.0, InternalInfo.energyMax);
+        boolean highlight = AsteorBar.tick - InternalInfo.energyGlint < 4;
         switch (Overlays.style) {
             case Overlays.INTERNAL_STYLE_ABOVE_HOT_BAR_NORMAL -> {
-                int left = screenWidth / 2 + 10;
-                int top = screenHeight - gui.rightHeight() + 4;
-                draw(poseStack, left, top, left + BOUND_FULL_WIDTH_SHORT, top + 5, highlight, manaType, manaLevel, false);
-                gui.rightHeight(12);
+                int left = screenWidth / 2 - 91;
+                int top = screenHeight - gui.leftHeight() + 4;
+                draw(poseStack, left, top, left + BOUND_FULL_WIDTH_SHORT, top + 5, highlight, energyLevel, false);
+                gui.leftHeight(12);
             }
             default -> {
             }
