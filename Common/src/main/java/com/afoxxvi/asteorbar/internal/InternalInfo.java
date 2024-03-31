@@ -52,6 +52,8 @@ public class InternalInfo {
     public static Object decodeActivate(FriendlyByteBuf buffer) {
         try {
             activated = buffer.readBoolean();
+            mod_version = buffer.readShort();
+            resource_pack_version = buffer.readShort();
         } catch (Exception ignored) {
         }
         return object;
