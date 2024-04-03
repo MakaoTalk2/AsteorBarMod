@@ -164,6 +164,9 @@ dependencies {
     if (superiorshields_version_forge != "0") {
         compileOnly fg.deobf("curse.maven:superior-shields-311785:${superiorshields_version_forge}")
     }
+    if (lightshield_version_forge != "0") {
+        compileOnly fg.deobf("curse.maven:lightshield-996730:${lightshield_version_forge}")
+    }
     if (vampirism_version_forge != "0") {
         compileOnly fg.deobf("curse.maven:vampirism-become-a-vampire-233029:${vampirism_version_forge}")
     }

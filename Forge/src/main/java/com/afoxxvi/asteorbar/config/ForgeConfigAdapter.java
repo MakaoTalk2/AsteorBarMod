@@ -100,6 +100,7 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.BooleanValue HOOK_FEATHERS;
         public static final ForgeConfigSpec.BooleanValue HOOK_APPLE_SKIN;
         public static final ForgeConfigSpec.BooleanValue HOOK_SUPERIOR_SHIELDS;
+        public static final ForgeConfigSpec.BooleanValue HOOK_LIGHT_SHIELD;
         public static final ForgeConfigSpec.BooleanValue HOOK_VAMPIRISM;
 
 
@@ -473,6 +474,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.hookSuperiorShields)
                     .translation("text.autoconfig.asteorbar.option.hook.hookSuperiorShields")
                     .define("superiorShields", DefaultConfigAdapter.I.hookSuperiorShields());
+            HOOK_LIGHT_SHIELD = BUILDER
+                    .comment(ConfigComment.hookLightShield)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookLightShield")
+                    .define("lightShield", DefaultConfigAdapter.I.hookLightShield());
             HOOK_VAMPIRISM = BUILDER
                     .comment(ConfigComment.hookVampirism)
                     .translation("text.autoconfig.asteorbar.option.hook.hookVampirism")
@@ -954,6 +959,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public boolean hookSuperiorShields() {
         return Config.HOOK_SUPERIOR_SHIELDS.get();
+    }
+
+    @Override
+    public boolean hookLightShield() {
+        return Config.HOOK_LIGHT_SHIELD.get();
     }
 
     @Override

@@ -484,6 +484,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean hookLightShield() {
+        return config.hook.hookLightShield;
+    }
+
+    @Override
     public boolean hookVampirism() {
         return config.hook.hookVampirism;
     }
@@ -698,6 +703,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean hookAppleSkin = DefaultConfigAdapter.I.hookAppleSkin();
             @Comment(ConfigComment.hookSuperiorShields)
             public boolean hookSuperiorShields = DefaultConfigAdapter.I.hookSuperiorShields();
+            @Comment(ConfigComment.hookLightShield)
+            public boolean hookLightShield = DefaultConfigAdapter.I.hookLightShield();
             @Comment(ConfigComment.hookVampirism)
             public boolean hookVampirism = DefaultConfigAdapter.I.hookVampirism();
         }

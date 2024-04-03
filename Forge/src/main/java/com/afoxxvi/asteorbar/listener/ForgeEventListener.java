@@ -1,6 +1,7 @@
 package com.afoxxvi.asteorbar.listener;
 
 import com.afoxxvi.asteorbar.AsteorBar;
+import com.afoxxvi.asteorbar.entity.LightShieldRenderer;
 import com.afoxxvi.asteorbar.key.KeyBinding;
 import com.afoxxvi.asteorbar.overlay.Overlays;
 import net.minecraft.client.Minecraft;
@@ -39,6 +40,7 @@ public class ForgeEventListener {
         NamedGuiOverlay overlay = event.getOverlay();
         if (overlay == VanillaGuiOverlay.VIGNETTE.type()) {
             Overlays.reset();
+            LightShieldRenderer.init();
         }
         if (overlay == VanillaGuiOverlay.PLAYER_HEALTH.type()
                 || overlay == VanillaGuiOverlay.FOOD_LEVEL.type()
@@ -54,6 +56,7 @@ public class ForgeEventListener {
                 || Overlays.feathers && AsteorBar.config.hookFeathers() && overlay.id().equals(FEATHERS_FEATHERS)
                 || Overlays.vampirism && AsteorBar.config.hookVampirism() && overlay.id().equals(VAMPIRISM_BLOOD)
                 || Overlays.superiorshields && AsteorBar.config.hookSuperiorShields() && overlay.id().equals(SUPERIOR_SHIELDS_SHIELD)
+                || Overlays.lightshield && AsteorBar.config.hookLightShield() && overlay.id().getNamespace().equals("lightshield")
         ) {
             event.setCanceled(true);
         }
