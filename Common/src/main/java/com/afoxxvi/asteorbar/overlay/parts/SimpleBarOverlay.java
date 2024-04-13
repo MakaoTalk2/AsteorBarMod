@@ -49,7 +49,7 @@ public abstract class SimpleBarOverlay extends BaseOverlay {
             drawFillFlip(poseStack, left + 1, top + 1, right - 1, bottom - 1, fillWidth, parameters.fillColor, flip);
         }
         if (parameters.boundFillColor != 0) {
-            final int boundFillWidth = (int) (innerWidth * parameters.boundValue / parameters.boundCapacity);
+            final int boundFillWidth = (int) ((right - left) * parameters.boundValue / parameters.boundCapacity);
             drawBoundFlip(poseStack, left, top, right, bottom, boundFillWidth, parameters.boundFillColor, flip);
         }
         if (parameters.centerText != null) {

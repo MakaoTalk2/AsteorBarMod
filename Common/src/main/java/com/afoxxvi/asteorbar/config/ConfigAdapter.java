@@ -190,5 +190,9 @@ public interface ConfigAdapter {
 
     boolean hookSuperiorShields();
 
+    boolean hookLightShield();
+
     boolean hookVampirism();
+
+    boolean hookHomeostatic();
 }
