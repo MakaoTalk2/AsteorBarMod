@@ -493,6 +493,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
         return config.hook.hookVampirism;
     }
 
+    @Override
+    public boolean hookHomeostatic() {
+        return config.hook.hookHomeostatic;
+    }
+
     public static void init() {
         AutoConfig.register(FabricConfigAdapter.AsteorBarConfig.class, JanksonConfigSerializer::new);
         holder = AutoConfig.getConfigHolder(FabricConfigAdapter.AsteorBarConfig.class);
@@ -707,6 +712,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean hookLightShield = DefaultConfigAdapter.I.hookLightShield();
             @Comment(ConfigComment.hookVampirism)
             public boolean hookVampirism = DefaultConfigAdapter.I.hookVampirism();
+            @Comment(ConfigComment.hookHomeostatic)
+            public boolean hookHomeostatic = DefaultConfigAdapter.I.hookHomeostatic();
         }
     }
 }

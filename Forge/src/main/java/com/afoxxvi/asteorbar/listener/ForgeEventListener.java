@@ -26,6 +26,9 @@ public class ForgeEventListener {
     public static final ResourceLocation FEATHERS_FEATHERS = new ResourceLocation("feathers", "feathers");
     public static final ResourceLocation VAMPIRISM_BLOOD = new ResourceLocation("vampirism", "blood_bar");
     public static final ResourceLocation SUPERIOR_SHIELDS_SHIELD = new ResourceLocation("superiorshields", "superior_shield_overlay");
+    public static final ResourceLocation HOMEOSTATIC_WATER = new ResourceLocation("homeostatic", "water_level");
+    public static final ResourceLocation HOMEOSTATIC_HYDRATION = new ResourceLocation("homeostatic", "hydration");
+
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
@@ -57,6 +60,7 @@ public class ForgeEventListener {
                 || Overlays.vampirism && AsteorBar.config.hookVampirism() && overlay.id().equals(VAMPIRISM_BLOOD)
                 || Overlays.superiorshields && AsteorBar.config.hookSuperiorShields() && overlay.id().equals(SUPERIOR_SHIELDS_SHIELD)
                 || Overlays.lightshield && AsteorBar.config.hookLightShield() && overlay.id().getNamespace().equals("lightshield")
+                || Overlays.homeostatic && AsteorBar.config.hookHomeostatic() && (overlay.id().equals(HOMEOSTATIC_WATER) || overlay.id().equals(HOMEOSTATIC_HYDRATION))
         ) {
             event.setCanceled(true);
         }

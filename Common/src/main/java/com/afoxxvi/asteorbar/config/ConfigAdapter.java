@@ -193,4 +193,6 @@ public interface ConfigAdapter {
     boolean hookLightShield();
 
     boolean hookVampirism();
+
+    boolean hookHomeostatic();
 }

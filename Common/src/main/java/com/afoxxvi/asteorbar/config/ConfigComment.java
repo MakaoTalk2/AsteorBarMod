@@ -94,4 +94,5 @@ public class ConfigComment {
     public static final String hookSuperiorShields = "Whether to hook Superior Shields. If enabled, the mod will display the shield bar.";
     public static final String hookLightShield = "Whether to hook Light Shield. If enabled, the mod will display the shield bar.";
     public static final String hookVampirism = "Whether to hook Vampirism. If enabled, the mod will display the blood bar.";
+    public static final String hookHomeostatic = "Whether to hook Homeostatic. If enabled, the mod will display the thirst bar.";
 }

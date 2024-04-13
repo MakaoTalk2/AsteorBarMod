@@ -7,6 +7,7 @@ import net.minecraft.world.entity.player.Player;
 
 public abstract class SimpleBarOverlay extends BaseOverlay {
     protected int tick = 0;
+
     public static class Parameters {
         public int fillColor = 0;
         public int fillColor2 = 0;
@@ -48,7 +49,7 @@ public abstract class SimpleBarOverlay extends BaseOverlay {
             drawFillFlip(guiGraphics, left + 1, top + 1, right - 1, bottom - 1, fillWidth, parameters.fillColor, flip);
         }
         if (parameters.boundFillColor != 0) {
-            final int boundFillWidth = (int) (innerWidth * parameters.boundValue / parameters.boundCapacity);
+            final int boundFillWidth = (int) ((right - left) * parameters.boundValue / parameters.boundCapacity);
             drawBoundFlip(guiGraphics, left, top, right, bottom, boundFillWidth, parameters.boundFillColor, flip);
         }
         if (parameters.centerText != null) {

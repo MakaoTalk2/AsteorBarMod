@@ -482,4 +482,9 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     public boolean hookVampirism() {
         return true;
     }
+
+    @Override
+    public boolean hookHomeostatic() {
+        return true;
+    }
 }

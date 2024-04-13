@@ -102,6 +102,7 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.BooleanValue HOOK_SUPERIOR_SHIELDS;
         public static final ForgeConfigSpec.BooleanValue HOOK_LIGHT_SHIELD;
         public static final ForgeConfigSpec.BooleanValue HOOK_VAMPIRISM;
+        public static final ForgeConfigSpec.BooleanValue HOOK_HOMEOSTATIC;
 
 
         static {
@@ -482,6 +483,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.hookVampirism)
                     .translation("text.autoconfig.asteorbar.option.hook.hookVampirism")
                     .define("vampirism", DefaultConfigAdapter.I.hookVampirism());
+            HOOK_HOMEOSTATIC = BUILDER
+                    .comment(ConfigComment.hookHomeostatic)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookHomeostatic")
+                    .define("homeostatic", DefaultConfigAdapter.I.hookHomeostatic());
             BUILDER.pop();
         }
 
@@ -969,6 +974,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public boolean hookVampirism() {
         return Config.HOOK_VAMPIRISM.get();
+    }
+
+    @Override
+    public boolean hookHomeostatic() {
+        return Config.HOOK_HOMEOSTATIC.get();
     }
 
 }
