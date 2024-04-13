@@ -68,6 +68,7 @@ public class ForgeEventListener {
                 || Overlays.vampirism && AsteorBar.config.hookVampirism() && overlay == vampirismBlood
                 || Overlays.superiorshields && AsteorBar.config.hookSuperiorShields() && overlay == superiorShieldsShield
                 || Overlays.appleskin && AsteorBar.config.hookAppleSkin() && overlay.getClass().getPackageName().equals("squeek.appleskin.client")
+            //|| Overlays.homeostatic && AsteorBar.config.hookHomeostatic() && (overlay.id().equals(HOMEOSTATIC_WATER) || overlay.id().equals(HOMEOSTATIC_HYDRATION))
         ) {
             event.setCanceled(true);
         }

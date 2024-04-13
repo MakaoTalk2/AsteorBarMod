@@ -18,6 +18,7 @@ public class ModEventListener {
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "mount_health", new ForgeRenderGui(MOUNT_HEALTH));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "tough_as_nails", new ForgeRenderGui(new ToughAsNailsOverlay()));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "thirst", new ForgeRenderGui(new ThirstOverlay()));
+        OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "homeostatic", new ForgeRenderGui(new HomeostaticOverlay()));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "feathers", new ForgeRenderGui(new FeathersOverlay()));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "irons_spellbooks_mana", new ForgeRenderGui(new IronsSpellbooksOverlay()));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "parcool_stamina", new ForgeRenderGui(new ParcoolOverlay()));
