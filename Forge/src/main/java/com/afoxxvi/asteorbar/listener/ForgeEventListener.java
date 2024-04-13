@@ -25,6 +25,9 @@ public class ForgeEventListener {
     public static final ResourceLocation FEATHERS_FEATHERS = new ResourceLocation("feathers", "feathers");
     public static final ResourceLocation VAMPIRISM_BLOOD = new ResourceLocation("vampirism", "blood_bar");
     public static final ResourceLocation SUPERIOR_SHIELDS_SHIELD = new ResourceLocation("superiorshields", "superior_shield_overlay");
+    public static final ResourceLocation HOMEOSTATIC_WATER = new ResourceLocation("homeostatic", "water_level");
+    public static final ResourceLocation HOMEOSTATIC_HYDRATION = new ResourceLocation("homeostatic", "hydration");
+
 
     @SubscribeEvent
     public static void onClientTick(TickEvent.ClientTickEvent event) {
@@ -37,7 +40,6 @@ public class ForgeEventListener {
     public static void disableVanillaOverlays(RenderGuiOverlayEvent.Pre event) {
         if (!AsteorBar.config.enableOverlay()) return;
         NamedGuiOverlay overlay = event.getOverlay();
-        //AsteorBarForge.LOGGER.info(overlay.id().toString());
         if (overlay == VanillaGuiOverlay.VIGNETTE.type()) {
             Overlays.reset();
         }
@@ -55,6 +57,7 @@ public class ForgeEventListener {
                 || Overlays.feathers && AsteorBar.config.hookFeathers() && overlay.id().equals(FEATHERS_FEATHERS)
                 || Overlays.vampirism && AsteorBar.config.hookVampirism() && overlay.id().equals(VAMPIRISM_BLOOD)
                 || Overlays.superiorshields && AsteorBar.config.hookSuperiorShields() && overlay.id().equals(SUPERIOR_SHIELDS_SHIELD)
+                || Overlays.homeostatic && AsteorBar.config.hookHomeostatic() && (overlay.id().equals(HOMEOSTATIC_WATER) || overlay.id().equals(HOMEOSTATIC_HYDRATION))
         ) {
             event.setCanceled(true);
         }

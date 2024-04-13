@@ -474,7 +474,17 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean hookLightShield() {
+        return true;
+    }
+
+    @Override
     public boolean hookVampirism() {
+        return true;
+    }
+
+    @Override
+    public boolean hookHomeostatic() {
         return true;
     }
 }
