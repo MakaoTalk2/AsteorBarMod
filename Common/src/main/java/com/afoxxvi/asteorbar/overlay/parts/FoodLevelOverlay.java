@@ -71,7 +71,7 @@ public class FoodLevelOverlay extends BaseOverlay {
         }
         int foodIncrement = 0;
         float saturationIncrement = 0F;
-        if (Overlays.appleskin) {
+        if (AsteorBar.compatibility.appleskin) {
             final var foodValues = AsteorBar.platformAdapter.getAppleSkinFoodValues(player);
             if (foodValues != null) {
                 foodIncrement = foodValues.hungerIncrement();

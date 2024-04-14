@@ -23,6 +23,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class NetworkHandler {
+    private static boolean initialized = false;
     private static final SimpleChannel CHANNEL = ChannelBuilder
             .named(new ResourceLocation(AsteorBar.MOD_ID, "network"))
             .networkProtocolVersion(1)
@@ -83,7 +84,11 @@ public class NetworkHandler {
                 SATURATION.put(player.getUUID(), saturationLevel);
                 CHANNEL.send(new SaturationPacket(saturationLevel), PacketDistributor.PLAYER.with(player));
             }
-            if (Overlays.toughAsNails) {
+            if (!initialized) {
+                initialized = true;
+                AsteorBar.compatibility.init();
+            }
+            if (AsteorBar.compatibility.toughAsNails) {
                 var thirst = ThirstHelper.getThirst(player);
                 boolean send = false;
                 float hydration = thirst.getHydration();
@@ -240,7 +245,7 @@ public class NetworkHandler {
         public static void handle(ToughAsNailsPacket packet, CustomPayloadEvent.Context context) {
             context.enqueueWork(() -> {
                 var player = getPlayer(context);
-                if (player != null && Overlays.toughAsNails) {
+                if (player != null && AsteorBar.compatibility.toughAsNails) {
                     var thirst = ThirstHelper.getThirst(player);
                     thirst.setHydration(packet.hydration);
                     thirst.setExhaustion(packet.exhaustion);

@@ -24,6 +24,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class NetworkHandler {
+    private static boolean initialized = false;
     //avoid sending packets too frequently
     private static final Map<UUID, Float> EXHAUSTION = new HashMap<>();
     private static final Map<UUID, Float> SATURATION = new HashMap<>();
@@ -57,7 +58,11 @@ public class NetworkHandler {
                 SATURATION.put(player.getUUID(), saturationLevel);
                 PacketDistributor.PLAYER.with(player).send(new SaturationPacket(saturationLevel));
             }
-            if (Overlays.toughAsNails) {
+            if (!initialized) {
+                initialized = true;
+                AsteorBar.compatibility.init();
+            }
+            if (AsteorBar.compatibility.toughAsNails) {
                 var thirst = ThirstHelper.getThirst(player);
                 boolean send = false;
                 float hydration = thirst.getHydration();

@@ -13,7 +13,7 @@ public class LightShieldRenderer {
 
     public static void init() {
         if (init) return;
-        if (!Overlays.lightShield) return;
+        if (!AsteorBar.compatibility.lightshield) return;
         init = true;
         EntityRenderer.EXTRA_RENDERERS.add((entity, poseStack, multiBufferSource, halfWidth, halfHeight, boundWidth) -> {
             if (entity instanceof Player player) {

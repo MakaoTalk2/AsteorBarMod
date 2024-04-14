@@ -40,7 +40,7 @@ public class ToughAsNailsOverlay extends BaseOverlay {
     @SuppressWarnings("DuplicatedCode")
     @Override
     public void renderOverlay(RenderGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
-        if (!Overlays.toughAsNails || !AsteorBar.config.hookToughAsNails()) return;
+        if (!AsteorBar.compatibility.toughAsNails || !AsteorBar.config.hookToughAsNails()) return;
         ToughAsNailsTemperatureMixin.invokeRenderTemperature(guiGraphics, partialTick, screenWidth, screenHeight);
         if (!ThirstHelper.isThirstEnabled()) return;
         RenderSystem.setShaderTexture(0, LIGHTMAP_TEXTURE);

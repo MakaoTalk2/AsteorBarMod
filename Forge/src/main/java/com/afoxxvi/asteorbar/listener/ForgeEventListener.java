@@ -40,8 +40,8 @@ public class ForgeEventListener {
                 || (AsteorBar.config.overwriteVanillaExperienceBar() && overlay == VanillaGuiOverlay.EXPERIENCE_BAR.type())
                 || overlay == VanillaGuiOverlay.MOUNT_HEALTH.type()
                 || (AsteorBar.config.overwriteVanillaArmorBar() && overlay == VanillaGuiOverlay.ARMOR_LEVEL.type())
-                || Overlays.toughAsNails && AsteorBar.config.hookToughAsNails() && overlay.id().equals(TOUGH_AS_NAILS_THIRST_LEVEL)
-                || Overlays.parcool && AsteorBar.config.hookParcool() && overlay.id().equals(PARCOOL_STAMINA)
+                || AsteorBar.compatibility.toughAsNails && AsteorBar.config.hookToughAsNails() && overlay.id().equals(TOUGH_AS_NAILS_THIRST_LEVEL)
+                || AsteorBar.compatibility.parcool && AsteorBar.config.hookParcool() && overlay.id().equals(PARCOOL_STAMINA)
         ) {
             event.setCanceled(true);
         }

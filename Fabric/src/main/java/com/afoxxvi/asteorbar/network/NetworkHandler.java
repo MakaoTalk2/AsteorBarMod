@@ -1,6 +1,7 @@
 package com.afoxxvi.asteorbar.network;
 
 
+import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.overlay.Overlays;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
@@ -20,6 +21,7 @@ import java.util.Map;
 import java.util.UUID;
 
 public class NetworkHandler {
+    private static boolean initialized = false;
     private static final ResourceLocation CHANNEL = new ResourceLocation("asteorbar", "network");
     private static final int INDEX_EXHAUSTION = 0;
     private static final int INDEX_SATURATION = 1;
@@ -106,7 +108,11 @@ public class NetworkHandler {
             var packet = ServerPlayNetworking.createS2CPacket(CHANNEL, PacketByteBufs.duplicate(buf));
             player.connection.send(packet);
         }
-        if (Overlays.toughAsNails) {
+        if (!initialized) {
+            initialized = true;
+            AsteorBar.compatibility.init();
+        }
+        if (AsteorBar.compatibility.toughAsNails) {
             var thirst = ThirstHelper.getThirst(player);
             boolean send = false;
             float hydration = thirst.getHydration();

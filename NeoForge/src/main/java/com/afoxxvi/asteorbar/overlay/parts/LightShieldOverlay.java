@@ -37,7 +37,7 @@ public class LightShieldOverlay extends BaseOverlay {
 
     @Override
     public void renderOverlay(RenderGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
-        if (!Overlays.lightShield) return;
+        if (!AsteorBar.compatibility.lightshield) return;
         var player = gui.mc().player;
         if (player == null) return;
         var shield = luoyu.lightshield.Api.getShieldAmount(player);
