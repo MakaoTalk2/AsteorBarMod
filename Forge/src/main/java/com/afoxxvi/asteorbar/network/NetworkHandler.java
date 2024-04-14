@@ -83,7 +83,7 @@ public class NetworkHandler {
                 SATURATION.put(player.getUUID(), saturationLevel);
                 CHANNEL.send(new SaturationPacket(saturationLevel), PacketDistributor.PLAYER.with(player));
             }
-            if (Overlays.toughAsNails) {
+            if (AsteorBar.compatibility.toughAsNails) {
                 var thirst = ThirstHelper.getThirst(player);
                 boolean send = false;
                 float hydration = thirst.getHydration();
@@ -240,7 +240,7 @@ public class NetworkHandler {
         public static void handle(ToughAsNailsPacket packet, CustomPayloadEvent.Context context) {
             context.enqueueWork(() -> {
                 var player = getPlayer(context);
-                if (player != null && Overlays.toughAsNails) {
+                if (player != null && AsteorBar.compatibility.toughAsNails) {
                     var thirst = ThirstHelper.getThirst(player);
                     thirst.setHydration(packet.hydration);
                     thirst.setExhaustion(packet.exhaustion);

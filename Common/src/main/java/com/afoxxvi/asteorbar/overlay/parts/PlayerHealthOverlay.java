@@ -231,7 +231,7 @@ public class PlayerHealthOverlay extends BaseOverlay {
             regenerationOffset = (int) (tickCount % 30 * 6);
         }
         double healthIncrement = 0;
-        if (Overlays.appleskin) {
+        if (AsteorBar.compatibility.appleskin) {
             final var foodValues = AsteorBar.platformAdapter.getAppleSkinFoodValues(player);
             if (foodValues != null) {
                 healthIncrement = foodValues.healthIncrement();
