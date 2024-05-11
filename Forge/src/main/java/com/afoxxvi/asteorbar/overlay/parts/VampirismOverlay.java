@@ -85,7 +85,7 @@ public class VampirismOverlay extends BaseOverlay {
 
     @Override
     public boolean shouldOverride() {
-        if (!Overlays.vampirism || !AsteorBar.config.hookVampirism()) return false;
+        if (!AsteorBar.compatibility.vampirism || !AsteorBar.config.hookVampirism()) return false;
         final var mc = Minecraft.getInstance();
         var player = mc.player;
         if (player == null) return false;

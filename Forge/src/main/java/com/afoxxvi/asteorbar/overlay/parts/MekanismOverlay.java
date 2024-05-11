@@ -44,6 +44,6 @@ public class MekanismOverlay extends SimpleBarOverlay {
 
     @Override
     protected boolean shouldRender(Player player) {
-        return Overlays.mekanism && AsteorBar.config.hookMekanism();
+        return AsteorBar.compatibility.mekanism && AsteorBar.config.hookMekanism();
     }
 }
