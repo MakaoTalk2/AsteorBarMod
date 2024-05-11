@@ -40,6 +40,6 @@ public class IronsSpellbooksOverlay extends SimpleBarOverlay {
 
     @Override
     protected boolean shouldRender(Player player) {
-        return Overlays.ironsSpellbooks && AsteorBar.config.hookIronsSpellbooks() && ManaBarOverlay.shouldShowManaBar(player);
+        return AsteorBar.compatibility.ironsSpellbooks && AsteorBar.config.hookIronsSpellbooks() && ManaBarOverlay.shouldShowManaBar(player);
     }
 }

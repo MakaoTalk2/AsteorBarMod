@@ -71,7 +71,7 @@ public class NetworkHandler {
                 case INDEX_DEHYDRATION: {
                     float dehydration = buf.readFloat();
                     client.execute(() -> {
-                        if (client.player != null && Overlays.dehydration) {
+                        if (client.player != null && AsteorBar.compatibility.dehydration) {
                             var thirstManager = ((ThirstManagerAccess) client.player).getThirstManager();
                             if (thirstManager != null) {
                                 thirstManager.dehydration = dehydration;
@@ -108,7 +108,7 @@ public class NetworkHandler {
             var packet = ServerPlayNetworking.createS2CPacket(CHANNEL, PacketByteBufs.duplicate(buf));
             player.connection.send(packet);
         }
-        if (Overlays.dehydration) {
+        if (AsteorBar.compatibility.dehydration) {
             var thirstManager = ((ThirstManagerAccess) player).getThirstManager();
             if (thirstManager != null && thirstManager.hasThirst()) {
                 float dehydration = thirstManager.dehydration;

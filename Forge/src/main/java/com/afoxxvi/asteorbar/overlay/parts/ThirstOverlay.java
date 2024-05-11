@@ -64,6 +64,6 @@ public class ThirstOverlay extends SimpleBarOverlay {
 
     @Override
     protected boolean shouldRender(Player player) {
-        return Overlays.thirst && AsteorBar.config.hookThirstWasTaken();
+        return AsteorBar.compatibility.thirst && AsteorBar.config.hookThirstWasTaken();
     }
 }

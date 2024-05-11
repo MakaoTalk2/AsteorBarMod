@@ -72,6 +72,6 @@ public class HomeostaticOverlay extends SimpleBarOverlay {
 
     @Override
     protected boolean shouldRender(Player player) {
-        return Overlays.homeostatic && AsteorBar.config.hookHomeostatic();
+        return AsteorBar.compatibility.homeostatic && AsteorBar.config.hookHomeostatic();
     }
 }

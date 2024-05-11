@@ -62,6 +62,6 @@ public class ToughAsNailsOverlay extends SimpleBarOverlay {
 
     @Override
     protected boolean shouldRender(Player player) {
-        return Overlays.toughAsNails && AsteorBar.config.hookToughAsNails() && ThirstHelper.isThirstEnabled();
+        return AsteorBar.compatibility.toughAsNails && AsteorBar.config.hookToughAsNails() && ThirstHelper.isThirstEnabled();
     }
 }
