@@ -84,6 +84,6 @@ public class FeathersOverlay extends SimpleBarOverlay {
 
     @Override
     protected boolean shouldRender(Player player) {
-        return Overlays.feathers && AsteorBar.config.hookFeathers();
+        return AsteorBar.compatibility.feathers && AsteorBar.config.hookFeathers();
     }
 }

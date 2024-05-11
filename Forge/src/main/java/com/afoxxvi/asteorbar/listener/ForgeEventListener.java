@@ -43,16 +43,16 @@ public class ForgeEventListener {
         if (overlay == ForgeIngameGui.VIGNETTE_ELEMENT) {
             Overlays.reset();
         }
-        if (mekasuitEnergyLevel == null && Overlays.mekanism && overlay.getClass().getSimpleName().equals("MekaSuitEnergyLevel")) {
+        if (mekasuitEnergyLevel == null && AsteorBar.compatibility.mekanism && overlay.getClass().getSimpleName().equals("MekaSuitEnergyLevel")) {
             mekasuitEnergyLevel = overlay;
         }
-        if (superiorShieldsShield == null && Overlays.superiorshields && overlay.getClass().getSimpleName().equals("GuiShieldOverlay")) {
+        if (superiorShieldsShield == null && AsteorBar.compatibility.superiorshields && overlay.getClass().getSimpleName().equals("GuiShieldOverlay")) {
             superiorShieldsShield = overlay;
         }
-        if (vampirismBlood == null && Overlays.vampirism && overlay.getClass().getSimpleName().equals("BloodBarOverlay")) {
+        if (vampirismBlood == null && AsteorBar.compatibility.vampirism && overlay.getClass().getSimpleName().equals("BloodBarOverlay")) {
             vampirismBlood = overlay;
         }
-        if (parcoolStamina == null && Overlays.parcool && overlay.getClass().getSimpleName().equals("StaminaHUDController")) {
+        if (parcoolStamina == null && AsteorBar.compatibility.parcool && overlay.getClass().getSimpleName().equals("StaminaHUDController")) {
             parcoolStamina = overlay;
         }
         if (overlay == ForgeIngameGui.PLAYER_HEALTH_ELEMENT
@@ -61,14 +61,14 @@ public class ForgeEventListener {
                 || (AsteorBar.config.overwriteVanillaExperienceBar() && overlay == ForgeIngameGui.EXPERIENCE_BAR_ELEMENT)
                 || overlay == ForgeIngameGui.MOUNT_HEALTH_ELEMENT
                 || (AsteorBar.config.overwriteVanillaArmorBar() && overlay == ForgeIngameGui.ARMOR_LEVEL_ELEMENT)
-                || Overlays.toughAsNails && AsteorBar.config.hookToughAsNails() && overlay == ThirstOverlayHandler.THIRST_LEVEL_ELEMENT
-                || Overlays.thirst && AsteorBar.config.hookThirstWasTaken() && overlay == ThirstBarRenderer.THIRST_OVERLAY
-                || Overlays.mekanism && AsteorBar.config.hookMekanism() && overlay == mekasuitEnergyLevel
-                || Overlays.parcool && AsteorBar.config.hookParcool() && overlay == parcoolStamina
-                || Overlays.vampirism && AsteorBar.config.hookVampirism() && overlay == vampirismBlood
-                || Overlays.superiorshields && AsteorBar.config.hookSuperiorShields() && overlay == superiorShieldsShield
-                || Overlays.appleskin && AsteorBar.config.hookAppleSkin() && overlay.getClass().getPackageName().equals("squeek.appleskin.client")
-            //|| Overlays.homeostatic && AsteorBar.config.hookHomeostatic() && (overlay.id().equals(HOMEOSTATIC_WATER) || overlay.id().equals(HOMEOSTATIC_HYDRATION))
+                || AsteorBar.compatibility.toughAsNails && AsteorBar.config.hookToughAsNails() && overlay == ThirstOverlayHandler.THIRST_LEVEL_ELEMENT
+                || AsteorBar.compatibility.thirst && AsteorBar.config.hookThirstWasTaken() && overlay == ThirstBarRenderer.THIRST_OVERLAY
+                || AsteorBar.compatibility.mekanism && AsteorBar.config.hookMekanism() && overlay == mekasuitEnergyLevel
+                || AsteorBar.compatibility.parcool && AsteorBar.config.hookParcool() && overlay == parcoolStamina
+                || AsteorBar.compatibility.vampirism && AsteorBar.config.hookVampirism() && overlay == vampirismBlood
+                || AsteorBar.compatibility.superiorshields && AsteorBar.config.hookSuperiorShields() && overlay == superiorShieldsShield
+                || AsteorBar.compatibility.appleskin && AsteorBar.config.hookAppleSkin() && overlay.getClass().getPackageName().equals("squeek.appleskin.client")
+            //|| AsteorBar.compatibility.homeostatic && AsteorBar.config.hookHomeostatic() && (overlay.id().equals(HOMEOSTATIC_WATER) || overlay.id().equals(HOMEOSTATIC_HYDRATION))
         ) {
             event.setCanceled(true);
         }

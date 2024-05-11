@@ -40,6 +40,6 @@ public class SuperiorShieldsOverlay extends SimpleBarOverlay {
 
     @Override
     protected boolean shouldRender(Player player) {
-        return Overlays.superiorshields && AsteorBar.config.hookSuperiorShields();
+        return AsteorBar.compatibility.superiorshields && AsteorBar.config.hookSuperiorShields();
     }
 }
