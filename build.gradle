@@ -3,7 +3,7 @@ plugins {
 }
 
 group = 'com.afoxxvi'
-version = '1.0-SNAPSHOT'
+version = mod_version
 
 repositories {
     mavenCentral()

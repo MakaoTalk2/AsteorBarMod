@@ -53,6 +53,6 @@ public class ParcoolOverlay extends SimpleBarOverlay {
 
     @Override
     protected boolean shouldRender(Player player) {
-        return Overlays.parcool && AsteorBar.config.hookParcool();
+        return AsteorBar.compatibility.parcool && AsteorBar.config.hookParcool();
     }
 }

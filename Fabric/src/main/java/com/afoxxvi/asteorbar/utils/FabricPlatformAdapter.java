@@ -1,5 +1,6 @@
 package com.afoxxvi.asteorbar.utils;
 
+import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.entity.AsteorBarRenderType;
 import com.afoxxvi.asteorbar.overlay.Overlays;
 import net.fabricmc.loader.api.FabricLoader;
@@ -33,7 +34,7 @@ public class FabricPlatformAdapter implements PlatformAdapter {
 
     @Override
     public AppleSkinFoodValues getAppleSkinFoodValues(Player player) {
-        if (!Overlays.appleskin) {
+        if (!AsteorBar.compatibility.appleskin) {
             return null;
         }
         // if not using third adapter, the game will crash if appleskin is not loaded
