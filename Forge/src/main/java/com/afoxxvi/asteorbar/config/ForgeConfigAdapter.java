@@ -19,6 +19,7 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.IntValue FULL_HEALTH_VALUE;
         public static final ForgeConfigSpec.BooleanValue ENABLE_STACK_HEALTH_BAR;
         public static final ForgeConfigSpec.ConfigValue<String> STACK_HEALTH_BAR_COLORS;
+        public static final ForgeConfigSpec.IntValue HIDE_UNCHANGING_BAR_AFTER_SECONDS;
         public static final ForgeConfigSpec.IntValue HEALTH_COLOR_NORMAL;
         public static final ForgeConfigSpec.IntValue HEALTH_COLOR_POISON;
         public static final ForgeConfigSpec.IntValue HEALTH_COLOR_WITHER;
@@ -63,6 +64,7 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.BooleanValue ENABLE_FOOD_BLINK;
         public static final ForgeConfigSpec.BooleanValue DISPLAY_SATURATION;
         public static final ForgeConfigSpec.BooleanValue DISPLAY_EXHAUSTION;
+        public static final ForgeConfigSpec.BooleanValue DISPLAY_FOOD_TEXT;
         public static final ForgeConfigSpec.BooleanValue DISPLAY_ARMOR_TOUGHNESS;
         public static final ForgeConfigSpec.IntValue CORNER_BAR_LENGTH;
         public static final ForgeConfigSpec.IntValue CORNER_HORIZONTAL_PADDING;
@@ -149,6 +151,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.stackHealthBarColors)
                     .translation("text.autoconfig.asteorbar.option.overlay.stackHealthBarColors")
                     .define("stackHealthBarColors", DefaultConfigAdapter.I.stackHealthBarColors());
+            HIDE_UNCHANGING_BAR_AFTER_SECONDS = BUILDER
+                    .comment(ConfigComment.hideUnchangingBarAfterSeconds)
+                    .translation("text.autoconfig.asteorbar.option.overlay.hideUnchangingBarAfterSeconds")
+                    .defineInRange("hideUnchangingBarAfterSeconds", DefaultConfigAdapter.I.hideUnchangingBarAfterSeconds(), 0, Integer.MAX_VALUE);
             HEALTH_COLOR_NORMAL = BUILDER
                     .comment(ConfigComment.healthColorNormal)
                     .translation("text.autoconfig.asteorbar.option.overlay.healthColorNormal")
@@ -325,6 +331,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.displayExhaustion)
                     .translation("text.autoconfig.asteorbar.option.overlay.displayExhaustion")
                     .define("displayExhaustion", DefaultConfigAdapter.I.displayExhaustion());
+            DISPLAY_FOOD_TEXT = BUILDER
+                    .comment(ConfigComment.displayFoodText)
+                    .translation("text.autoconfig.asteorbar.option.overlay.displayFoodText")
+                    .define("displayFoodText", DefaultConfigAdapter.I.displayFoodText());
             DISPLAY_ARMOR_TOUGHNESS = BUILDER
                     .comment(ConfigComment.displayArmorToughness)
                     .translation("text.autoconfig.asteorbar.option.overlay.displayArmorToughness")
@@ -551,6 +561,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public int hideUnchangingBarAfterSeconds() {
+        return Config.HIDE_UNCHANGING_BAR_AFTER_SECONDS.get();
+    }
+
+    @Override
     public int healthColorNormal() {
         return Config.HEALTH_COLOR_NORMAL.get();
     }
@@ -768,6 +783,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public boolean displayExhaustion() {
         return Config.DISPLAY_EXHAUSTION.get();
+    }
+
+    @Override
+    public boolean displayFoodText() {
+        return Config.DISPLAY_FOOD_TEXT.get();
     }
 
     @Override

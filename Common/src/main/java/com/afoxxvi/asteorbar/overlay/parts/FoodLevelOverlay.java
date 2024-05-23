@@ -3,18 +3,25 @@ package com.afoxxvi.asteorbar.overlay.parts;
 import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.overlay.Overlays;
 import com.afoxxvi.asteorbar.overlay.RenderGui;
+import com.afoxxvi.asteorbar.utils.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.effect.MobEffects;
-import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.food.FoodData;
 
 @SuppressWarnings("DuplicatedCode")
 public class FoodLevelOverlay extends BaseOverlay {
     private int foodBlinkTime = 0;
+    private final int[] shift = new int[]{0, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1};
 
     private void draw(GuiGraphics guiGraphics, int left, int top, int right, int bottom, boolean highlight, int foodColor, int foodLevel, float saturation, float exhaustion, int foodIncrement, float saturationIncrement, int tick, boolean flip) {
         RenderSystem.enableBlend();
+        int verticalShift = 0;
+        if (foodLevel <= 4) {
+            verticalShift = shift[tick / (foodLevel + 1) % shift.length];
+            top += verticalShift;
+            bottom += verticalShift;
+        }
         var boundColor = highlight ? AsteorBar.config.foodBoundColorBlink() : AsteorBar.config.foodBoundColor();
         drawBound(guiGraphics, left, top, right, bottom, boundColor);
         drawEmptyFill(guiGraphics, left + 1, top + 1, right - 1, bottom - 1, AsteorBar.config.foodEmptyColor());
@@ -53,6 +60,11 @@ public class FoodLevelOverlay extends BaseOverlay {
             int exhaustionWidth = (int) (innerWidth * (Math.min(AsteorBar.config.fullExhaustionValue(), exhaustion) / AsteorBar.config.fullExhaustionValue()));
             drawTextureFillFlip(guiGraphics, left + 1, top, right - 1, exhaustionWidth, 5, 10, Y_FOOD_EXHAUSTION_FILL, FILL_FULL_WIDTH_LONG, flip);
             RenderSystem.setShaderTexture(0, LIGHTMAP_TEXTURE);
+        }
+        top -= verticalShift;
+        if (AsteorBar.config.displayFoodText()) {
+            String foodText = Utils.formatNumber(foodLevel) + "/" + Utils.formatNumber(AsteorBar.config.fullFoodLevelValue());
+            Overlays.addStringRender((left + right) / 2, top - 2, 0xFFFFFF, foodText, Overlays.ALIGN_CENTER, true);
         }
         RenderSystem.disableBlend();
     }

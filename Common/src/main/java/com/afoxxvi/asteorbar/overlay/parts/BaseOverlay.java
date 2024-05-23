@@ -20,6 +20,7 @@ public abstract class BaseOverlay {
     public static final int Y_LEFT_DECORATION = 36;
 
     public BaseOverlay overrideOverlay = null;
+    protected int tick = 0;
 
     public boolean shouldOverride() {
         return false;
@@ -142,6 +143,7 @@ public abstract class BaseOverlay {
 
     public void render(RenderGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         if (AsteorBar.config.enableOverlay()) {
+            tick = gui.gui().getGuiTicks();
             RenderSystem.setShaderTexture(0, LIGHTMAP_TEXTURE);
             if (overrideOverlay != null && overrideOverlay.shouldOverride()) {
                 overrideOverlay.render(gui, guiGraphics, partialTick, screenWidth, screenHeight);

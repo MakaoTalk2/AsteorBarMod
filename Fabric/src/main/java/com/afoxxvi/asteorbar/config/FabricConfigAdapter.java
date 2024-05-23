@@ -78,6 +78,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public int hideUnchangingBarAfterSeconds() {
+        return config.overlay.hideUnchangingBarAfterSeconds;
+    }
+
+    @Override
     public int healthColorNormal() {
         return config.overlay.healthColorNormal;
     }
@@ -295,6 +300,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     @Override
     public boolean displayExhaustion() {
         return config.overlay.displayExhaustion;
+    }
+
+    @Override
+    public boolean displayFoodText() {
+        return config.overlay.displayFoodText;
     }
 
     @Override
@@ -531,6 +541,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean enableStackHealthBar = DefaultConfigAdapter.I.enableStackHealthBar();
             @Comment(ConfigComment.stackHealthBarColors)
             public String stackHealthBarColors = DefaultConfigAdapter.I.stackHealthBarColors();
+            @Comment(ConfigComment.hideUnchangingBarAfterSeconds)
+            public int hideUnchangingBarAfterSeconds = DefaultConfigAdapter.I.hideUnchangingBarAfterSeconds();
             @Comment(ConfigComment.healthColorNormal)
             public int healthColorNormal = DefaultConfigAdapter.I.healthColorNormal();
             @Comment(ConfigComment.healthColorPoison)
@@ -619,6 +631,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean displaySaturation = DefaultConfigAdapter.I.displaySaturation();
             @Comment(ConfigComment.displayExhaustion)
             public boolean displayExhaustion = DefaultConfigAdapter.I.displayExhaustion();
+            @Comment(ConfigComment.displayFoodText)
+            public boolean displayFoodText = DefaultConfigAdapter.I.displayFoodText();
             @Comment(ConfigComment.displayArmorToughness)
             public boolean displayArmorToughness = DefaultConfigAdapter.I.displayArmorToughness();
             @Comment(ConfigComment.cornerBarLength)

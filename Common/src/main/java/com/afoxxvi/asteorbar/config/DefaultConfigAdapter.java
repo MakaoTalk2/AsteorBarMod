@@ -69,6 +69,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public int hideUnchangingBarAfterSeconds() {
+        return 0;
+    }
+
+    @Override
     public int healthColorNormal() {
         return 0xffff4545;
     }
@@ -286,6 +291,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     @Override
     public boolean displayExhaustion() {
         return true;
+    }
+
+    @Override
+    public boolean displayFoodText() {
+        return false;
     }
 
     @Override
