@@ -103,6 +103,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.BooleanValue HOOK_APPLE_SKIN;
         public static final ForgeConfigSpec.BooleanValue HOOK_SUPERIOR_SHIELDS;
         public static final ForgeConfigSpec.BooleanValue HOOK_VAMPIRISM;
+        public static final ForgeConfigSpec.BooleanValue HOOK_BOTANIA;
+        public static final ForgeConfigSpec.BooleanValue HOOK_ORIGINS;
+        public static final ForgeConfigSpec.BooleanValue HOOK_TFC;
+        public static final ForgeConfigSpec.BooleanValue HOOK_ARS_NOUVEAU;
 
 
         static {
@@ -487,6 +491,22 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.hookVampirism)
                     .translation("text.autoconfig.asteorbar.option.hook.hookVampirism")
                     .define("vampirism", DefaultConfigAdapter.I.hookVampirism());
+            HOOK_BOTANIA = BUILDER
+                    .comment(ConfigComment.hookBotania)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookBotania")
+                    .define("botania", DefaultConfigAdapter.I.hookBotania());
+            HOOK_ORIGINS = BUILDER
+                    .comment(ConfigComment.hookOrigins)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookOrigins")
+                    .define("origins", DefaultConfigAdapter.I.hookOrigins());
+            HOOK_TFC = BUILDER
+                    .comment(ConfigComment.hookTFC)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookTFC")
+                    .define("tfc", DefaultConfigAdapter.I.hookTFC());
+            HOOK_ARS_NOUVEAU = BUILDER
+                    .comment(ConfigComment.hookArsNouveau)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookArsNouveau")
+                    .define("arsNouveau", DefaultConfigAdapter.I.hookArsNouveau());
             BUILDER.pop();
         }
 
@@ -979,6 +999,26 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public boolean hookVampirism() {
         return Config.HOOK_VAMPIRISM.get();
+    }
+
+    @Override
+    public boolean hookBotania() {
+        return Config.HOOK_BOTANIA.get();
+    }
+
+    @Override
+    public boolean hookOrigins() {
+        return Config.HOOK_ORIGINS.get();
+    }
+
+    @Override
+    public boolean hookTFC() {
+        return Config.HOOK_TFC.get();
+    }
+
+    @Override
+    public boolean hookArsNouveau() {
+        return Config.HOOK_ARS_NOUVEAU.get();
     }
 
 }

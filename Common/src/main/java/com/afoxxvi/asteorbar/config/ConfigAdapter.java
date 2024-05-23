@@ -195,4 +195,12 @@ public interface ConfigAdapter {
     boolean hookSuperiorShields();
 
     boolean hookVampirism();
+
+    boolean hookBotania();
+
+    boolean hookOrigins();
+
+    boolean hookTFC();
+
+    boolean hookArsNouveau();
 }

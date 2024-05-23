@@ -498,6 +498,26 @@ public class FabricConfigAdapter implements ConfigAdapter {
         return config.hook.hookVampirism;
     }
 
+    @Override
+    public boolean hookBotania() {
+        return config.hook.hookBotania;
+    }
+
+    @Override
+    public boolean hookOrigins() {
+        return config.hook.hookOrigins;
+    }
+
+    @Override
+    public boolean hookTFC() {
+        return config.hook.hookTFC;
+    }
+
+    @Override
+    public boolean hookArsNouveau() {
+        return config.hook.hookArsNouveau;
+    }
+
     public static void init() {
         AutoConfig.register(FabricConfigAdapter.AsteorBarConfig.class, JanksonConfigSerializer::new);
         holder = AutoConfig.getConfigHolder(FabricConfigAdapter.AsteorBarConfig.class);
@@ -714,6 +734,14 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean hookSuperiorShields = DefaultConfigAdapter.I.hookSuperiorShields();
             @Comment(ConfigComment.hookVampirism)
             public boolean hookVampirism = DefaultConfigAdapter.I.hookVampirism();
+            @Comment(ConfigComment.hookBotania)
+            public boolean hookBotania = DefaultConfigAdapter.I.hookBotania();
+            @Comment(ConfigComment.hookOrigins)
+            public boolean hookOrigins = DefaultConfigAdapter.I.hookOrigins();
+            @Comment(ConfigComment.hookTFC)
+            public boolean hookTFC = DefaultConfigAdapter.I.hookTFC();
+            @Comment(ConfigComment.hookArsNouveau)
+            public boolean hookArsNouveau = DefaultConfigAdapter.I.hookArsNouveau();
         }
     }
 }

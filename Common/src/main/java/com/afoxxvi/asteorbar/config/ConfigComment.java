@@ -95,4 +95,8 @@ public class ConfigComment {
     public static final String hookAppleSkin = "Whether to hook AppleSkin. If enabled, the mod will display health and food preview.";
     public static final String hookSuperiorShields = "Whether to hook Superior Shields. If enabled, the mod will display the shield bar.";
     public static final String hookVampirism = "Whether to hook Vampirism. If enabled, the mod will display the blood bar.";
+    public static final String hookBotania = "Whether to hook Botania. If enabled, the mod will display the mana bar.";
+    public static final String hookOrigins = "Whether to hook Origins.";
+    public static final String hookTFC = "Whether to hook TFC.";
+    public static final String hookArsNouveau = "Whether to hook Ars Nouveau.";
 }

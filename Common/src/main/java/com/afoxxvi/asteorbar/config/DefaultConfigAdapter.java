@@ -487,4 +487,24 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     public boolean hookVampirism() {
         return true;
     }
+
+    @Override
+    public boolean hookBotania() {
+        return true;
+    }
+
+    @Override
+    public boolean hookOrigins() {
+        return true;
+    }
+
+    @Override
+    public boolean hookTFC() {
+        return true;
+    }
+
+    @Override
+    public boolean hookArsNouveau() {
+        return true;
+    }
 }
