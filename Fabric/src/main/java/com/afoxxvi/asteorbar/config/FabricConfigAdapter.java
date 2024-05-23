@@ -78,6 +78,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public int hideUnchangingBarAfterSeconds() {
+        return config.overlay.hideUnchangingBarAfterSeconds;
+    }
+
+    @Override
     public int healthColorNormal() {
         return config.overlay.healthColorNormal;
     }
@@ -298,6 +303,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean displayFoodText() {
+        return config.overlay.displayFoodText;
+    }
+
+    @Override
     public boolean displayArmorToughness() {
         return config.overlay.displayArmorToughness;
     }
@@ -488,6 +498,26 @@ public class FabricConfigAdapter implements ConfigAdapter {
         return config.hook.hookVampirism;
     }
 
+    @Override
+    public boolean hookBotania() {
+        return config.hook.hookBotania;
+    }
+
+    @Override
+    public boolean hookOrigins() {
+        return config.hook.hookOrigins;
+    }
+
+    @Override
+    public boolean hookTFC() {
+        return config.hook.hookTFC;
+    }
+
+    @Override
+    public boolean hookArsNouveau() {
+        return config.hook.hookArsNouveau;
+    }
+
     public static void init() {
         AutoConfig.register(FabricConfigAdapter.AsteorBarConfig.class, JanksonConfigSerializer::new);
         holder = AutoConfig.getConfigHolder(FabricConfigAdapter.AsteorBarConfig.class);
@@ -531,6 +561,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean enableStackHealthBar = DefaultConfigAdapter.I.enableStackHealthBar();
             @Comment(ConfigComment.stackHealthBarColors)
             public String stackHealthBarColors = DefaultConfigAdapter.I.stackHealthBarColors();
+            @Comment(ConfigComment.hideUnchangingBarAfterSeconds)
+            public int hideUnchangingBarAfterSeconds = DefaultConfigAdapter.I.hideUnchangingBarAfterSeconds();
             @Comment(ConfigComment.healthColorNormal)
             public int healthColorNormal = DefaultConfigAdapter.I.healthColorNormal();
             @Comment(ConfigComment.healthColorPoison)
@@ -619,6 +651,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean displaySaturation = DefaultConfigAdapter.I.displaySaturation();
             @Comment(ConfigComment.displayExhaustion)
             public boolean displayExhaustion = DefaultConfigAdapter.I.displayExhaustion();
+            @Comment(ConfigComment.displayFoodText)
+            public boolean displayFoodText = DefaultConfigAdapter.I.displayFoodText();
             @Comment(ConfigComment.displayArmorToughness)
             public boolean displayArmorToughness = DefaultConfigAdapter.I.displayArmorToughness();
             @Comment(ConfigComment.cornerBarLength)
@@ -700,6 +734,14 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean hookSuperiorShields = DefaultConfigAdapter.I.hookSuperiorShields();
             @Comment(ConfigComment.hookVampirism)
             public boolean hookVampirism = DefaultConfigAdapter.I.hookVampirism();
+            @Comment(ConfigComment.hookBotania)
+            public boolean hookBotania = DefaultConfigAdapter.I.hookBotania();
+            @Comment(ConfigComment.hookOrigins)
+            public boolean hookOrigins = DefaultConfigAdapter.I.hookOrigins();
+            @Comment(ConfigComment.hookTFC)
+            public boolean hookTFC = DefaultConfigAdapter.I.hookTFC();
+            @Comment(ConfigComment.hookArsNouveau)
+            public boolean hookArsNouveau = DefaultConfigAdapter.I.hookArsNouveau();
         }
     }
 }

@@ -19,6 +19,7 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.IntValue FULL_HEALTH_VALUE;
         public static final ForgeConfigSpec.BooleanValue ENABLE_STACK_HEALTH_BAR;
         public static final ForgeConfigSpec.ConfigValue<String> STACK_HEALTH_BAR_COLORS;
+        public static final ForgeConfigSpec.IntValue HIDE_UNCHANGING_BAR_AFTER_SECONDS;
         public static final ForgeConfigSpec.IntValue HEALTH_COLOR_NORMAL;
         public static final ForgeConfigSpec.IntValue HEALTH_COLOR_POISON;
         public static final ForgeConfigSpec.IntValue HEALTH_COLOR_WITHER;
@@ -63,6 +64,7 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.BooleanValue ENABLE_FOOD_BLINK;
         public static final ForgeConfigSpec.BooleanValue DISPLAY_SATURATION;
         public static final ForgeConfigSpec.BooleanValue DISPLAY_EXHAUSTION;
+        public static final ForgeConfigSpec.BooleanValue DISPLAY_FOOD_TEXT;
         public static final ForgeConfigSpec.BooleanValue DISPLAY_ARMOR_TOUGHNESS;
         public static final ForgeConfigSpec.IntValue CORNER_BAR_LENGTH;
         public static final ForgeConfigSpec.IntValue CORNER_HORIZONTAL_PADDING;
@@ -101,6 +103,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.BooleanValue HOOK_APPLE_SKIN;
         public static final ForgeConfigSpec.BooleanValue HOOK_SUPERIOR_SHIELDS;
         public static final ForgeConfigSpec.BooleanValue HOOK_VAMPIRISM;
+        public static final ForgeConfigSpec.BooleanValue HOOK_BOTANIA;
+        public static final ForgeConfigSpec.BooleanValue HOOK_ORIGINS;
+        public static final ForgeConfigSpec.BooleanValue HOOK_TFC;
+        public static final ForgeConfigSpec.BooleanValue HOOK_ARS_NOUVEAU;
 
 
         static {
@@ -149,6 +155,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.stackHealthBarColors)
                     .translation("text.autoconfig.asteorbar.option.overlay.stackHealthBarColors")
                     .define("stackHealthBarColors", DefaultConfigAdapter.I.stackHealthBarColors());
+            HIDE_UNCHANGING_BAR_AFTER_SECONDS = BUILDER
+                    .comment(ConfigComment.hideUnchangingBarAfterSeconds)
+                    .translation("text.autoconfig.asteorbar.option.overlay.hideUnchangingBarAfterSeconds")
+                    .defineInRange("hideUnchangingBarAfterSeconds", DefaultConfigAdapter.I.hideUnchangingBarAfterSeconds(), 0, Integer.MAX_VALUE);
             HEALTH_COLOR_NORMAL = BUILDER
                     .comment(ConfigComment.healthColorNormal)
                     .translation("text.autoconfig.asteorbar.option.overlay.healthColorNormal")
@@ -325,6 +335,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.displayExhaustion)
                     .translation("text.autoconfig.asteorbar.option.overlay.displayExhaustion")
                     .define("displayExhaustion", DefaultConfigAdapter.I.displayExhaustion());
+            DISPLAY_FOOD_TEXT = BUILDER
+                    .comment(ConfigComment.displayFoodText)
+                    .translation("text.autoconfig.asteorbar.option.overlay.displayFoodText")
+                    .define("displayFoodText", DefaultConfigAdapter.I.displayFoodText());
             DISPLAY_ARMOR_TOUGHNESS = BUILDER
                     .comment(ConfigComment.displayArmorToughness)
                     .translation("text.autoconfig.asteorbar.option.overlay.displayArmorToughness")
@@ -477,6 +491,22 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.hookVampirism)
                     .translation("text.autoconfig.asteorbar.option.hook.hookVampirism")
                     .define("vampirism", DefaultConfigAdapter.I.hookVampirism());
+            HOOK_BOTANIA = BUILDER
+                    .comment(ConfigComment.hookBotania)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookBotania")
+                    .define("botania", DefaultConfigAdapter.I.hookBotania());
+            HOOK_ORIGINS = BUILDER
+                    .comment(ConfigComment.hookOrigins)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookOrigins")
+                    .define("origins", DefaultConfigAdapter.I.hookOrigins());
+            HOOK_TFC = BUILDER
+                    .comment(ConfigComment.hookTFC)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookTFC")
+                    .define("tfc", DefaultConfigAdapter.I.hookTFC());
+            HOOK_ARS_NOUVEAU = BUILDER
+                    .comment(ConfigComment.hookArsNouveau)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookArsNouveau")
+                    .define("arsNouveau", DefaultConfigAdapter.I.hookArsNouveau());
             BUILDER.pop();
         }
 
@@ -548,6 +578,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public String stackHealthBarColors() {
         return Config.STACK_HEALTH_BAR_COLORS.get();
+    }
+
+    @Override
+    public int hideUnchangingBarAfterSeconds() {
+        return Config.HIDE_UNCHANGING_BAR_AFTER_SECONDS.get();
     }
 
     @Override
@@ -771,6 +806,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean displayFoodText() {
+        return Config.DISPLAY_FOOD_TEXT.get();
+    }
+
+    @Override
     public boolean displayArmorToughness() {
         return Config.DISPLAY_ARMOR_TOUGHNESS.get();
     }
@@ -959,6 +999,26 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public boolean hookVampirism() {
         return Config.HOOK_VAMPIRISM.get();
+    }
+
+    @Override
+    public boolean hookBotania() {
+        return Config.HOOK_BOTANIA.get();
+    }
+
+    @Override
+    public boolean hookOrigins() {
+        return Config.HOOK_ORIGINS.get();
+    }
+
+    @Override
+    public boolean hookTFC() {
+        return Config.HOOK_TFC.get();
+    }
+
+    @Override
+    public boolean hookArsNouveau() {
+        return Config.HOOK_ARS_NOUVEAU.get();
     }
 
 }

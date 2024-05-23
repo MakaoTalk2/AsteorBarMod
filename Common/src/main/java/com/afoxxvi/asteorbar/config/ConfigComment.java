@@ -12,6 +12,7 @@ public class ConfigComment {
     public static final String fullHealthValue = "Full health value. Determines the amount single health bar represents. No effect while stack health bar is disabled.";
     public static final String enableStackHealthBar = "Whether to enable stack health bar. If enabled, the health bar will be displayed like multiple health bars with different colors stacked together. Note that once enabled, the health bar color in specific conditions will be rendered half transparently on the health bar, and if the absorption display mode is 0, it will be changed to 2  in game dynamically to avoid ambiguity.";
     public static final String stackHealthBarColors = "The color list of the stack health bar. Split by commas, each color must be in ARGB format, no space, no illegal characters, no tail comma. For example: '#FF00FF00,#FFFF0000,#FF0000FF', the health bars will pick colors from the list sequentially, and return to the first color when the list is exhausted.";
+    public static final String hideUnchangingBarAfterSeconds = "If a bar value is not changing in some seconds, then hide them. 0 to disable.";
     public static final String healthColorNormal = "The color of the health bar. 0x00000000 to 0xFFFFFFFF. ARGB format.";
     public static final String healthColorPoison = "The color of the poison health bar. 0x00000000 to 0xFFFFFFFF. ARGB format.";
     public static final String healthColorWither = "The color of the wither health bar. 0x00000000 to 0xFFFFFFFF. ARGB format.";
@@ -56,6 +57,7 @@ public class ConfigComment {
     public static final String enableFoodBlink = "Whether to enable food level bar blink. This feature is designed to simulate the vanilla food icon shake.";
     public static final String displaySaturation = "Whether to display saturation bar.";
     public static final String displayExhaustion = "Whether to display exhaustion bar.";
+    public static final String displayFoodText = "Whether to display food text.";
     public static final String displayArmorToughness = "Whether to display armor toughness bar.";
     public static final String cornerBarLength = "The length of the bars if using corner layout. Affected bars: health, food, experience.";
     public static final String cornerHorizontalPadding = "The horizontal padding of the bars if using corner layout.";
@@ -93,4 +95,8 @@ public class ConfigComment {
     public static final String hookAppleSkin = "Whether to hook AppleSkin. If enabled, the mod will display health and food preview.";
     public static final String hookSuperiorShields = "Whether to hook Superior Shields. If enabled, the mod will display the shield bar.";
     public static final String hookVampirism = "Whether to hook Vampirism. If enabled, the mod will display the blood bar.";
+    public static final String hookBotania = "Whether to hook Botania. If enabled, the mod will display the mana bar.";
+    public static final String hookOrigins = "Whether to hook Origins.";
+    public static final String hookTFC = "Whether to hook TFC.";
+    public static final String hookArsNouveau = "Whether to hook Ars Nouveau.";
 }

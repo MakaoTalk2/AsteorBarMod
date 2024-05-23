@@ -69,6 +69,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public int hideUnchangingBarAfterSeconds() {
+        return 0;
+    }
+
+    @Override
     public int healthColorNormal() {
         return 0xffff4545;
     }
@@ -289,6 +294,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean displayFoodText() {
+        return false;
+    }
+
+    @Override
     public boolean displayArmorToughness() {
         return true;
     }
@@ -475,6 +485,26 @@ public class DefaultConfigAdapter implements ConfigAdapter {
 
     @Override
     public boolean hookVampirism() {
+        return true;
+    }
+
+    @Override
+    public boolean hookBotania() {
+        return true;
+    }
+
+    @Override
+    public boolean hookOrigins() {
+        return true;
+    }
+
+    @Override
+    public boolean hookTFC() {
+        return true;
+    }
+
+    @Override
+    public boolean hookArsNouveau() {
         return true;
     }
 }

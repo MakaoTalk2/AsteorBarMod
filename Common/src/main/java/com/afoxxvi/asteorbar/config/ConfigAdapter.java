@@ -27,6 +27,8 @@ public interface ConfigAdapter {
 
     String stackHealthBarColors();
 
+    int hideUnchangingBarAfterSeconds();
+
     int healthColorNormal();
 
     int healthColorPoison();
@@ -115,6 +117,8 @@ public interface ConfigAdapter {
 
     boolean displayExhaustion();
 
+    boolean displayFoodText();
+
     boolean displayArmorToughness();
 
     int cornerBarLength();
@@ -191,4 +195,12 @@ public interface ConfigAdapter {
     boolean hookSuperiorShields();
 
     boolean hookVampirism();
+
+    boolean hookBotania();
+
+    boolean hookOrigins();
+
+    boolean hookTFC();
+
+    boolean hookArsNouveau();
 }
