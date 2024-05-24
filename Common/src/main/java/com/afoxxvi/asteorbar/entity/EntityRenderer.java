@@ -43,7 +43,8 @@ public class EntityRenderer {
 
     private static int modifyAlpha(int color, int alpha) {
         if (alpha == 0) return color;
-        return (color & 0x00ffffff) | (alpha << 24);
+        final var newAlpha = (color >> 24) * alpha / 255;
+        return (color & 0x00ffffff) | (newAlpha << 24);
     }
 
     public static void render(LivingEntity entity, PoseStack poseStack, MultiBufferSource multiBufferSource) {

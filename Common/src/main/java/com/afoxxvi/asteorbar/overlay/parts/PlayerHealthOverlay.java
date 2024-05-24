@@ -190,7 +190,6 @@ public class PlayerHealthOverlay extends BaseOverlay {
             drawBound(guiGraphics, left, top, right, bottom, AsteorBar.config.healthBoundColorBlink());
         } else if (flashAlpha > 0) {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, flashAlpha);
-            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             drawBound(guiGraphics, left, top, right, bottom, AsteorBar.config.healthBoundColorLow());
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
