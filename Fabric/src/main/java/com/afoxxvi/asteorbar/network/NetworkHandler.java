@@ -1,19 +1,23 @@
 package com.afoxxvi.asteorbar.network;
 
-
 import com.afoxxvi.asteorbar.AsteorBar;
-import com.afoxxvi.asteorbar.overlay.Overlays;
+import com.afoxxvi.asteorbar.AsteorBarFabric;
+import com.afoxxvi.asteorbar.AsteorBarFabricClient;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
+import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
+import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
+import org.jetbrains.annotations.NotNull;
 import toughasnails.api.thirst.ThirstHelper;
 
 import java.util.HashMap;
@@ -31,20 +35,27 @@ public class NetworkHandler {
 
     @Environment(EnvType.CLIENT)
     public static void init() {
-        ClientPlayNetworking.registerGlobalReceiver(CHANNEL, (client, handler, buf, responseSender) -> {
+        PayloadTypeRegistry.playS2C().register(NetworkPayload.ID, NetworkPayload.PAYLOAD_CODEC);
+        ClientPlayNetworking.registerGlobalReceiver(NetworkPayload.ID, (payload, context) -> {
+            final var buf = payload.buf;
             byte index = buf.readByte();
+            final var client = context.client();
             switch (index) {
                 case INDEX_EXHAUSTION: {
-                    float exhaustion = buf.readFloat();
+                    float exhaustion = payload.buf().readFloat();
                     client.execute(() -> {
-                        if (client.player != null) client.player.getFoodData().setExhaustion(exhaustion);
+                        if (client.player != null) {
+                            client.player.getFoodData().setExhaustion(exhaustion);
+                        }
                     });
                 }
                 break;
                 case INDEX_SATURATION:
-                    float saturation = buf.readFloat();
+                    float saturation = payload.buf().readFloat();
                     client.execute(() -> {
-                        if (client.player != null) client.player.getFoodData().setSaturation(saturation);
+                        if (client.player != null) {
+                            client.player.getFoodData().setSaturation(saturation);
+                        }
                     });
                     break;
                 case INDEX_ABSORPTION: {
@@ -63,8 +74,8 @@ public class NetworkHandler {
                 case INDEX_ACTIVATE: {
                     boolean activate = buf.readBoolean();
                     client.execute(() -> {
-                        var buffer = Unpooled.buffer(1).writeBoolean(true);
-                        ClientPlayNetworking.send(CHANNEL, new FriendlyByteBuf(buffer));
+                        var buffer = Unpooled.buffer(1).writeBoolean(activate);
+                        ClientPlayNetworking.send(new NetworkPayload(new FriendlyByteBuf(buffer)));
                     });
                 }
                 break;
@@ -79,6 +90,9 @@ public class NetworkHandler {
                         }
                     });
                 }
+                break;
+                default:
+                    break;
             }
         });
     }
@@ -90,6 +104,24 @@ public class NetworkHandler {
     private static final Map<UUID, Float> TOUGH_AS_NAILS_HYDRATION = new HashMap<>();
     private static final Map<UUID, Float> TOUGH_AS_NAILS_EXHAUSTION = new HashMap<>();
 
+    public record NetworkPayload(FriendlyByteBuf buf) implements CustomPacketPayload {
+        public static final StreamCodec<FriendlyByteBuf, NetworkPayload> PAYLOAD_CODEC = CustomPacketPayload.codec(NetworkPayload::write, NetworkPayload::read);
+        public static final CustomPacketPayload.Type<NetworkPayload> ID = new CustomPacketPayload.Type<>(CHANNEL);
+
+        @Override
+        public @NotNull Type<? extends CustomPacketPayload> type() {
+            return ID;
+        }
+
+        public static NetworkPayload read(FriendlyByteBuf friendlyByteBuf) {
+            return new NetworkPayload(PacketByteBufs.create().writeBytes(friendlyByteBuf));
+        }
+
+        public void write(FriendlyByteBuf friendlyByteBuf) {
+            friendlyByteBuf.writeBytes(buf);
+        }
+    }
+
     public static void onPlayerTick(ServerPlayer player) {
         var foodStats = player.getFoodData();
         float exhaustionLevel = foodStats.getExhaustionLevel();
@@ -97,16 +129,14 @@ public class NetworkHandler {
         if (oldExhaustion == null || Math.abs(oldExhaustion - exhaustionLevel) >= 0.01F) {
             EXHAUSTION.put(player.getUUID(), exhaustionLevel);
             ByteBuf buf = PacketByteBufs.create().writeByte(INDEX_EXHAUSTION).writeFloat(exhaustionLevel);
-            var packet = ServerPlayNetworking.createS2CPacket(CHANNEL, PacketByteBufs.duplicate(buf));
-            player.connection.send(packet);
+            ServerPlayNetworking.send(player, new NetworkPayload(PacketByteBufs.duplicate(buf)));
         }
         float saturationLevel = foodStats.getSaturationLevel();
         Float oldSaturation = SATURATION.get(player.getUUID());
         if (oldSaturation == null || Math.abs(oldSaturation - saturationLevel) >= 0.01F) {
             SATURATION.put(player.getUUID(), saturationLevel);
             ByteBuf buf = PacketByteBufs.create().writeByte(INDEX_SATURATION).writeFloat(saturationLevel);
-            var packet = ServerPlayNetworking.createS2CPacket(CHANNEL, PacketByteBufs.duplicate(buf));
-            player.connection.send(packet);
+            ServerPlayNetworking.send(player, new NetworkPayload(PacketByteBufs.duplicate(buf)));
         }
         if (!initialized) {
             initialized = true;
@@ -129,8 +159,7 @@ public class NetworkHandler {
             }
             if (send) {
                 ByteBuf buf = PacketByteBufs.create().writeByte(INDEX_TOUGH_AS_NAILS).writeFloat(hydration).writeFloat(exhaustion);
-                var packet = ServerPlayNetworking.createS2CPacket(CHANNEL, PacketByteBufs.duplicate(buf));
-                player.connection.send(packet);
+                ServerPlayNetworking.send(player, new NetworkPayload(PacketByteBufs.duplicate(buf)));
             }
         }
     }

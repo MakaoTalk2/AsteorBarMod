@@ -32,10 +32,6 @@ public class ForgePlatformAdapter implements PlatformAdapter {
 
     @Override
     public AppleSkinFoodValues getAppleSkinFoodValues(Player player) {
-        if (!AsteorBar.compatibility.appleskin) {
-            return null;
-        }
-        // if not using third adapter, the game will crash if appleskin is not loaded
-        return AppleSkinAdapter.getInstance().getAppleSkinFoodValues(player);
+        return null;
     }
 }

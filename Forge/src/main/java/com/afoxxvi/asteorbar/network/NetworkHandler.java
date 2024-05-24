@@ -12,10 +12,8 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.network.CustomPayloadEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.network.ChannelBuilder;
-import net.minecraftforge.network.NetworkDirection;
 import net.minecraftforge.network.PacketDistributor;
 import net.minecraftforge.network.SimpleChannel;
-import toughasnails.api.thirst.ThirstHelper;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -58,13 +56,6 @@ public class NetworkHandler {
                 .decoder(ActivatePacket::decode)
                 .consumerNetworkThread(ActivatePacket::handle)
                 .add();
-
-        //third party mod
-        CHANNEL.messageBuilder(ToughAsNailsPacket.class, 64)
-                .encoder(ToughAsNailsPacket::encode)
-                .decoder(ToughAsNailsPacket::decode)
-                .consumerNetworkThread(ToughAsNailsPacket::handle)
-                .add();
     }
 
     @SubscribeEvent
@@ -87,30 +78,11 @@ public class NetworkHandler {
                 initialized = true;
                 AsteorBar.compatibility.init();
             }
-            if (AsteorBar.compatibility.toughAsNails) {
-                var thirst = ThirstHelper.getThirst(player);
-                boolean send = false;
-                float hydration = thirst.getHydration();
-                Float oldHydration = TOUGH_AS_NAILS_HYDRATION.get(player.getUUID());
-                if (oldHydration == null || Math.abs(oldHydration - hydration) >= 0.01F) {
-                    TOUGH_AS_NAILS_HYDRATION.put(player.getUUID(), hydration);
-                    send = true;
-                }
-                float exhaustion = thirst.getExhaustion();
-                Float oldToughAsNailsExhaustion = TOUGH_AS_NAILS_EXHAUSTION.get(player.getUUID());
-                if (oldToughAsNailsExhaustion == null || Math.abs(oldToughAsNailsExhaustion - exhaustion) >= 0.01F) {
-                    TOUGH_AS_NAILS_EXHAUSTION.put(player.getUUID(), exhaustion);
-                    send = true;
-                }
-                if (send) {
-                    CHANNEL.send(new ToughAsNailsPacket(hydration, exhaustion), PacketDistributor.PLAYER.with(player));
-                }
-            }
         }
     }
 
     private static Player getPlayer(CustomPayloadEvent.Context context) {
-        return context.getDirection() == NetworkDirection.PLAY_TO_SERVER ? context.getSender() : Minecraft.getInstance().player;
+        return context.isServerSide() ? context.getSender() : Minecraft.getInstance().player;
     }
 
     public static class ActivatePacket {
@@ -217,37 +189,6 @@ public class NetworkHandler {
                     if (entity instanceof LivingEntity livingEntity) {
                         livingEntity.setAbsorptionAmount(packet.absorption);
                     }
-                }
-            });
-            context.setPacketHandled(true);
-        }
-    }
-
-    public static class ToughAsNailsPacket {
-        float hydration;
-        float exhaustion;
-
-        public ToughAsNailsPacket(float hydration, float exhaustion) {
-            this.hydration = hydration;
-            this.exhaustion = exhaustion;
-        }
-
-        public static void encode(ToughAsNailsPacket packet, FriendlyByteBuf buffer) {
-            buffer.writeFloat(packet.hydration);
-            buffer.writeFloat(packet.exhaustion);
-        }
-
-        public static ToughAsNailsPacket decode(FriendlyByteBuf buffer) {
-            return new ToughAsNailsPacket(buffer.readFloat(), buffer.readFloat());
-        }
-
-        public static void handle(ToughAsNailsPacket packet, CustomPayloadEvent.Context context) {
-            context.enqueueWork(() -> {
-                var player = getPlayer(context);
-                if (player != null && AsteorBar.compatibility.toughAsNails) {
-                    var thirst = ThirstHelper.getThirst(player);
-                    thirst.setHydration(packet.hydration);
-                    thirst.setExhaustion(packet.exhaustion);
                 }
             });
             context.setPacketHandled(true);

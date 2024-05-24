@@ -23,7 +23,6 @@ public class ModEventListener {
     public static void registerOverlay(RegisterGuiOverlaysEvent event) {
         AsteorBarNeoForge.LOGGER.info("Registering Overlays");
         event.registerBelow(VanillaGuiOverlay.PLAYER_HEALTH.id(), new ResourceLocation(AsteorBar.MOD_ID, "player_health"), new NeoForgeRenderGui(PLAYER_HEALTH));
-        event.registerBelow(VanillaGuiOverlay.PLAYER_HEALTH.id(), new ResourceLocation(AsteorBar.MOD_ID, "light_shield"), new NeoForgeRenderGui(new LightShieldOverlay()));
         event.registerBelow(VanillaGuiOverlay.PLAYER_HEALTH.id(), new ResourceLocation(AsteorBar.MOD_ID, "food_level"), new NeoForgeRenderGui(FOOD_LEVEL));
         event.registerBelow(VanillaGuiOverlay.PLAYER_HEALTH.id(), new ResourceLocation(AsteorBar.MOD_ID, "mount_health"), new NeoForgeRenderGui(MOUNT_HEALTH));
         event.registerBelow(VanillaGuiOverlay.PLAYER_HEALTH.id(), new ResourceLocation(AsteorBar.MOD_ID, "thirst_level"), new NeoForgeRenderGui(new ToughAsNailsOverlay()));

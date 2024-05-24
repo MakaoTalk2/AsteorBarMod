@@ -14,7 +14,7 @@ public abstract class GuiMixin {
     @Invoker("renderPlayerHealth")
     public abstract void renderPlayerHealthRaw(GuiGraphics guiGraphics);
 
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;renderPlayerHealth(Lnet/minecraft/client/gui/GuiGraphics;)V"), method = "render")
+    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;renderPlayerHealth(Lnet/minecraft/client/gui/GuiGraphics;)V"), method = "renderHotbarAndDecorations")
     public void renderPlayerHealth(Gui instance, GuiGraphics guiGraphics) {
         Overlays.reset();
         if (Overlays.style == Overlays.STYLE_NONE) {
@@ -27,18 +27,20 @@ public abstract class GuiMixin {
     @Invoker("renderVehicleHealth")
     public abstract void renderVehicleHealthRaw(GuiGraphics guiGraphics);
 
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;renderVehicleHealth(Lnet/minecraft/client/gui/GuiGraphics;)V"), method = "render")
+    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;renderVehicleHealth(Lnet/minecraft/client/gui/GuiGraphics;)V"), method = "renderHotbarAndDecorations")
     public void renderVehicleHealth(Gui instance, GuiGraphics guiGraphics) {
         if (Overlays.style == Overlays.STYLE_NONE) {
             renderVehicleHealthRaw(guiGraphics);
         }
     }
 
+    @Invoker("renderExperienceBar")
+    public abstract void renderExperienceBar(GuiGraphics guiGraphics, int i);
 
-    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;renderExperienceBar(Lnet/minecraft/client/gui/GuiGraphics;I)V"), method = "render")
+    @Redirect(at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/Gui;renderExperienceBar(Lnet/minecraft/client/gui/GuiGraphics;I)V"), method = "renderHotbarAndDecorations")
     public void renderExperienceBar(Gui instance, GuiGraphics guiGraphics, int i) {
         if (Overlays.style == Overlays.STYLE_NONE) {
-            instance.renderExperienceBar(guiGraphics, i);
+            renderExperienceBar(guiGraphics, i);
         }
     }
 }

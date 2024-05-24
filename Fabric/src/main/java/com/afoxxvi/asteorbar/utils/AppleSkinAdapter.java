@@ -1,10 +1,10 @@
 package com.afoxxvi.asteorbar.utils;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
-import squeek.appleskin.ModConfig;
-import squeek.appleskin.api.event.FoodValuesEvent;
-import squeek.appleskin.api.food.FoodValues;
+import net.minecraft.world.food.FoodData;
+import squeek.appleskin.api.event.HUDOverlayEvent;
+import squeek.appleskin.client.HUDOverlayHandler;
 import squeek.appleskin.helpers.FoodHelper;
 
 public class AppleSkinAdapter {
@@ -18,17 +18,13 @@ public class AppleSkinAdapter {
     }
 
     public PlatformAdapter.AppleSkinFoodValues getAppleSkinFoodValues(Player player) {
-        ItemStack heldItem = player.getMainHandItem();
-        if (ModConfig.INSTANCE.showFoodValuesHudOverlayWhenOffhand && !FoodHelper.canConsume(heldItem, player)) {
-            heldItem = player.getOffhandItem();
-        }
-        if (heldItem.isEmpty() || !FoodHelper.canConsume(heldItem, player)) {
-            return null;
-        }
-        FoodValues modifiedFoodValues = FoodHelper.getModifiedFoodValues(heldItem, player);
-        FoodValuesEvent foodValuesEvent = new FoodValuesEvent(player, heldItem, FoodHelper.getDefaultFoodValues(heldItem), modifiedFoodValues);
-        FoodValuesEvent.EVENT.invoker().interact(foodValuesEvent);
-        modifiedFoodValues = foodValuesEvent.modifiedFoodValues;
-        return new PlatformAdapter.AppleSkinFoodValues(modifiedFoodValues.hunger, modifiedFoodValues.getSaturationIncrement(), FoodHelper.getEstimatedHealthIncrement(heldItem, modifiedFoodValues, player));
+        FoodData stats = player.getFoodData();
+        FoodHelper.QueriedFoodResult result = HUDOverlayHandler.INSTANCE.heldFood.result(Minecraft.getInstance().gui.getGuiTicks(), player);
+        HUDOverlayEvent.HungerRestored hungerRenderEvent = new HUDOverlayEvent.HungerRestored(stats.getFoodLevel(), result.itemStack, result.modifiedFoodComponent, 0, 0, null);
+        HUDOverlayEvent.HungerRestored.EVENT.invoker().interact(hungerRenderEvent);
+        int foodHunger = result.modifiedFoodComponent.nutrition();
+        float foodSaturationIncrement = result.modifiedFoodComponent.saturation();
+        float foodHealthIncrement = FoodHelper.getEstimatedHealthIncrement(player, result.modifiedFoodComponent);
+        return new PlatformAdapter.AppleSkinFoodValues(foodHunger, foodSaturationIncrement, foodHealthIncrement);
     }
 }
