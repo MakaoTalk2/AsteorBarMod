@@ -1,56 +1,36 @@
 package com.afoxxvi.asteorbar.overlay;
 
-import com.afoxxvi.asteorbar.overlay.parts.BaseOverlay;
 import net.minecraft.client.gui.Gui;
-import net.minecraft.client.gui.GuiGraphics;
-import net.minecraftforge.client.gui.overlay.ForgeGui;
-import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 
-public class ForgeRenderGui extends RenderGui implements IGuiOverlay {
-    private ForgeGui gui;
-    private final BaseOverlay overlay;
-    private final boolean survival;
+public class ForgeRenderGui extends RenderGui {
+    private final Gui gui;
 
-    public ForgeRenderGui(BaseOverlay overlay) {
-        this(overlay, true);
-    }
-
-    public ForgeRenderGui(BaseOverlay overlay, boolean survival) {
-        this.overlay = overlay;
-        this.survival = survival;
+    public ForgeRenderGui(Gui gui) {
+        this.gui = gui;
     }
 
     @Override
     public int leftHeight() {
-        return gui.leftHeight;
+        return Overlays.leftHeight;
     }
 
     @Override
     public int rightHeight() {
-        return gui.rightHeight;
+        return Overlays.rightHeight;
     }
 
     @Override
     public void leftHeight(int i) {
-        gui.leftHeight += i;
+        Overlays.leftHeight += i;
     }
 
     @Override
     public void rightHeight(int i) {
-        gui.rightHeight += i;
+        Overlays.rightHeight += i;
     }
 
     @Override
     public Gui gui() {
         return gui;
-    }
-
-    @Override
-    public void render(ForgeGui forgeGui, GuiGraphics guiGraphics, float v, int i, int i1) {
-        this.gui = forgeGui;
-        if (!gui.getMinecraft().options.hideGui && (!survival || gui.shouldDrawSurvivalElements())) {
-            forgeGui.setupOverlayRenderState(true, false);
-            overlay.render(this, guiGraphics, v, i, i1);
-        }
     }
 }
