@@ -1,21 +1,18 @@
 package com.afoxxvi.asteorbar.network;
 
 import com.afoxxvi.asteorbar.AsteorBar;
-import com.afoxxvi.asteorbar.AsteorBarNeoForge;
-import com.afoxxvi.asteorbar.overlay.Overlays;
-import net.minecraft.client.Minecraft;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.neoforged.bus.api.SubscribeEvent;
-import net.neoforged.neoforge.event.TickEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
 import net.neoforged.neoforge.network.PacketDistributor;
-import net.neoforged.neoforge.network.event.RegisterPayloadHandlerEvent;
-import net.neoforged.neoforge.network.handling.PlayPayloadContext;
-import net.neoforged.neoforge.network.registration.IPayloadRegistrar;
+import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
+import net.neoforged.neoforge.network.handling.IPayloadContext;
+import net.neoforged.neoforge.network.registration.PayloadRegistrar;
 import org.jetbrains.annotations.NotNull;
 import toughasnails.api.thirst.ThirstHelper;
 
@@ -26,37 +23,100 @@ import java.util.UUID;
 public class NetworkHandler {
     private static boolean initialized = false;
     //avoid sending packets too frequently
+    private static final ResourceLocation CHANNEL = new ResourceLocation("asteorbar", "network");
+    private static final byte INDEX_EXHAUSTION = 0;
+    private static final byte INDEX_SATURATION = 1;
+    private static final byte INDEX_ABSORPTION = 2;
+    private static final byte INDEX_ACTIVATE = 3;
+    private static final byte INDEX_TOUGH_AS_NAILS = 64;
     private static final Map<UUID, Float> EXHAUSTION = new HashMap<>();
     private static final Map<UUID, Float> SATURATION = new HashMap<>();
 
     private static final Map<UUID, Float> TOUGH_AS_NAILS_HYDRATION = new HashMap<>();
     private static final Map<UUID, Float> TOUGH_AS_NAILS_EXHAUSTION = new HashMap<>();
 
-    @SubscribeEvent
-    public static void register(final RegisterPayloadHandlerEvent event) {
-        final IPayloadRegistrar registrar = event.registrar(AsteorBar.MOD_ID);
-        registrar.play(ActivatePacket.ID, ActivatePacket::new, ActivatePacket::handle);
-        registrar.play(SaturationPacket.ID, SaturationPacket::new, SaturationPacket::handle);
-        registrar.play(ExhaustionPacket.ID, ExhaustionPacket::new, ExhaustionPacket::handle);
-        registrar.play(EntityAbsorptionPacket.ID, EntityAbsorptionPacket::new, EntityAbsorptionPacket::handle);
-        registrar.play(ToughAsNailsPacket.ID, ToughAsNailsPacket::new, ToughAsNailsPacket::handle);
+    public record NetworkPayload(byte index, float f1, float f2, int i1) implements CustomPacketPayload {
+        public static final StreamCodec<FriendlyByteBuf, NetworkPayload> PAYLOAD_CODEC = CustomPacketPayload.codec(NetworkPayload::write, NetworkPayload::read);
+        public static final CustomPacketPayload.Type<NetworkPayload> ID = new CustomPacketPayload.Type<>(CHANNEL);
+
+        @Override
+        public @NotNull Type<? extends CustomPacketPayload> type() {
+            return ID;
+        }
+
+        public static NetworkPayload read(FriendlyByteBuf friendlyByteBuf) {
+            return new NetworkPayload(friendlyByteBuf.readByte(), friendlyByteBuf.readFloat(), friendlyByteBuf.readFloat(), friendlyByteBuf.readInt());
+        }
+
+        public void write(FriendlyByteBuf friendlyByteBuf) {
+            friendlyByteBuf.writeByte(index).writeFloat(f1).writeFloat(f2).writeInt(i1);
+        }
+    }
+
+    public static void handle(NetworkPayload payload, IPayloadContext context) {
+        byte index = payload.index;
+        switch (index) {
+            case INDEX_EXHAUSTION: {
+                float exhaustion = payload.f1;
+                context.enqueueWork(() -> context.player().getFoodData().setExhaustion(exhaustion));
+            }
+            break;
+            case INDEX_SATURATION:
+                float saturation = payload.f1;
+                context.enqueueWork(() -> context.player().getFoodData().setSaturation(saturation));
+                break;
+            case INDEX_ABSORPTION: {
+                int entityId = payload.i1;
+                float absorption = payload.f1;
+                context.enqueueWork(() -> {
+                    var entity = context.player().level().getEntity(entityId);
+                    if (entity instanceof LivingEntity livingEntity) {
+                        livingEntity.setAbsorptionAmount(absorption);
+                    }
+                });
+            }
+            break;
+            case INDEX_ACTIVATE: {
+                boolean activate = payload.i1 != 0;
+                context.enqueueWork(() -> PacketDistributor.sendToServer(new NetworkPayload(INDEX_ACTIVATE, 0F, 0F, activate ? 1 : 0)));
+            }
+            break;
+            case INDEX_TOUGH_AS_NAILS: {
+                float hydration = payload.f1;
+                float exhaustion = payload.f2;
+                context.enqueueWork(() -> {
+                    var thirst = ThirstHelper.getThirst(context.player());
+                    thirst.setHydration(hydration);
+                    thirst.setExhaustion(exhaustion);
+                });
+            }
+            break;
+            default:
+                break;
+        }
     }
 
     @SubscribeEvent
-    public static void onPlayerTick(TickEvent.PlayerTickEvent event) {
-        if (event.player instanceof ServerPlayer player) {
+    public static void register(final RegisterPayloadHandlersEvent event) {
+        final PayloadRegistrar registrar = event.registrar(AsteorBar.MOD_ID);
+        registrar.playToClient(NetworkPayload.ID, NetworkPayload.PAYLOAD_CODEC, NetworkHandler::handle);
+    }
+
+    @SubscribeEvent
+    public static void onPlayerTick(PlayerTickEvent.Pre event) {
+        if (event.getEntity() instanceof ServerPlayer player) {
             var foodStats = player.getFoodData();
             float exhaustionLevel = foodStats.getExhaustionLevel();
             Float oldExhaustion = EXHAUSTION.get(player.getUUID());
             if (oldExhaustion == null || Math.abs(oldExhaustion - exhaustionLevel) >= 0.01F) {
                 EXHAUSTION.put(player.getUUID(), exhaustionLevel);
-                PacketDistributor.PLAYER.with(player).send(new ExhaustionPacket(exhaustionLevel));
+                PacketDistributor.sendToPlayer(player, new NetworkPayload(INDEX_EXHAUSTION, exhaustionLevel, 0F, 0));
             }
             float saturationLevel = foodStats.getSaturationLevel();
             Float oldSaturation = SATURATION.get(player.getUUID());
             if (oldSaturation == null || Math.abs(oldSaturation - saturationLevel) >= 0.01F) {
                 SATURATION.put(player.getUUID(), saturationLevel);
-                PacketDistributor.PLAYER.with(player).send(new SaturationPacket(saturationLevel));
+                PacketDistributor.sendToPlayer(player, new NetworkPayload(INDEX_SATURATION, saturationLevel, 0F, 0));
             }
             if (!initialized) {
                 initialized = true;
@@ -78,188 +138,9 @@ public class NetworkHandler {
                     send = true;
                 }
                 if (send) {
-                    PacketDistributor.PLAYER.with(player).send(new ToughAsNailsPacket(hydration, exhaustion));
+                    PacketDistributor.sendToPlayer(player, new NetworkPayload(INDEX_TOUGH_AS_NAILS, hydration, exhaustion, 0));
                 }
             }
-        }
-    }
-
-    private static Player getPlayer(PlayPayloadContext context) {
-        return context.player().orElse(Minecraft.getInstance().player);
-    }
-
-    public static class ActivatePacket implements CustomPacketPayload {
-        public static final ResourceLocation ID = new ResourceLocation(AsteorBar.MOD_ID, "activate");
-
-        public boolean activate;
-
-        public ActivatePacket(boolean activate) {
-            this.activate = activate;
-        }
-
-        public ActivatePacket(final FriendlyByteBuf buffer) {
-            this.activate = buffer.readBoolean();
-        }
-
-        public static void handle(ActivatePacket packet, PlayPayloadContext context) {
-            context.workHandler().submitAsync(() -> {
-                AsteorBarNeoForge.LOGGER.info("Received activate packet. Sending back to server.");
-                PacketDistributor.SERVER.noArg().send(new ActivatePacket(true));
-            });
-        }
-
-        @Override
-        public void write(FriendlyByteBuf friendlyByteBuf) {
-            friendlyByteBuf.writeBoolean(activate);
-        }
-
-        @Override
-        public @NotNull ResourceLocation id() {
-            return ID;
-        }
-    }
-
-    public static class SaturationPacket implements CustomPacketPayload {
-        public static final ResourceLocation ID = new ResourceLocation(AsteorBar.MOD_ID, "saturation");
-        public float saturation;
-
-        public SaturationPacket(float saturation) {
-            this.saturation = saturation;
-        }
-
-        public SaturationPacket(final FriendlyByteBuf buffer) {
-            this.saturation = buffer.readFloat();
-        }
-
-        public static void handle(SaturationPacket packet, PlayPayloadContext context) {
-            context.workHandler().submitAsync(() -> {
-                var player = getPlayer(context);
-                if (player != null) {
-                    var foodStats = player.getFoodData();
-                    foodStats.setSaturation(packet.saturation);
-                }
-            });
-        }
-
-        @Override
-        public void write(FriendlyByteBuf friendlyByteBuf) {
-            friendlyByteBuf.writeFloat(saturation);
-        }
-
-        @Override
-        public @NotNull ResourceLocation id() {
-            return ID;
-        }
-    }
-
-    public static class ExhaustionPacket implements CustomPacketPayload {
-        public static final ResourceLocation ID = new ResourceLocation(AsteorBar.MOD_ID, "exhaustion");
-        public float exhaustion;
-
-        public ExhaustionPacket(float exhaustion) {
-            this.exhaustion = exhaustion;
-        }
-
-        public ExhaustionPacket(final FriendlyByteBuf buffer) {
-            this.exhaustion = buffer.readFloat();
-        }
-
-        public static void handle(ExhaustionPacket packet, PlayPayloadContext context) {
-            context.workHandler().submitAsync(() -> {
-                var player = getPlayer(context);
-                if (player != null) {
-                    var foodStats = player.getFoodData();
-                    foodStats.setExhaustion(packet.exhaustion);
-                }
-            });
-        }
-
-
-        @Override
-        public void write(FriendlyByteBuf friendlyByteBuf) {
-            friendlyByteBuf.writeFloat(exhaustion);
-        }
-
-        @Override
-        public @NotNull ResourceLocation id() {
-            return ID;
-        }
-    }
-
-    public static class EntityAbsorptionPacket implements CustomPacketPayload {
-        public static final ResourceLocation ID = new ResourceLocation(AsteorBar.MOD_ID, "entity_absorption");
-        public int entityId;
-        public float absorption;
-
-        public EntityAbsorptionPacket(int entityId, float absorption) {
-            this.entityId = entityId;
-            this.absorption = absorption;
-        }
-
-        public EntityAbsorptionPacket(final FriendlyByteBuf buffer) {
-            this.entityId = buffer.readInt();
-            this.absorption = buffer.readFloat();
-        }
-
-        public static void handle(EntityAbsorptionPacket packet, PlayPayloadContext context) {
-            context.workHandler().submitAsync(() -> {
-                var player = getPlayer(context);
-                if (player != null) {
-                    var entity = player.level().getEntity(packet.entityId);
-                    if (entity instanceof LivingEntity livingEntity) {
-                        livingEntity.setAbsorptionAmount(packet.absorption);
-                    }
-                }
-            });
-        }
-
-        @Override
-        public void write(FriendlyByteBuf friendlyByteBuf) {
-            friendlyByteBuf.writeInt(entityId);
-            friendlyByteBuf.writeFloat(absorption);
-        }
-
-        @Override
-        public @NotNull ResourceLocation id() {
-            return ID;
-        }
-    }
-
-    public static class ToughAsNailsPacket implements CustomPacketPayload {
-        public static final ResourceLocation ID = new ResourceLocation(AsteorBar.MOD_ID, "tough_as_nails");
-        public float hydration;
-        public float exhaustion;
-
-        public ToughAsNailsPacket(float hydration, float exhaustion) {
-            this.hydration = hydration;
-            this.exhaustion = exhaustion;
-        }
-
-        public ToughAsNailsPacket(final FriendlyByteBuf buffer) {
-            this.hydration = buffer.readFloat();
-            this.exhaustion = buffer.readFloat();
-        }
-
-        public static void handle(ToughAsNailsPacket packet, PlayPayloadContext context) {
-            context.workHandler().submitAsync(() -> {
-                var player = getPlayer(context);
-                if (player != null) {
-                    var thirst = ThirstHelper.getThirst(player);
-                    thirst.setHydration(packet.hydration);
-                    thirst.setExhaustion(packet.exhaustion);
-                }
-            });
-        }
-
-        @Override
-        public void write(FriendlyByteBuf friendlyByteBuf) {
-            friendlyByteBuf.writeFloat(hydration);
-            friendlyByteBuf.writeFloat(exhaustion);
-        }
-
-        @Override
-        public @NotNull ResourceLocation id() {
-            return ID;
         }
     }
 }

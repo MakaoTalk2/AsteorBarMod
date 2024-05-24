@@ -1,7 +1,6 @@
 package com.afoxxvi.asteorbar.overlay.parts;
 
 import com.afoxxvi.asteorbar.AsteorBar;
-import com.afoxxvi.asteorbar.mixin.third.ToughAsNailsTemperatureMixin;
 import com.afoxxvi.asteorbar.overlay.Overlays;
 import com.afoxxvi.asteorbar.overlay.RenderGui;
 import com.afoxxvi.asteorbar.utils.Utils;
@@ -11,6 +10,7 @@ import toughasnails.api.potion.TANEffects;
 import toughasnails.api.thirst.IThirst;
 import toughasnails.api.thirst.ThirstHelper;
 import toughasnails.init.ModConfig;
+import toughasnails.temperature.TemperatureOverlayRenderer;
 
 public class ToughAsNailsOverlay extends BaseOverlay {
     private int thirstBlinkTime = 0;
@@ -41,7 +41,7 @@ public class ToughAsNailsOverlay extends BaseOverlay {
     @Override
     public void renderOverlay(RenderGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         if (!AsteorBar.compatibility.toughAsNails || !AsteorBar.config.hookToughAsNails()) return;
-        ToughAsNailsTemperatureMixin.invokeRenderTemperature(guiGraphics, partialTick, screenWidth, screenHeight);
+        TemperatureOverlayRenderer.renderTemperature(guiGraphics, partialTick, screenWidth, screenHeight);
         if (!ThirstHelper.isThirstEnabled()) return;
         RenderSystem.setShaderTexture(0, LIGHTMAP_TEXTURE);
         var player = gui.mc().player;

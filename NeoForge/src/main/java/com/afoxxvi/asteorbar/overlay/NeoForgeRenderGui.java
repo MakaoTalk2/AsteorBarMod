@@ -1,13 +1,14 @@
 package com.afoxxvi.asteorbar.overlay;
 
 import com.afoxxvi.asteorbar.overlay.parts.BaseOverlay;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
-import net.neoforged.neoforge.client.gui.overlay.ExtendedGui;
-import net.neoforged.neoforge.client.gui.overlay.IGuiOverlay;
+import net.minecraft.client.gui.LayeredDraw;
+import org.jetbrains.annotations.NotNull;
 
-public class NeoForgeRenderGui extends RenderGui implements IGuiOverlay {
-    private ExtendedGui gui;
+public class NeoForgeRenderGui extends RenderGui implements LayeredDraw.Layer {
+    private Gui gui;
     private final BaseOverlay overlay;
     private final boolean survival;
 
@@ -46,10 +47,11 @@ public class NeoForgeRenderGui extends RenderGui implements IGuiOverlay {
     }
 
     @Override
-    public void render(ExtendedGui gui, GuiGraphics guiGraphics, float v, int i, int i1) {
-        this.gui = gui;
-        if (!this.gui.getMinecraft().options.hideGui && (!survival || this.gui.shouldDrawSurvivalElements())) {
-            overlay.render(this, guiGraphics, v, i, i1);
+    public void render(@NotNull GuiGraphics guiGraphics, float v) {
+        final Minecraft mc = Minecraft.getInstance();
+        this.gui = mc.gui;
+        if (!mc.options.hideGui && (!survival || mc.gameMode.canHurtPlayer())) {
+            overlay.render(this, guiGraphics, v, guiGraphics.guiWidth(), guiGraphics.guiHeight());
         }
     }
 }

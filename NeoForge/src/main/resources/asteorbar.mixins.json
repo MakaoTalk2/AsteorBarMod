@@ -11,6 +11,6 @@
   },
   "refmap": "asteorbar.mixins.refmap.json",
   "mixins": [
-    "third.ToughAsNailsTemperatureMixin"
+    "third.AppleSkinMixin"
   ]
 }

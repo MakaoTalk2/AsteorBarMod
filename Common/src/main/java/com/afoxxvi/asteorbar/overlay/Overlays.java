@@ -34,7 +34,7 @@ public class Overlays {
     public static final int ALIGN_LEFT = 0;
     public static final int ALIGN_CENTER = 1;
     public static final int ALIGN_RIGHT = 2;
-    private static List<Render> stringRenders = new ArrayList<>();
+    public static List<Render> stringRenders = new ArrayList<>();
     private static boolean initialized = false;
 
     public static void init() {
@@ -88,7 +88,7 @@ public class Overlays {
         var render = new Render();
         render.x = x;
         render.y = y;
-        render.color = color;
+        render.color = color | 0xFF000000;
         render.text = text;
         render.align = align;
         render.shadow = shadow;
@@ -97,7 +97,7 @@ public class Overlays {
             case ALIGN_RIGHT -> render.x -= Minecraft.getInstance().font.width(text);
         }
         render.bound = bound;
-        render.boundColor = boundColor;
+        render.boundColor = boundColor | 0xFF000000;
         stringRenders.add(render);
     }
 

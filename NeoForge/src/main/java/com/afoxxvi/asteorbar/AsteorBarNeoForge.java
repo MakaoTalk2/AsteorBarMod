@@ -20,7 +20,7 @@ public class AsteorBarNeoForge {
         modEventBus.addListener(this::commonSetup);
         modEventBus.addListener(NetworkHandler::register);
         NeoForge.EVENT_BUS.addListener(NetworkHandler::onPlayerTick);
-        ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, NeoForgeConfigAdapter.Config.CONFIG);
+        ModLoadingContext.get().getActiveContainer().registerConfig(ModConfig.Type.CLIENT, NeoForgeConfigAdapter.Config.CONFIG);
         AsteorBar.platformAdapter = new NeoForgePlatformAdapter();
         AsteorBar.config = new NeoForgeConfigAdapter();
     }
