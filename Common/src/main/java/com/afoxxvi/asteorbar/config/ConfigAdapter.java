@@ -95,6 +95,8 @@ public interface ConfigAdapter {
 
     double lowHealthRate();
 
+    boolean shakeHealthAndFoodWhileLow();
+
     boolean overwriteVanillaArmorBar();
 
     boolean overwriteVanillaExperienceBar();
@@ -127,6 +129,8 @@ public interface ConfigAdapter {
 
     int cornerVerticalPadding();
 
+    boolean forceRenderAtCorner();
+
     //mob config
     boolean enableHealthBar();
 
@@ -139,6 +143,8 @@ public interface ConfigAdapter {
     boolean showOnPlayers();
 
     boolean showOnBosses();
+
+    boolean showOnArmorStands();
 
     boolean showOnFullHealthWithoutAbsorption();
 

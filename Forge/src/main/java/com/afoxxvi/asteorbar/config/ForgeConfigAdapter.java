@@ -53,6 +53,7 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.IntValue ARMOR_TOUGHNESS_COLOR;
         public static final ForgeConfigSpec.BooleanValue ENABLE_HEALTH_BLINK;
         public static final ForgeConfigSpec.DoubleValue LOW_HEALTH_RATE;
+        public static final ForgeConfigSpec.BooleanValue SHAKE_HEALTH_AND_FOOD_WHILE_LOW;
         public static final ForgeConfigSpec.BooleanValue OVERWRITE_VANILLA_ARMOR_BAR;
         public static final ForgeConfigSpec.BooleanValue OVERWRITE_VANILLA_EXPERIENCE_BAR;
         public static final ForgeConfigSpec.BooleanValue DISPLAY_EXPERIENCE_PROGRESS;
@@ -69,12 +70,14 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.IntValue CORNER_BAR_LENGTH;
         public static final ForgeConfigSpec.IntValue CORNER_HORIZONTAL_PADDING;
         public static final ForgeConfigSpec.IntValue CORNER_VERTICAL_PADDING;
+        public static final ForgeConfigSpec.BooleanValue FORCE_RENDER_AT_CORNER;
         //mob config
         public static final ForgeConfigSpec.BooleanValue ENABLE_HEALTH_BAR;
         public static final ForgeConfigSpec.DoubleValue MAX_DISTANCE;
         public static final ForgeConfigSpec.BooleanValue SHOW_ON_SELF;
         public static final ForgeConfigSpec.BooleanValue SHOW_ON_PLAYERS;
         public static final ForgeConfigSpec.BooleanValue SHOW_ON_BOSSES;
+        public static final ForgeConfigSpec.BooleanValue SHOW_ON_ARMOR_STANDS;
         public static final ForgeConfigSpec.BooleanValue SHOW_ON_FULL_HEALTH_WITHOUT_ABSORPTION;
         public static final ForgeConfigSpec.BooleanValue SHOW_ON_FULL_HEALTH_WITH_ABSORPTION;
         public static final ForgeConfigSpec.IntValue HEALTH_BAR_ALPHA;
@@ -291,6 +294,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.lowHealthRate)
                     .translation("text.autoconfig.asteorbar.option.overlay.lowHealthRate")
                     .defineInRange("lowHealthRate", DefaultConfigAdapter.I.lowHealthRate(), 0.0, 1.0);
+            SHAKE_HEALTH_AND_FOOD_WHILE_LOW = BUILDER
+                    .comment(ConfigComment.shakeHealthAndFoodWhileLow)
+                    .translation("text.autoconfig.asteorbar.option.overlay.shakeHealthAndFoodWhileLow")
+                    .define("shakeHealthAndFoodWhileLow", DefaultConfigAdapter.I.shakeHealthAndFoodWhileLow());
             OVERWRITE_VANILLA_ARMOR_BAR = BUILDER
                     .comment(ConfigComment.overwriteVanillaArmorBar)
                     .translation("text.autoconfig.asteorbar.option.overlay.overwriteVanillaArmorBar")
@@ -355,6 +362,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.cornerVerticalPadding)
                     .translation("text.autoconfig.asteorbar.option.overlay.cornerVerticalPadding")
                     .defineInRange("cornerVerticalPadding", DefaultConfigAdapter.I.cornerVerticalPadding(), 0, 100);
+            FORCE_RENDER_AT_CORNER = BUILDER
+                    .comment(ConfigComment.forceRenderAtCorner)
+                    .translation("text.autoconfig.asteorbar.option.overlay.forceRenderAtCorner")
+                    .define("forceRenderAtCorner", DefaultConfigAdapter.I.forceRenderAtCorner());
             BUILDER.pop();
             BUILDER.push("entity");
             ENABLE_HEALTH_BAR = BUILDER
@@ -377,6 +388,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.showOnBosses)
                     .translation("text.autoconfig.asteorbar.option.entity.showOnBosses")
                     .define("showOnBosses", DefaultConfigAdapter.I.showOnBosses());
+            SHOW_ON_ARMOR_STANDS = BUILDER
+                    .comment(ConfigComment.showOnArmorStands)
+                    .translation("text.autoconfig.asteorbar.option.entity.showOnArmorStands")
+                    .define("showOnArmorStands", DefaultConfigAdapter.I.showOnArmorStands());
             SHOW_ON_FULL_HEALTH_WITHOUT_ABSORPTION = BUILDER
                     .comment(ConfigComment.showOnFullHealthWithoutAbsorption)
                     .translation("text.autoconfig.asteorbar.option.entity.showOnFullHealthWithoutAbsorption")
@@ -751,6 +766,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean shakeHealthAndFoodWhileLow() {
+        return Config.SHAKE_HEALTH_AND_FOOD_WHILE_LOW.get();
+    }
+
+    @Override
     public boolean overwriteVanillaArmorBar() {
         return Config.OVERWRITE_VANILLA_ARMOR_BAR.get();
     }
@@ -831,6 +851,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean forceRenderAtCorner() {
+        return Config.FORCE_RENDER_AT_CORNER.get();
+    }
+
+    @Override
     public boolean enableHealthBar() {
         return Config.ENABLE_HEALTH_BAR.get();
     }
@@ -859,6 +884,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public boolean showOnBosses() {
         return Config.SHOW_ON_BOSSES.get();
+    }
+
+    @Override
+    public boolean showOnArmorStands() {
+        return Config.SHOW_ON_ARMOR_STANDS.get();
     }
 
     @Override
