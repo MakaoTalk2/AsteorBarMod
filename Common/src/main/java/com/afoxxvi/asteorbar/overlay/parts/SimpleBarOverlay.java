@@ -58,7 +58,7 @@ public abstract class SimpleBarOverlay extends BaseOverlay {
             drawFillFlip(guiGraphics, left + 1, top + 1, right - 1, bottom - 1, fillWidth, parameters.fillColor, flip);
         }
         if (parameters.boundFillColor != 0) {
-            final int boundFillWidth = (int) (innerWidth * parameters.boundValue / parameters.boundCapacity);
+            final int boundFillWidth = (int) ((right - left) * parameters.boundValue / parameters.boundCapacity);
             drawBoundFlip(guiGraphics, left, top, right, bottom, boundFillWidth, parameters.boundFillColor, flip);
         }
         if (parameters.centerText != null) {
@@ -122,7 +122,7 @@ public abstract class SimpleBarOverlay extends BaseOverlay {
         int left, top, right;
         boolean flip;
         int style = Overlays.style;
-        if (alwaysLow()) {
+        if (alwaysLow() && !AsteorBar.config.forceRenderAtCorner()) {
             style = Overlays.STYLE_ABOVE_HOT_BAR_SHORT;
         }
         switch (style) {

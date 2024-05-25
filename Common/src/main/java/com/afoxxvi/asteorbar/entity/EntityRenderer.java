@@ -7,6 +7,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
@@ -33,6 +34,7 @@ public class EntityRenderer {
         if (!AsteorBar.config.showOnSelf() && entity == player) return 5;
         if (!AsteorBar.config.showOnPlayers() && (entity instanceof Player)) return 6;
         if (!AsteorBar.config.showOnBosses() && AsteorBar.platformAdapter.isBoss(entity)) return 7;
+        if (!AsteorBar.config.showOnArmorStands() && entity instanceof ArmorStand) return 11;
         if (entity.getMaxHealth() == entity.getHealth()) {
             if (!AsteorBar.config.showOnFullHealthWithAbsorption() && entity.getAbsorptionAmount() > 0) return 8;
             if (!AsteorBar.config.showOnFullHealthWithoutAbsorption() && entity.getAbsorptionAmount() == 0) return 9;

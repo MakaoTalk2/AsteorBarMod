@@ -46,6 +46,7 @@ public class ConfigComment {
     public static final String armorToughnessColor = "The color of the armor toughness bar. 0x00000000 to 0xFFFFFFFF. ARGB format.";
     public static final String enableHealthBlink = "Whether to enable health bar blink. This feature is designed to simulate the vanilla health icon blink.";
     public static final String lowHealthRate = "The health bar will start to flash when health rate is lower than this value. From 0.0-1.0. 0.0 means never flash.";
+    public static final String shakeHealthAndFoodWhileLow = "Whether to shake health and food bar while low value.";
     public static final String overwriteVanillaArmorBar = "Whether to overwrite vanilla armor bar. If you don't like the mod's armor bar, you can disable this option.";
     public static final String overwriteVanillaExperienceBar = "Whether to overwrite vanilla experience bar. If you don't like the mod's experience bar, you can disable this option, progress label won't be affected.";
     public static final String displayExperienceProgress = "Whether to display experience progress on the side of the experience bar.";
@@ -62,11 +63,13 @@ public class ConfigComment {
     public static final String cornerBarLength = "The length of the bars if using corner layout. Affected bars: health, food, experience.";
     public static final String cornerHorizontalPadding = "The horizontal padding of the bars if using corner layout.";
     public static final String cornerVerticalPadding = "The vertical padding of the bars if using corner layout.";
+    public static final String forceRenderAtCorner = "Force every bar to be rendered at the corner. Only works in corner layout.";
     public static final String enableHealthBar = "Whether to enable health bar for entity. If disabled, all other health bar options will be ignored.";
     public static final String maxDistance = "The maximum distance to display mob health bar.";
     public static final String showOnSelf = "Whether to display health bar on self.";
     public static final String showOnPlayers = "Whether to display health bar on players.";
     public static final String showOnBosses = "Whether to display health bar on bosses.";
+    public static final String showOnArmorStands = "Whether to display health bar on armor stands.";
     public static final String showOnFullHealthWithoutAbsorption = "Whether to display health bar on mobs with full health if the mob's absorption value is 0.";
     public static final String showOnFullHealthWithAbsorption = "Whether to display health bar on mobs with full health if the mob's absorption value is not 0.";
     public static final String healthBarAlpha = "The alpha of the health bar. 0 to 255. The alpha part of the color will be replaced by this value unless this value is 0.";
