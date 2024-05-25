@@ -1,9 +1,7 @@
 package com.afoxxvi.asteorbar.mixin;
 
 import com.afoxxvi.asteorbar.overlay.FabricGuiRegistry;
-import com.afoxxvi.asteorbar.overlay.FabricRenderGui;
 import com.afoxxvi.asteorbar.overlay.Overlays;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
 import org.spongepowered.asm.mixin.Mixin;

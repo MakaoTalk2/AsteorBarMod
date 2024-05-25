@@ -3,11 +3,11 @@ package com.afoxxvi.asteorbar.entity;
 import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.utils.GuiHelper;
 import com.afoxxvi.asteorbar.utils.Utils;
-import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.ArrayList;
@@ -34,6 +34,7 @@ public class EntityRenderer {
         if (!AsteorBar.config.showOnSelf() && entity == player) return 5;
         if (!AsteorBar.config.showOnPlayers() && (entity instanceof Player)) return 6;
         if (!AsteorBar.config.showOnBosses() && AsteorBar.platformAdapter.isBoss(entity)) return 7;
+        if (!AsteorBar.config.showOnArmorStands() && entity instanceof ArmorStand) return 11;
         if (entity.getMaxHealth() == entity.getHealth()) {
             if (!AsteorBar.config.showOnFullHealthWithAbsorption() && entity.getAbsorptionAmount() > 0) return 8;
             if (!AsteorBar.config.showOnFullHealthWithoutAbsorption() && entity.getAbsorptionAmount() == 0) return 9;
@@ -44,7 +45,8 @@ public class EntityRenderer {
 
     private static int modifyAlpha(int color, int alpha) {
         if (alpha == 0) return color;
-        return (color & 0x00ffffff) | (alpha << 24);
+        final var newAlpha = (color >> 24) * alpha / 255;
+        return (color & 0x00ffffff) | (newAlpha << 24);
     }
 
     public static void render(LivingEntity entity, PoseStack poseStack, MultiBufferSource multiBufferSource) {

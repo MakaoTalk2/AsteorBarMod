@@ -2,7 +2,6 @@ package com.afoxxvi.asteorbar.utils;
 
 import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.entity.AsteorBarRenderType;
-import com.afoxxvi.asteorbar.overlay.Overlays;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.tags.FluidTags;
