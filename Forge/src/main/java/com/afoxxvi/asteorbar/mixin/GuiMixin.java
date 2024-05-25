@@ -40,5 +40,12 @@ public abstract class GuiMixin {
             ci.cancel();
         }
     }
+
+    @Inject(method = "renderExperienceLevel(Lnet/minecraft/client/gui/GuiGraphics;F)V", at = @At("HEAD"), cancellable = true)
+    public void injectExpLevel(GuiGraphics p_335340_, float p_332198_, CallbackInfo ci) {
+        if (Overlays.style != Overlays.STYLE_NONE && AsteorBar.config.overwriteVanillaExperienceBar()) {
+            ci.cancel();
+        }
+    }
 }
 
