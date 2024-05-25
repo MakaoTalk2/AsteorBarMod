@@ -239,6 +239,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean shakeHealthAndFoodWhileLow() {
+        return true;
+    }
+
+    @Override
     public boolean overwriteVanillaArmorBar() {
         return true;
     }
@@ -319,6 +324,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean forceRenderAtCorner() {
+        return false;
+    }
+
+    @Override
     public boolean enableHealthBar() {
         return true;
     }
@@ -346,6 +356,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     @Override
     public boolean showOnBosses() {
         return true;
+    }
+
+    @Override
+    public boolean showOnArmorStands() {
+        return false;
     }
 
     @Override

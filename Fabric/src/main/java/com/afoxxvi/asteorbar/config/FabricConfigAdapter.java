@@ -248,6 +248,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean shakeHealthAndFoodWhileLow() {
+        return config.overlay.shakeHealthAndFoodWhileLow;
+    }
+
+    @Override
     public boolean overwriteVanillaArmorBar() {
         return config.overlay.overwriteVanillaArmorBar;
     }
@@ -328,6 +333,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean forceRenderAtCorner() {
+        return config.overlay.forceRenderAtCorner;
+    }
+
+    @Override
     public boolean enableHealthBar() {
         return config.entity.enableHealthBar;
     }
@@ -356,6 +366,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     @Override
     public boolean showOnBosses() {
         return config.entity.showOnBosses;
+    }
+
+    @Override
+    public boolean showOnArmorStands() {
+        return config.entity.showOnArmorStands;
     }
 
     @Override
@@ -629,6 +644,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean enableHealthBlink = DefaultConfigAdapter.I.enableHealthBlink();
             @Comment(ConfigComment.lowHealthRate)
             public double lowHealthRate = DefaultConfigAdapter.I.lowHealthRate();
+            @Comment(ConfigComment.shakeHealthAndFoodWhileLow)
+            public boolean shakeHealthAndFoodWhileLow = DefaultConfigAdapter.I.shakeHealthAndFoodWhileLow();
             @Comment(ConfigComment.overwriteVanillaArmorBar)
             public boolean overwriteVanillaArmorBar = DefaultConfigAdapter.I.overwriteVanillaArmorBar();
             @Comment(ConfigComment.overwriteVanillaExperienceBar)
@@ -661,6 +678,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public int cornerHorizontalPadding = DefaultConfigAdapter.I.cornerHorizontalPadding();
             @Comment(ConfigComment.cornerVerticalPadding)
             public int cornerVerticalPadding = DefaultConfigAdapter.I.cornerVerticalPadding();
+            @Comment(ConfigComment.forceRenderAtCorner)
+            public boolean forceRenderAtCorner = DefaultConfigAdapter.I.forceRenderAtCorner();
         }
 
         //mob config
@@ -675,6 +694,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean showOnPlayers = DefaultConfigAdapter.I.showOnPlayers();
             @Comment(ConfigComment.showOnBosses)
             public boolean showOnBosses = DefaultConfigAdapter.I.showOnBosses();
+            @Comment(ConfigComment.showOnArmorStands)
+            public boolean showOnArmorStands = DefaultConfigAdapter.I.showOnArmorStands();
             @Comment(ConfigComment.showOnFullHealthWithoutAbsorption)
             public boolean showOnFullHealthWithoutAbsorption = DefaultConfigAdapter.I.showOnFullHealthWithoutAbsorption();
             @Comment(ConfigComment.showOnFullHealthWithAbsorption)
