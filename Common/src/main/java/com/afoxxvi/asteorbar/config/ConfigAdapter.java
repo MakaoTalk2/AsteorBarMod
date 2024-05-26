@@ -27,6 +27,8 @@ public interface ConfigAdapter {
 
     String stackHealthBarColors();
 
+    int hideUnchangingBarAfterSeconds();
+
     int healthColorNormal();
 
     int healthColorPoison();
@@ -93,6 +95,8 @@ public interface ConfigAdapter {
 
     double lowHealthRate();
 
+    boolean shakeHealthAndFoodWhileLow();
+
     boolean overwriteVanillaArmorBar();
 
     boolean overwriteVanillaExperienceBar();
@@ -115,6 +119,8 @@ public interface ConfigAdapter {
 
     boolean displayExhaustion();
 
+    boolean displayFoodText();
+
     boolean displayArmorToughness();
 
     int cornerBarLength();
@@ -122,6 +128,8 @@ public interface ConfigAdapter {
     int cornerHorizontalPadding();
 
     int cornerVerticalPadding();
+
+    boolean forceRenderAtCorner();
 
     //mob config
     boolean enableHealthBar();
@@ -135,6 +143,8 @@ public interface ConfigAdapter {
     boolean showOnPlayers();
 
     boolean showOnBosses();
+
+    boolean showOnArmorStands();
 
     boolean showOnFullHealthWithoutAbsorption();
 
@@ -195,4 +205,12 @@ public interface ConfigAdapter {
     boolean hookVampirism();
 
     boolean hookHomeostatic();
+
+    boolean hookBotania();
+
+    boolean hookOrigins();
+
+    boolean hookTFC();
+
+    boolean hookArsNouveau();
 }

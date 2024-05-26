@@ -22,6 +22,7 @@ public class PlayerHealthOverlay extends BaseOverlay {
     private long healthBlinkTime = 0;
     private long lastHealthTime;
     private float lastHealth;
+    private final int[] shift = new int[]{0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1, 0, 1};
 
     private int[] getStackColor(int low, int num) {
         final var colors = AsteorBar.config.stackHealthBarColors().split(",");
@@ -31,7 +32,13 @@ public class PlayerHealthOverlay extends BaseOverlay {
         return new int[]{Utils.parseHexColor(color1), Utils.parseHexColor(color2), Utils.parseHexColor(colors[(low + 1) % colors.length])};
     }
 
-    private void draw(PoseStack poseStack, int left, int top, int right, int bottom, boolean highlight, int healthColor, float health, float absorb, float maxHealth, float flashAlpha, int regenerationOffset, double healthIncrement, long tick, boolean flip) {
+    private void draw(GuiGraphics guiGraphics, int left, int top, int right, int bottom, boolean highlight, int healthColor, float health, float absorb, float maxHealth, float flashAlpha, int regenerationOffset, double healthIncrement, long tick, boolean flip) {
+        int verticalShift = 0;
+        if (health < maxHealth * AsteorBar.config.lowHealthRate()) {
+            verticalShift = shift[(int) (tick % shift.length)];
+            top += verticalShift;
+            bottom += verticalShift;
+        }
         //draw bound
         drawBound(poseStack, left, top, right, bottom, AsteorBar.config.healthBoundColor());
         drawEmptyFill(poseStack, left + 1, top + 1, right - 1, bottom - 1, AsteorBar.config.healthEmptyColor());
@@ -168,6 +175,7 @@ public class PlayerHealthOverlay extends BaseOverlay {
             } else {
                 hp = (Utils.formatNumber(health) + "/" + Utils.formatNumber(maxHealth));
             }
+            top -= verticalShift;
             Overlays.addStringRender((left + right) / 2, top - 2, 0xFFFFFF, hp, Overlays.ALIGN_CENTER, true);
             if (AsteorBar.config.displayAbsorptionTextMethod() == ABSORPTION_TEXT_MODE_SEPARATE && absorb > 0.0F) {
                 if (flip) {
@@ -176,12 +184,12 @@ public class PlayerHealthOverlay extends BaseOverlay {
                     Overlays.addStringRender(left + 2, top - 2, 0xFFFF00, Utils.formatNumber(absorb), Overlays.ALIGN_LEFT, true);
                 }
             }
+            top += verticalShift;
         }
         if (highlight) {
             drawBound(poseStack, left, top, right, bottom, AsteorBar.config.healthBoundColorBlink());
         } else if (flashAlpha > 0) {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, flashAlpha);
-            RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
             drawBound(poseStack, left, top, right, bottom, AsteorBar.config.healthBoundColorLow());
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }

@@ -54,6 +54,11 @@ public class AsteorBar {
         public boolean vampirism = false;
         public boolean lightshield = false;
         public boolean homeostatic = false;
+        public boolean botania = false;
+        public boolean origins = false;
+        public boolean tfc = false;
+        public boolean arsNouveau = false;
+
 
         public void init() {
             toughAsNails = platformAdapter.isModLoaded("toughasnails");
@@ -68,6 +73,10 @@ public class AsteorBar {
             vampirism = platformAdapter.isModLoaded("vampirism");
             lightshield = platformAdapter.isModLoaded("lightshield");
             homeostatic = platformAdapter.isModLoaded("homeostatic");
+            botania = platformAdapter.isModLoaded("botania");
+            origins = platformAdapter.isModLoaded("origins");
+            tfc = platformAdapter.isModLoaded("tfc");
+            arsNouveau = platformAdapter.isModLoaded("ars_nouveau");
         }
     }
 }
