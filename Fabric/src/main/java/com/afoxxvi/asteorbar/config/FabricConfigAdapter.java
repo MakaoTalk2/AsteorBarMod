@@ -78,6 +78,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public int hideUnchangingBarAfterSeconds() {
+        return config.overlay.hideUnchangingBarAfterSeconds;
+    }
+
+    @Override
     public int healthColorNormal() {
         return config.overlay.healthColorNormal;
     }
@@ -243,6 +248,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean shakeHealthAndFoodWhileLow() {
+        return config.overlay.shakeHealthAndFoodWhileLow;
+    }
+
+    @Override
     public boolean overwriteVanillaArmorBar() {
         return config.overlay.overwriteVanillaArmorBar;
     }
@@ -298,6 +308,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean displayFoodText() {
+        return config.overlay.displayFoodText;
+    }
+
+    @Override
     public boolean displayArmorToughness() {
         return config.overlay.displayArmorToughness;
     }
@@ -315,6 +330,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     @Override
     public int cornerVerticalPadding() {
         return config.overlay.cornerVerticalPadding;
+    }
+
+    @Override
+    public boolean forceRenderAtCorner() {
+        return config.overlay.forceRenderAtCorner;
     }
 
     @Override
@@ -346,6 +366,11 @@ public class FabricConfigAdapter implements ConfigAdapter {
     @Override
     public boolean showOnBosses() {
         return config.entity.showOnBosses;
+    }
+
+    @Override
+    public boolean showOnArmorStands() {
+        return config.entity.showOnArmorStands;
     }
 
     @Override
@@ -498,6 +523,26 @@ public class FabricConfigAdapter implements ConfigAdapter {
         return config.hook.hookHomeostatic;
     }
 
+    @Override
+    public boolean hookBotania() {
+        return config.hook.hookBotania;
+    }
+
+    @Override
+    public boolean hookOrigins() {
+        return config.hook.hookOrigins;
+    }
+
+    @Override
+    public boolean hookTFC() {
+        return config.hook.hookTFC;
+    }
+
+    @Override
+    public boolean hookArsNouveau() {
+        return config.hook.hookArsNouveau;
+    }
+
     public static void init() {
         AutoConfig.register(FabricConfigAdapter.AsteorBarConfig.class, JanksonConfigSerializer::new);
         holder = AutoConfig.getConfigHolder(FabricConfigAdapter.AsteorBarConfig.class);
@@ -541,6 +586,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean enableStackHealthBar = DefaultConfigAdapter.I.enableStackHealthBar();
             @Comment(ConfigComment.stackHealthBarColors)
             public String stackHealthBarColors = DefaultConfigAdapter.I.stackHealthBarColors();
+            @Comment(ConfigComment.hideUnchangingBarAfterSeconds)
+            public int hideUnchangingBarAfterSeconds = DefaultConfigAdapter.I.hideUnchangingBarAfterSeconds();
             @Comment(ConfigComment.healthColorNormal)
             public int healthColorNormal = DefaultConfigAdapter.I.healthColorNormal();
             @Comment(ConfigComment.healthColorPoison)
@@ -607,6 +654,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean enableHealthBlink = DefaultConfigAdapter.I.enableHealthBlink();
             @Comment(ConfigComment.lowHealthRate)
             public double lowHealthRate = DefaultConfigAdapter.I.lowHealthRate();
+            @Comment(ConfigComment.shakeHealthAndFoodWhileLow)
+            public boolean shakeHealthAndFoodWhileLow = DefaultConfigAdapter.I.shakeHealthAndFoodWhileLow();
             @Comment(ConfigComment.overwriteVanillaArmorBar)
             public boolean overwriteVanillaArmorBar = DefaultConfigAdapter.I.overwriteVanillaArmorBar();
             @Comment(ConfigComment.overwriteVanillaExperienceBar)
@@ -629,6 +678,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean displaySaturation = DefaultConfigAdapter.I.displaySaturation();
             @Comment(ConfigComment.displayExhaustion)
             public boolean displayExhaustion = DefaultConfigAdapter.I.displayExhaustion();
+            @Comment(ConfigComment.displayFoodText)
+            public boolean displayFoodText = DefaultConfigAdapter.I.displayFoodText();
             @Comment(ConfigComment.displayArmorToughness)
             public boolean displayArmorToughness = DefaultConfigAdapter.I.displayArmorToughness();
             @Comment(ConfigComment.cornerBarLength)
@@ -637,6 +688,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public int cornerHorizontalPadding = DefaultConfigAdapter.I.cornerHorizontalPadding();
             @Comment(ConfigComment.cornerVerticalPadding)
             public int cornerVerticalPadding = DefaultConfigAdapter.I.cornerVerticalPadding();
+            @Comment(ConfigComment.forceRenderAtCorner)
+            public boolean forceRenderAtCorner = DefaultConfigAdapter.I.forceRenderAtCorner();
         }
 
         //mob config
@@ -651,6 +704,8 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean showOnPlayers = DefaultConfigAdapter.I.showOnPlayers();
             @Comment(ConfigComment.showOnBosses)
             public boolean showOnBosses = DefaultConfigAdapter.I.showOnBosses();
+            @Comment(ConfigComment.showOnArmorStands)
+            public boolean showOnArmorStands = DefaultConfigAdapter.I.showOnArmorStands();
             @Comment(ConfigComment.showOnFullHealthWithoutAbsorption)
             public boolean showOnFullHealthWithoutAbsorption = DefaultConfigAdapter.I.showOnFullHealthWithoutAbsorption();
             @Comment(ConfigComment.showOnFullHealthWithAbsorption)
@@ -714,6 +769,14 @@ public class FabricConfigAdapter implements ConfigAdapter {
             public boolean hookVampirism = DefaultConfigAdapter.I.hookVampirism();
             @Comment(ConfigComment.hookHomeostatic)
             public boolean hookHomeostatic = DefaultConfigAdapter.I.hookHomeostatic();
+            @Comment(ConfigComment.hookBotania)
+            public boolean hookBotania = DefaultConfigAdapter.I.hookBotania();
+            @Comment(ConfigComment.hookOrigins)
+            public boolean hookOrigins = DefaultConfigAdapter.I.hookOrigins();
+            @Comment(ConfigComment.hookTFC)
+            public boolean hookTFC = DefaultConfigAdapter.I.hookTFC();
+            @Comment(ConfigComment.hookArsNouveau)
+            public boolean hookArsNouveau = DefaultConfigAdapter.I.hookArsNouveau();
         }
     }
 }

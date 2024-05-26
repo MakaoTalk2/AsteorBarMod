@@ -1,8 +1,57 @@
 # Version History
 
+## v1.4.5
+
+2024/05
+
+### Features
+
+- Support Minecraft 1.20.6.
+- Option to force render all bars at corner.
+- Option to toggle bar shake effect.
+- Option to disable health bar for armor stands.
+
+### Adjustments & Fixes
+
+- Fixed bar bound width not calculated correctly.
+
+## v1.4.4
+
+2024/05/10 (not released)
+
+### Features
+
+- Health and food bar will shake in low health or hunger.
+- Automatically hide unchanged bars.
+- Option to display food level text.
+
+## v1.4.3
+
+2024/04/14
+
+### Adjustments & Fixes
+
+- Add support for NeoForge server.
+
+## v1.4.2
+
+2024/04/13
+
+### Features
+
+- Display thirst info of Homeostatic.
+
+## v1.4.1.1
+
+2024/04/03
+
+### Features
+
+- Added compatibility with Light Shield and Superior Shields in Forge 1.20.1.
+
 ## v1.4.1
 
-2024
+2024/03/26
 
 ### Features
 
@@ -10,6 +59,16 @@
 - Display stamina bar of Parcool.
 - Display feather bar of Feather.
 - Display mana bar of Iron's Spells 'n Spellbooks
+- Display blood bar of Vampirism.
+- Display shield bar of Superior Shields.
+- Allow to set a global alpha value for entity bars.
+- Now display mount health with food level together.
+
+### Adjustments & Fixes
+
+- Fixed the issue in spectator mode in Fabric.
+- Fixed entity rendering issue.
+- Fixed entity bar not using the lightmap.
 
 ## v1.4
 

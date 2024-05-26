@@ -19,6 +19,7 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.IntValue FULL_HEALTH_VALUE;
         public static final ForgeConfigSpec.BooleanValue ENABLE_STACK_HEALTH_BAR;
         public static final ForgeConfigSpec.ConfigValue<String> STACK_HEALTH_BAR_COLORS;
+        public static final ForgeConfigSpec.IntValue HIDE_UNCHANGING_BAR_AFTER_SECONDS;
         public static final ForgeConfigSpec.IntValue HEALTH_COLOR_NORMAL;
         public static final ForgeConfigSpec.IntValue HEALTH_COLOR_POISON;
         public static final ForgeConfigSpec.IntValue HEALTH_COLOR_WITHER;
@@ -52,6 +53,7 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.IntValue ARMOR_TOUGHNESS_COLOR;
         public static final ForgeConfigSpec.BooleanValue ENABLE_HEALTH_BLINK;
         public static final ForgeConfigSpec.DoubleValue LOW_HEALTH_RATE;
+        public static final ForgeConfigSpec.BooleanValue SHAKE_HEALTH_AND_FOOD_WHILE_LOW;
         public static final ForgeConfigSpec.BooleanValue OVERWRITE_VANILLA_ARMOR_BAR;
         public static final ForgeConfigSpec.BooleanValue OVERWRITE_VANILLA_EXPERIENCE_BAR;
         public static final ForgeConfigSpec.BooleanValue DISPLAY_EXPERIENCE_PROGRESS;
@@ -63,16 +65,19 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.BooleanValue ENABLE_FOOD_BLINK;
         public static final ForgeConfigSpec.BooleanValue DISPLAY_SATURATION;
         public static final ForgeConfigSpec.BooleanValue DISPLAY_EXHAUSTION;
+        public static final ForgeConfigSpec.BooleanValue DISPLAY_FOOD_TEXT;
         public static final ForgeConfigSpec.BooleanValue DISPLAY_ARMOR_TOUGHNESS;
         public static final ForgeConfigSpec.IntValue CORNER_BAR_LENGTH;
         public static final ForgeConfigSpec.IntValue CORNER_HORIZONTAL_PADDING;
         public static final ForgeConfigSpec.IntValue CORNER_VERTICAL_PADDING;
+        public static final ForgeConfigSpec.BooleanValue FORCE_RENDER_AT_CORNER;
         //mob config
         public static final ForgeConfigSpec.BooleanValue ENABLE_HEALTH_BAR;
         public static final ForgeConfigSpec.DoubleValue MAX_DISTANCE;
         public static final ForgeConfigSpec.BooleanValue SHOW_ON_SELF;
         public static final ForgeConfigSpec.BooleanValue SHOW_ON_PLAYERS;
         public static final ForgeConfigSpec.BooleanValue SHOW_ON_BOSSES;
+        public static final ForgeConfigSpec.BooleanValue SHOW_ON_ARMOR_STANDS;
         public static final ForgeConfigSpec.BooleanValue SHOW_ON_FULL_HEALTH_WITHOUT_ABSORPTION;
         public static final ForgeConfigSpec.BooleanValue SHOW_ON_FULL_HEALTH_WITH_ABSORPTION;
         public static final ForgeConfigSpec.IntValue HEALTH_BAR_ALPHA;
@@ -103,6 +108,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.BooleanValue HOOK_LIGHT_SHIELD;
         public static final ForgeConfigSpec.BooleanValue HOOK_VAMPIRISM;
         public static final ForgeConfigSpec.BooleanValue HOOK_HOMEOSTATIC;
+        public static final ForgeConfigSpec.BooleanValue HOOK_BOTANIA;
+        public static final ForgeConfigSpec.BooleanValue HOOK_ORIGINS;
+        public static final ForgeConfigSpec.BooleanValue HOOK_TFC;
+        public static final ForgeConfigSpec.BooleanValue HOOK_ARS_NOUVEAU;
 
 
         static {
@@ -151,6 +160,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.stackHealthBarColors)
                     .translation("text.autoconfig.asteorbar.option.overlay.stackHealthBarColors")
                     .define("stackHealthBarColors", DefaultConfigAdapter.I.stackHealthBarColors());
+            HIDE_UNCHANGING_BAR_AFTER_SECONDS = BUILDER
+                    .comment(ConfigComment.hideUnchangingBarAfterSeconds)
+                    .translation("text.autoconfig.asteorbar.option.overlay.hideUnchangingBarAfterSeconds")
+                    .defineInRange("hideUnchangingBarAfterSeconds", DefaultConfigAdapter.I.hideUnchangingBarAfterSeconds(), 0, Integer.MAX_VALUE);
             HEALTH_COLOR_NORMAL = BUILDER
                     .comment(ConfigComment.healthColorNormal)
                     .translation("text.autoconfig.asteorbar.option.overlay.healthColorNormal")
@@ -283,6 +296,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.lowHealthRate)
                     .translation("text.autoconfig.asteorbar.option.overlay.lowHealthRate")
                     .defineInRange("lowHealthRate", DefaultConfigAdapter.I.lowHealthRate(), 0.0, 1.0);
+            SHAKE_HEALTH_AND_FOOD_WHILE_LOW = BUILDER
+                    .comment(ConfigComment.shakeHealthAndFoodWhileLow)
+                    .translation("text.autoconfig.asteorbar.option.overlay.shakeHealthAndFoodWhileLow")
+                    .define("shakeHealthAndFoodWhileLow", DefaultConfigAdapter.I.shakeHealthAndFoodWhileLow());
             OVERWRITE_VANILLA_ARMOR_BAR = BUILDER
                     .comment(ConfigComment.overwriteVanillaArmorBar)
                     .translation("text.autoconfig.asteorbar.option.overlay.overwriteVanillaArmorBar")
@@ -327,6 +344,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.displayExhaustion)
                     .translation("text.autoconfig.asteorbar.option.overlay.displayExhaustion")
                     .define("displayExhaustion", DefaultConfigAdapter.I.displayExhaustion());
+            DISPLAY_FOOD_TEXT = BUILDER
+                    .comment(ConfigComment.displayFoodText)
+                    .translation("text.autoconfig.asteorbar.option.overlay.displayFoodText")
+                    .define("displayFoodText", DefaultConfigAdapter.I.displayFoodText());
             DISPLAY_ARMOR_TOUGHNESS = BUILDER
                     .comment(ConfigComment.displayArmorToughness)
                     .translation("text.autoconfig.asteorbar.option.overlay.displayArmorToughness")
@@ -343,6 +364,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.cornerVerticalPadding)
                     .translation("text.autoconfig.asteorbar.option.overlay.cornerVerticalPadding")
                     .defineInRange("cornerVerticalPadding", DefaultConfigAdapter.I.cornerVerticalPadding(), 0, 100);
+            FORCE_RENDER_AT_CORNER = BUILDER
+                    .comment(ConfigComment.forceRenderAtCorner)
+                    .translation("text.autoconfig.asteorbar.option.overlay.forceRenderAtCorner")
+                    .define("forceRenderAtCorner", DefaultConfigAdapter.I.forceRenderAtCorner());
             BUILDER.pop();
             BUILDER.push("entity");
             ENABLE_HEALTH_BAR = BUILDER
@@ -365,6 +390,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.showOnBosses)
                     .translation("text.autoconfig.asteorbar.option.entity.showOnBosses")
                     .define("showOnBosses", DefaultConfigAdapter.I.showOnBosses());
+            SHOW_ON_ARMOR_STANDS = BUILDER
+                    .comment(ConfigComment.showOnArmorStands)
+                    .translation("text.autoconfig.asteorbar.option.entity.showOnArmorStands")
+                    .define("showOnArmorStands", DefaultConfigAdapter.I.showOnArmorStands());
             SHOW_ON_FULL_HEALTH_WITHOUT_ABSORPTION = BUILDER
                     .comment(ConfigComment.showOnFullHealthWithoutAbsorption)
                     .translation("text.autoconfig.asteorbar.option.entity.showOnFullHealthWithoutAbsorption")
@@ -487,6 +516,22 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.hookHomeostatic)
                     .translation("text.autoconfig.asteorbar.option.hook.hookHomeostatic")
                     .define("homeostatic", DefaultConfigAdapter.I.hookHomeostatic());
+            HOOK_BOTANIA = BUILDER
+                    .comment(ConfigComment.hookBotania)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookBotania")
+                    .define("botania", DefaultConfigAdapter.I.hookBotania());
+            HOOK_ORIGINS = BUILDER
+                    .comment(ConfigComment.hookOrigins)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookOrigins")
+                    .define("origins", DefaultConfigAdapter.I.hookOrigins());
+            HOOK_TFC = BUILDER
+                    .comment(ConfigComment.hookTFC)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookTFC")
+                    .define("tfc", DefaultConfigAdapter.I.hookTFC());
+            HOOK_ARS_NOUVEAU = BUILDER
+                    .comment(ConfigComment.hookArsNouveau)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookArsNouveau")
+                    .define("arsNouveau", DefaultConfigAdapter.I.hookArsNouveau());
             BUILDER.pop();
         }
 
@@ -558,6 +603,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public String stackHealthBarColors() {
         return Config.STACK_HEALTH_BAR_COLORS.get();
+    }
+
+    @Override
+    public int hideUnchangingBarAfterSeconds() {
+        return Config.HIDE_UNCHANGING_BAR_AFTER_SECONDS.get();
     }
 
     @Override
@@ -726,6 +776,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean shakeHealthAndFoodWhileLow() {
+        return Config.SHAKE_HEALTH_AND_FOOD_WHILE_LOW.get();
+    }
+
+    @Override
     public boolean overwriteVanillaArmorBar() {
         return Config.OVERWRITE_VANILLA_ARMOR_BAR.get();
     }
@@ -781,6 +836,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean displayFoodText() {
+        return Config.DISPLAY_FOOD_TEXT.get();
+    }
+
+    @Override
     public boolean displayArmorToughness() {
         return Config.DISPLAY_ARMOR_TOUGHNESS.get();
     }
@@ -798,6 +858,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public int cornerVerticalPadding() {
         return Config.CORNER_VERTICAL_PADDING.get();
+    }
+
+    @Override
+    public boolean forceRenderAtCorner() {
+        return Config.FORCE_RENDER_AT_CORNER.get();
     }
 
     @Override
@@ -829,6 +894,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public boolean showOnBosses() {
         return Config.SHOW_ON_BOSSES.get();
+    }
+
+    @Override
+    public boolean showOnArmorStands() {
+        return Config.SHOW_ON_ARMOR_STANDS.get();
     }
 
     @Override
@@ -979,6 +1049,26 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public boolean hookHomeostatic() {
         return Config.HOOK_HOMEOSTATIC.get();
+    }
+
+    @Override
+    public boolean hookBotania() {
+        return Config.HOOK_BOTANIA.get();
+    }
+
+    @Override
+    public boolean hookOrigins() {
+        return Config.HOOK_ORIGINS.get();
+    }
+
+    @Override
+    public boolean hookTFC() {
+        return Config.HOOK_TFC.get();
+    }
+
+    @Override
+    public boolean hookArsNouveau() {
+        return Config.HOOK_ARS_NOUVEAU.get();
     }
 
 }
