@@ -80,6 +80,22 @@ Here are some known incompatibility with other mods, and currently there is no s
 
 - Oculus: while using shaders, living entity's health bar may not display correctly.
 
+## Q&A
+**How to change the layout of HUD?**</br>
+Press F8 by default, the HUD style will be cycled, include vanilla layout.
+
+**How to disable HUD or Entity Bar, I do only need one of the features?**</br>
+HUD can be closed by pressing F8, Entity Bar can be close by pressing F10, you can also disable these features in the config file.
+
+**How to configure the mod in game?**</br>
+For Fabric version, you'll need to install Mod Menu. For Other version, you can use any in-game configuration editor, such as configured.
+
+**The bars are too close and the text is stacking on each other.**</br>
+You can change the text scale in config, 1.0 should be well with force Unicode, and I recommend 0.75 if you are using vanilla font.
+
+**How to change color in config, I don't understand what these numbers mean.**</br>
+Colors are in ARGB hex format, but displayed as dec values. You can use Windows calculator, switch to programmer mode, click the 'QWORD' until it becomes 'DWORD', then click on HEX and input your ARGB color. The DEC value is just what you needed.
+
 ## Supported Minecraft versions and mod loaders
 
 Earlier versions is not planned to be supported.
