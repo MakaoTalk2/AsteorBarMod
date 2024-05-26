@@ -28,6 +28,12 @@ public class ForgeEventListener {
     public static final ResourceLocation SUPERIOR_SHIELDS_SHIELD = new ResourceLocation("superiorshields", "superior_shield_overlay");
     public static final ResourceLocation HOMEOSTATIC_WATER = new ResourceLocation("homeostatic", "water_level");
     public static final ResourceLocation HOMEOSTATIC_HYDRATION = new ResourceLocation("homeostatic", "hydration");
+    public static final ResourceLocation ARS_NOUVEAU_MANA = new ResourceLocation("ars_nouveau", "mana_hud");
+    public static final ResourceLocation TFC_HEALTH = new ResourceLocation("tfc", "health");
+    public static final ResourceLocation TFC_MOUNT_HEALTH = new ResourceLocation("tfc", "mount_health");
+    public static final ResourceLocation TFC_FOOD = new ResourceLocation("tfc", "food");
+    public static final ResourceLocation TFC_THIRST = new ResourceLocation("tfc", "thirst");
+    public static final ResourceLocation TFC_EXPERIENCE = new ResourceLocation("tfc", "experience");
 
 
     @SubscribeEvent
@@ -61,6 +67,8 @@ public class ForgeEventListener {
                 || AsteorBar.compatibility.superiorshields && AsteorBar.config.hookSuperiorShields() && overlay.id().equals(SUPERIOR_SHIELDS_SHIELD)
                 || AsteorBar.compatibility.lightshield && AsteorBar.config.hookLightShield() && overlay.id().getNamespace().equals("lightshield")
                 || AsteorBar.compatibility.homeostatic && AsteorBar.config.hookHomeostatic() && (overlay.id().equals(HOMEOSTATIC_WATER) || overlay.id().equals(HOMEOSTATIC_HYDRATION))
+                || AsteorBar.compatibility.arsNouveau && AsteorBar.config.hookArsNouveau() && overlay.id().equals(ARS_NOUVEAU_MANA)
+                || AsteorBar.compatibility.tfc && AsteorBar.config.hookTFC() && (overlay.id().equals(TFC_HEALTH) || overlay.id().equals(TFC_MOUNT_HEALTH) || overlay.id().equals(TFC_FOOD) || overlay.id().equals(TFC_THIRST))
         ) {
             event.setCanceled(true);
         }
