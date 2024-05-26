@@ -69,6 +69,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public int hideUnchangingBarAfterSeconds() {
+        return 0;
+    }
+
+    @Override
     public int healthColorNormal() {
         return 0xffff4545;
     }
@@ -234,6 +239,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean shakeHealthAndFoodWhileLow() {
+        return true;
+    }
+
+    @Override
     public boolean overwriteVanillaArmorBar() {
         return true;
     }
@@ -289,6 +299,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     }
 
     @Override
+    public boolean displayFoodText() {
+        return false;
+    }
+
+    @Override
     public boolean displayArmorToughness() {
         return true;
     }
@@ -306,6 +321,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     @Override
     public int cornerVerticalPadding() {
         return 16;
+    }
+
+    @Override
+    public boolean forceRenderAtCorner() {
+        return false;
     }
 
     @Override
@@ -336,6 +356,11 @@ public class DefaultConfigAdapter implements ConfigAdapter {
     @Override
     public boolean showOnBosses() {
         return true;
+    }
+
+    @Override
+    public boolean showOnArmorStands() {
+        return false;
     }
 
     @Override
@@ -485,6 +510,26 @@ public class DefaultConfigAdapter implements ConfigAdapter {
 
     @Override
     public boolean hookHomeostatic() {
+        return true;
+    }
+
+    @Override
+    public boolean hookBotania() {
+        return true;
+    }
+
+    @Override
+    public boolean hookOrigins() {
+        return true;
+    }
+
+    @Override
+    public boolean hookTFC() {
+        return true;
+    }
+
+    @Override
+    public boolean hookArsNouveau() {
         return true;
     }
 }

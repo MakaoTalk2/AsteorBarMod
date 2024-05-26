@@ -1,12 +1,17 @@
 package com.afoxxvi.asteorbar.overlay.parts;
 
+import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.overlay.Overlays;
 import com.afoxxvi.asteorbar.overlay.RenderGui;
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.world.entity.player.Player;
 
+import java.util.Objects;
+
 public abstract class SimpleBarOverlay extends BaseOverlay {
-    protected int tick = 0;
+    protected long lastChangeMillis = 0;
+    private Parameters lastParameters = new Parameters();
 
     public static class Parameters {
         public int fillColor = 0;
@@ -27,6 +32,10 @@ public abstract class SimpleBarOverlay extends BaseOverlay {
         public int rightColor = 0;
 
         public Parameters() {
+        }
+
+        public boolean valueEquals(Parameters other) {
+            return value == other.value && capacity == other.capacity && boundValue == other.boundValue && boundCapacity == other.boundCapacity && Objects.equals(centerText, other.centerText) && Objects.equals(leftText, other.leftText) && Objects.equals(rightText, other.rightText);
         }
     }
 
@@ -84,24 +93,39 @@ public abstract class SimpleBarOverlay extends BaseOverlay {
         return false;
     }
 
+    protected boolean canHide() {
+        return true;
+    }
+
     @Override
     public void renderOverlay(RenderGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
         var player = gui.mc().player;
         if (player == null) return;
-        tick = gui.gui().getGuiTicks();
         if (!shouldRender(player)) return;
         var parameters = getParameters(player);
         if (parameters == null) return;
+        boolean recoverShaderColor = false;
+        if (canHide()) {
+            if (!parameters.valueEquals(lastParameters)) {
+                lastChangeMillis = System.currentTimeMillis();
+            }
+            var wait = AsteorBar.config.hideUnchangingBarAfterSeconds() * 1000;
+            if (wait > 0) {
+                if (System.currentTimeMillis() - lastChangeMillis > wait + 1000) {
+                    return;
+                } else if (System.currentTimeMillis() - lastChangeMillis > wait) {
+                    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F - (System.currentTimeMillis() - lastChangeMillis - wait) / 1000.0F);
+                    recoverShaderColor = true;
+                }
+            }
+        }
         int left, top, right;
         boolean flip;
         int style = Overlays.style;
-        if (alwaysLow()) {
+        if (alwaysLow() && !AsteorBar.config.forceRenderAtCorner()) {
             style = Overlays.STYLE_ABOVE_HOT_BAR_SHORT;
         }
         switch (style) {
-            default -> {
-                return;
-            }
             case Overlays.STYLE_ABOVE_HOT_BAR_LONG, Overlays.STYLE_ABOVE_HOT_BAR_SHORT -> {
                 if (isLeftSide()) {
                     left = screenWidth / 2 - 91;
@@ -146,7 +170,14 @@ public abstract class SimpleBarOverlay extends BaseOverlay {
                 flip = true;
                 Overlays.vertical += 6;
             }
+            default -> {
+                return;
+            }
         }
         draw(poseStack, left, top, right, top + 5, parameters, flip);
+        lastParameters = parameters;
+        if (recoverShaderColor) {
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        }
     }
 }

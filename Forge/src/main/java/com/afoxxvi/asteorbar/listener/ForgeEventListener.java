@@ -27,6 +27,7 @@ public class ForgeEventListener {
     public static final ResourceLocation SUPERIOR_SHIELDS_SHIELD = new ResourceLocation("superiorshields", "superior_shield_overlay");
     public static final ResourceLocation HOMEOSTATIC_WATER = new ResourceLocation("homeostatic", "water_level");
     public static final ResourceLocation HOMEOSTATIC_HYDRATION = new ResourceLocation("homeostatic", "hydration");
+    public static final ResourceLocation ARS_NOUVEAU_MANA = new ResourceLocation("ars_nouveau", "mana_hud");
 
 
     @SubscribeEvent
@@ -58,6 +59,7 @@ public class ForgeEventListener {
                 || AsteorBar.compatibility.vampirism && AsteorBar.config.hookVampirism() && overlay.id().equals(VAMPIRISM_BLOOD)
                 || AsteorBar.compatibility.superiorshields && AsteorBar.config.hookSuperiorShields() && overlay.id().equals(SUPERIOR_SHIELDS_SHIELD)
                 || AsteorBar.compatibility.homeostatic && AsteorBar.config.hookHomeostatic() && (overlay.id().equals(HOMEOSTATIC_WATER) || overlay.id().equals(HOMEOSTATIC_HYDRATION))
+                || AsteorBar.compatibility.arsNouveau && AsteorBar.config.hookArsNouveau() && overlay.id().equals(ARS_NOUVEAU_MANA)
         ) {
             event.setCanceled(true);
         }
