@@ -3,6 +3,10 @@ package com.afoxxvi.asteorbar.listener;
 import com.afoxxvi.asteorbar.AsteorBarForge;
 import com.afoxxvi.asteorbar.overlay.ForgeRenderGui;
 import com.afoxxvi.asteorbar.overlay.parts.*;
+import com.afoxxvi.asteorbar.overlay.parts.tfc.TFCExperienceOverlay;
+import com.afoxxvi.asteorbar.overlay.parts.tfc.TFCFoodOverlay;
+import com.afoxxvi.asteorbar.overlay.parts.tfc.TFCHealthOverlay;
+import com.afoxxvi.asteorbar.overlay.parts.tfc.TFCThirstOverlay;
 import net.minecraftforge.client.gui.ForgeIngameGui;
 import net.minecraftforge.client.gui.OverlayRegistry;
 
@@ -15,12 +19,15 @@ public class ModEventListener {
         AsteorBarForge.LOGGER.info("Registering Overlays");
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "player_health", new ForgeRenderGui(PLAYER_HEALTH));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "food_level", new ForgeRenderGui(FOOD_LEVEL));
-        OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "mount_health", new ForgeRenderGui(MOUNT_HEALTH));
+        OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "tfc_thirst", new ForgeRenderGui(new TFCThirstOverlay()));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "tough_as_nails", new ForgeRenderGui(new ToughAsNailsOverlay()));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "thirst", new ForgeRenderGui(new ThirstOverlay()));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "homeostatic", new ForgeRenderGui(new HomeostaticOverlay()));
+        OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "mount_health", new ForgeRenderGui(MOUNT_HEALTH));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "feathers", new ForgeRenderGui(new FeathersOverlay()));
-        OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "irons_spellbooks_mana", new ForgeRenderGui(new IronsSpellbooksOverlay()));
+        OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "botania", new ForgeRenderGui(new BotaniaOverlay(), false));
+        OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "irons_spellbooks_mana", new ForgeRenderGui(new IronsSpellbooksOverlay(), false));
+        OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "ars_nouveau", new ForgeRenderGui(new ArsNouveauOverlay(), false));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "parcool_stamina", new ForgeRenderGui(new ParcoolOverlay()));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "experience_bar", new ForgeRenderGui(EXPERIENCE_BAR));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "armor_level", new ForgeRenderGui(ARMOR_LEVEL));
@@ -28,7 +35,10 @@ public class ModEventListener {
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.PLAYER_HEALTH_ELEMENT, "superiorshields", new ForgeRenderGui(new SuperiorShieldsOverlay()));
         OverlayRegistry.registerOverlayBelow(ForgeIngameGui.AIR_LEVEL_ELEMENT, "air_level", new ForgeRenderGui(AIR_LEVEL));
         OverlayRegistry.registerOverlayAbove(ForgeIngameGui.EXPERIENCE_BAR_ELEMENT, "string", new ForgeRenderGui(STRING));
-        FOOD_LEVEL.overrideOverlay = new VampirismOverlay();
+        FOOD_LEVEL.overrideOverlay.add(new VampirismOverlay());
+        PLAYER_HEALTH.overrideOverlay.add(new TFCHealthOverlay());
+        FOOD_LEVEL.overrideOverlay.add(new TFCFoodOverlay());
+        EXPERIENCE_BAR.overrideOverlay.add(new TFCExperienceOverlay());
         registerOverlay = true;
     }
 }

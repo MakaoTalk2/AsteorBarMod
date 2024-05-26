@@ -1,10 +1,12 @@
 package com.afoxxvi.asteorbar.listener;
 
 import com.afoxxvi.asteorbar.AsteorBar;
+import com.afoxxvi.asteorbar.AsteorBarForge;
 import com.afoxxvi.asteorbar.key.KeyBinding;
 import com.afoxxvi.asteorbar.overlay.Overlays;
 import dev.ghen.thirst.foundation.gui.ThirstBarRenderer;
 import net.minecraft.client.Minecraft;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
@@ -68,7 +70,7 @@ public class ForgeEventListener {
                 || AsteorBar.compatibility.vampirism && AsteorBar.config.hookVampirism() && overlay == vampirismBlood
                 || AsteorBar.compatibility.superiorshields && AsteorBar.config.hookSuperiorShields() && overlay == superiorShieldsShield
                 || AsteorBar.compatibility.appleskin && AsteorBar.config.hookAppleSkin() && overlay.getClass().getPackageName().equals("squeek.appleskin.client")
-            //|| AsteorBar.compatibility.homeostatic && AsteorBar.config.hookHomeostatic() && (overlay.id().equals(HOMEOSTATIC_WATER) || overlay.id().equals(HOMEOSTATIC_HYDRATION))
+                //|| AsteorBar.compatibility.tfc && AsteorBar.config.hookTFC() && (overlay.id().equals(TFC_HEALTH) || overlay.id().equals(TFC_MOUNT_HEALTH) || overlay.id().equals(TFC_FOOD) || overlay.id().equals(TFC_THIRST))
         ) {
             event.setCanceled(true);
         }
