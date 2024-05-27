@@ -13,15 +13,16 @@ public class AsteorBarRenderType extends RenderStateShard {
     private static final ResourceLocation LIGHTMAP_TEXTURE = new ResourceLocation(AsteorBar.MOD_ID, "textures/ui/lightmap.png");
     public static final RenderType RENDER_TYPE = RenderTypeMixin.create(
             "asteorbar_health_bar",
-            DefaultVertexFormat.POSITION_COLOR_TEX,
+            DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,
             VertexFormat.Mode.QUADS,
             131072,
             false,
             false,
             RenderType.CompositeState.builder()
-                    .setShaderState(RenderStateShard.POSITION_COLOR_TEX_SHADER)
+                    .setShaderState(RenderStateShard.POSITION_COLOR_TEX_LIGHTMAP_SHADER)
                     .setTransparencyState(TRANSLUCENT_TRANSPARENCY)
                     .setTextureState(new TextureStateShard(LIGHTMAP_TEXTURE, false, false))
+                    .setLightmapState(LIGHTMAP)
                     .createCompositeState(false));
 
     public AsteorBarRenderType(String p_110161_, Runnable p_110162_, Runnable p_110163_) {
