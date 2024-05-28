@@ -213,4 +213,6 @@ public interface ConfigAdapter {
     boolean hookTFC();
 
     boolean hookArsNouveau();
+
+    boolean hookApoli();
 }

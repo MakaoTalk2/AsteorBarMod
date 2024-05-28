@@ -9,7 +9,8 @@
     "EntityMixin",
     "GuiMixin",
     "RenderTypeMixin",
-    "third.DehydrationMixin"
+    "third.DehydrationMixin",
+    "third.OriginPowerHudMixin"
   ],
   "server": [],
   "injectors": {
