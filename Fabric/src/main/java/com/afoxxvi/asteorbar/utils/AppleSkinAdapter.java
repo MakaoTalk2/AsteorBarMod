@@ -20,6 +20,9 @@ public class AppleSkinAdapter {
     public PlatformAdapter.AppleSkinFoodValues getAppleSkinFoodValues(Player player) {
         FoodData stats = player.getFoodData();
         FoodHelper.QueriedFoodResult result = HUDOverlayHandler.INSTANCE.heldFood.result(Minecraft.getInstance().gui.getGuiTicks(), player);
+        if (result == null) {
+            return null;
+        }
         HUDOverlayEvent.HungerRestored hungerRenderEvent = new HUDOverlayEvent.HungerRestored(stats.getFoodLevel(), result.itemStack, result.modifiedFoodComponent, 0, 0, null);
         HUDOverlayEvent.HungerRestored.EVENT.invoker().interact(hungerRenderEvent);
         int foodHunger = result.modifiedFoodComponent.nutrition();

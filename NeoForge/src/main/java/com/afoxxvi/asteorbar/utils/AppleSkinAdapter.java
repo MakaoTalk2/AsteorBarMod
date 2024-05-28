@@ -17,6 +17,9 @@ public class AppleSkinAdapter {
 
     public PlatformAdapter.AppleSkinFoodValues getAppleSkinFoodValues(Player player) {
         FoodHelper.QueriedFoodResult result = AppleSkinMixin.getHeldFood().result(Minecraft.getInstance().gui.getGuiTicks(), player);
+        if (result == null) {
+            return null;
+        }
         int foodHunger = result.modifiedFoodProperties.nutrition();
         float foodSaturationIncrement = result.modifiedFoodProperties.saturation();
         float foodHealthIncrement = FoodHelper.getEstimatedHealthIncrement(player, result.modifiedFoodProperties);

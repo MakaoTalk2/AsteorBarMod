@@ -38,6 +38,7 @@ public class NeoForgeEventListener {
                 || (AsteorBar.config.overwriteVanillaExperienceBar() && (overlay == VanillaGuiLayers.EXPERIENCE_BAR || overlay == VanillaGuiLayers.EXPERIENCE_LEVEL))
                 || overlay == VanillaGuiLayers.VEHICLE_HEALTH
                 || (AsteorBar.config.overwriteVanillaArmorBar() && overlay == VanillaGuiLayers.ARMOR_LEVEL)
+                || AsteorBar.compatibility.appleskin && overlay.getNamespace().equals("appleskin")
         ) {
             event.setCanceled(true);
         }
