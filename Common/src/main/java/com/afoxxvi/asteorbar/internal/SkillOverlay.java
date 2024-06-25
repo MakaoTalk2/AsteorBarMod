@@ -27,7 +27,7 @@ public class SkillOverlay extends BaseOverlay {
             int y = screenHeight - 23;
             GuiHelper.drawTexturedRect(poseStack, x, y, 24, 22, 29, 24);
         }
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 8; i++) {
             if ((InternalInfo.skillShow & (1 << (i + 4))) == 0) continue;
             int x = middle + 91 + i * 21;
             int y = screenHeight - 23;
@@ -35,7 +35,7 @@ public class SkillOverlay extends BaseOverlay {
         }
         //RenderSystem.setShaderTexture(0, SKILL_TEXTURE);
         //GuiHelper.drawTexturedRect(poseStack, left, top, 9, 0, 182, 12);
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 16; i++) {
             if ((InternalInfo.skillShow & (1 << i)) == 0) continue;
             int x = i < 4 ? (middle - 91 - 26 - 21 * 4 + i * 21) : (middle + 91 + 10 + (i - 4) * 21);
             int y = screenHeight - 19;
@@ -59,16 +59,16 @@ public class SkillOverlay extends BaseOverlay {
             int cooldown = InternalInfo.skillCooldown[i];
             if (cooldown < Byte.MAX_VALUE) {
                 var len = cooldown * 16 / Byte.MAX_VALUE;
-                GuiHelper.drawSolidColor(poseStack, x, y + 8, x + 16, y + 16, 0x40D0D0D0);
-                GuiHelper.drawSolidColor(poseStack, x + len, y + 8, x + 16, y + 16, 0x40D0D0D0);
+                GuiHelper.drawSolidColor(poseStack, x + 8, y, x + 16, y + 16, 0x80D0D0D0);
+                GuiHelper.drawSolidColor(poseStack, x + 8, y + len, x + 16, y + 16, 0x80D0D0D0);
                 //GuiHelper.drawSolidColor(poseStack, x, y + 9, x + 24, y + 10, 0xFF000000);
                 //GuiHelper.drawSolidColor(poseStack, x, y + 9, x + len, y + 10, 0xFFD0D0D0);
             }
             int mana = InternalInfo.skillMana[i];
             if (mana < Byte.MAX_VALUE) {
                 var len = mana * 16 / Byte.MAX_VALUE;
-                GuiHelper.drawSolidColor(poseStack, x, y, x + 16, y + 8, 0x4000FFFF);
-                GuiHelper.drawSolidColor(poseStack, x + len, y, x + 16, y + 8, 0x4000FFFF);
+                GuiHelper.drawSolidColor(poseStack, x, y, x + 8, y + 16, 0x8000FFFF);
+                GuiHelper.drawSolidColor(poseStack, x, y + len, x + 8, y + 16, 0x8000FFFF);
                 //GuiHelper.drawSolidColor(poseStack, x, y, x + 24, y + 1, 0xFF000000);
                 //GuiHelper.drawSolidColor(poseStack, x, y, x + len, y + 1, 0xFF00FFFF);
             }

@@ -11,7 +11,7 @@ import net.minecraft.world.entity.player.Player;
 public class AsteorBar {
     public static final String MOD_ID = "asteorbar";
     public static final String MOD_NAME = "AsteorBar";
-    public static final int MOD_VERSION = 1;
+    public static final int INTERNAL_MOD_VERSION = 2;
     public static ConfigAdapter config = new DefaultConfigAdapter();
     public static Compatibility compatibility = new Compatibility();
 

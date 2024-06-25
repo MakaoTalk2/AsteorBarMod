@@ -10,11 +10,11 @@ import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 
 public class InternalNetworkHandler {
-    private static final ResourceLocation CHANNEL = new ResourceLocation(AsteorBar.MOD_ID, "internal");
+    private static final ResourceLocation INTERNAL = new ResourceLocation(AsteorBar.MOD_ID, "internal");
 
     @Environment(EnvType.CLIENT)
     public static void init() {
-        ClientPlayNetworking.registerGlobalReceiver(CHANNEL, (client, handler, buf, responseSender) -> {
+        ClientPlayNetworking.registerGlobalReceiver(INTERNAL, (client, handler, buf, responseSender) -> {
             byte index = buf.readByte();
             switch (index) {
                 case 0 -> InternalInfo.decodeActivate(buf);
@@ -30,13 +30,13 @@ public class InternalNetworkHandler {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         buf.writeByte(128);
         buf.writeByte(skillIndex);
-        ClientPlayNetworking.send(CHANNEL, buf);
+        ClientPlayNetworking.send(INTERNAL, buf);
     }
 
     public static void sendRushPacket(int direction) {
         FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
         buf.writeByte(129);
         buf.writeByte(direction);
-        ClientPlayNetworking.send(CHANNEL, buf);
+        ClientPlayNetworking.send(INTERNAL, buf);
     }
 }

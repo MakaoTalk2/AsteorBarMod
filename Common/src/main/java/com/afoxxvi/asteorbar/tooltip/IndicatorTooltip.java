@@ -32,9 +32,9 @@ public class IndicatorTooltip implements TooltipComponent, ClientTooltipComponen
     @Override
     public void renderImage(Font font, int i, int j, PoseStack poseStack, ItemRenderer itemRenderer) {
         GuiHelper.drawString(poseStack, ".", i, j, 0xFFFFFF);
-        if (AsteorBar.MOD_VERSION != InternalInfo.mod_version) {
+        if (AsteorBar.INTERNAL_MOD_VERSION != InternalInfo.mod_version) {
             if (Minecraft.getInstance().options.renderDebug) {
-                GuiHelper.drawString(poseStack, "expected=" + InternalInfo.mod_version + ", current=" + AsteorBar.MOD_VERSION, i, j, 0xFF5555, true);
+                GuiHelper.drawString(poseStack, "expected=" + InternalInfo.mod_version + ", current=" + AsteorBar.INTERNAL_MOD_VERSION, i, j, 0xFF5555, true);
             }
             GuiHelper.drawSolidColor(poseStack, i, j, i + size, j + size, 0xFFFF0000);
         } else {
