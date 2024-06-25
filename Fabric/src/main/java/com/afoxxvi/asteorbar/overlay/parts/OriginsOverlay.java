@@ -13,8 +13,10 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class OriginsOverlay extends BaseOverlay {
     private SimpleBarOverlay subOverlay = null;
@@ -34,17 +36,21 @@ public class OriginsOverlay extends BaseOverlay {
         if (player == null) {
             return;
         }
-        PowerHolderComponent.KEY.get(player).getPowers().stream().filter(HudRendered.class::isInstance).map(p -> (HudRendered) p).filter(HudRendered::shouldRender).map(h -> Map.entry(h, h.getRenderSettings().getChildOrSelf(player))).filter(entry -> entry.getValue().isPresent()).sorted(Map.Entry.comparingByValue(Comparator.comparing(Optional::get))).forEach(entry -> {
-            HudRendered hudRendered = entry.getKey();
-            HudRender hudRender = entry.getValue().get();
-            if (subOverlay == null) {
-                subOverlay = new OriginSimpleBar();
+        List<HudRendered> hudPowers = PowerHolderComponent.KEY.get(player).getPowers().stream().filter(p -> p instanceof HudRendered).map(p -> (HudRendered) p).sorted(
+                Comparator.comparing(hudRenderedA -> hudRenderedA.getRenderSettings().getSpriteLocation())
+        ).toList();
+        for (HudRendered hudRendered : hudPowers) {
+            HudRender hudRender = hudRendered.getRenderSettings();
+            if (hudRender.shouldRender(player) && hudRendered.shouldRender()) {
+                if (subOverlay == null) {
+                    subOverlay = new OriginSimpleBar();
+                }
+                final var originSimpleBar = (OriginSimpleBar) subOverlay;
+                originSimpleBar.hudRender = hudRender;
+                originSimpleBar.hudRendered = hudRendered;
+                subOverlay.render(gui, guiGraphics, partialTick, screenWidth, screenHeight);
             }
-            final var originSimpleBar = (OriginSimpleBar) subOverlay;
-            originSimpleBar.hudRender = hudRender;
-            originSimpleBar.hudRendered = hudRendered;
-            subOverlay.render(gui, guiGraphics, partialTick, screenWidth, screenHeight);
-        });
+        }
     }
 
     private static class OriginSimpleBar extends SimpleBarOverlay {
@@ -99,10 +105,9 @@ public class OriginsOverlay extends BaseOverlay {
 
         @Override
         protected void drawDecorations(GuiGraphics guiGraphics, int left, int top, int right, int bottom, Parameters parameters, boolean flip) {
-            int iconU = (BAR_WIDTH + 2) + hudRender.getIconIndex() * ICON_INDEX_OFFSET;
             int barV = BAR_HEIGHT + hudRender.getBarIndex() * BAR_INDEX_OFFSET;
             RenderSystem.setShaderTexture(0, hudRender.getSpriteLocation());
-            GuiHelper.drawTexturedRect(guiGraphics, (right + left) / 2 - ICON_SIZE / 2, (top + bottom) / 2 - ICON_SIZE / 2, iconU, barV, ICON_SIZE, ICON_SIZE);
+            GuiHelper.drawTexturedRect(guiGraphics, (right + left) / 2 - ICON_SIZE / 2, (top + bottom) / 2 - ICON_SIZE / 2, 73, barV, ICON_SIZE, ICON_SIZE);
             RenderSystem.setShaderTexture(0, LIGHTMAP_TEXTURE);
         }
 
