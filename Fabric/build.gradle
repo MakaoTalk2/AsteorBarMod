@@ -49,6 +49,7 @@ dependencies {
             exclude(group: "org.quiltmc.parsers")
             exclude(group: "maven.modrinth")
             exclude(group: "com.jamieswhiteshirt")
+            exclude(group: "com.github.DaFuqs")
         }
     }
 }

@@ -5,18 +5,15 @@ import com.afoxxvi.asteorbar.overlay.RenderGui;
 import com.afoxxvi.asteorbar.utils.GuiHelper;
 import com.afoxxvi.asteorbar.utils.Utils;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import io.github.apace100.apoli.component.PowerHolderComponent;
 import io.github.apace100.apoli.power.HudRendered;
 import io.github.apace100.apoli.util.HudRender;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.entity.player.Player;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 public class OriginsOverlay extends BaseOverlay {
     private SimpleBarOverlay subOverlay = null;
@@ -26,9 +23,10 @@ public class OriginsOverlay extends BaseOverlay {
 
     private static final int BAR_INDEX_OFFSET = BAR_HEIGHT + 2;
     private static final int ICON_INDEX_OFFSET = ICON_SIZE + 1;
+    public static List<HudRendered> hudPowers;
 
     @Override
-    public void renderOverlay(RenderGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
+    public void renderOverlay(RenderGui gui, PoseStack guiGraphics, float partialTick, int screenWidth, int screenHeight) {
         if (!(AsteorBar.compatibility.apoli && AsteorBar.config.hookApoli())) {
             return;
         }
@@ -36,9 +34,7 @@ public class OriginsOverlay extends BaseOverlay {
         if (player == null) {
             return;
         }
-        List<HudRendered> hudPowers = PowerHolderComponent.KEY.get(player).getPowers().stream().filter(p -> p instanceof HudRendered).map(p -> (HudRendered) p).sorted(
-                Comparator.comparing(hudRenderedA -> hudRenderedA.getRenderSettings().getSpriteLocation())
-        ).toList();
+        if (hudPowers == null) return;
         for (HudRendered hudRendered : hudPowers) {
             HudRender hudRender = hudRendered.getRenderSettings();
             if (hudRender.shouldRender(player) && hudRendered.shouldRender()) {
@@ -104,7 +100,7 @@ public class OriginsOverlay extends BaseOverlay {
         }
 
         @Override
-        protected void drawDecorations(GuiGraphics guiGraphics, int left, int top, int right, int bottom, Parameters parameters, boolean flip) {
+        protected void drawDecorations(PoseStack guiGraphics, int left, int top, int right, int bottom, Parameters parameters, boolean flip) {
             int barV = BAR_HEIGHT + hudRender.getBarIndex() * BAR_INDEX_OFFSET;
             RenderSystem.setShaderTexture(0, hudRender.getSpriteLocation());
             GuiHelper.drawTexturedRect(guiGraphics, (right + left) / 2 - ICON_SIZE / 2, (top + bottom) / 2 - ICON_SIZE / 2, 73, barV, ICON_SIZE, ICON_SIZE);
