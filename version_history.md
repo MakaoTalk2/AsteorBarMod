@@ -2,7 +2,7 @@
 
 ## v1.4.5
 
-2024/05
+2024/05/26
 
 ### Features
 
@@ -10,6 +10,9 @@
 - Option to force render all bars at corner.
 - Option to toggle bar shake effect.
 - Option to disable health bar for armor stands.
+- Display bar of TerraFirmaCraft.
+- Display mana bar of Ars Nouveau.
+- Display mana bar of Botania.
 
 ### Adjustments & Fixes
 

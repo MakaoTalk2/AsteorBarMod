@@ -9,7 +9,8 @@
   "client": [
     "EntityMixin",
     "GuiMixin",
-    "RenderTypeMixin"
+    "RenderTypeMixin",
+    "third.OriginPowerHudMixin"
   ],
   "server": [],
   "injectors": {

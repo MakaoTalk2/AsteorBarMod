@@ -110,6 +110,7 @@ public class NeoForgeConfigAdapter implements ConfigAdapter {
         public static final ModConfigSpec.BooleanValue HOOK_ORIGINS;
         public static final ModConfigSpec.BooleanValue HOOK_TFC;
         public static final ModConfigSpec.BooleanValue HOOK_ARS_NOUVEAU;
+        public static final ModConfigSpec.BooleanValue HOOK_APOLI;
 
         static {
             BUILDER.push("overlay");
@@ -521,6 +522,10 @@ public class NeoForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.hookArsNouveau)
                     .translation("text.autoconfig.asteorbar.option.hook.hookArsNouveau")
                     .define("arsNouveau", DefaultConfigAdapter.I.hookArsNouveau());
+            HOOK_APOLI = BUILDER
+                    .comment(ConfigComment.hookApoli)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookApoli")
+                    .define("apoli", DefaultConfigAdapter.I.hookApoli());
             BUILDER.pop();
         }
 
@@ -1048,6 +1053,11 @@ public class NeoForgeConfigAdapter implements ConfigAdapter {
     @Override
     public boolean hookArsNouveau() {
         return Config.HOOK_ARS_NOUVEAU.get();
+    }
+
+    @Override
+    public boolean hookApoli() {
+        return Config.HOOK_APOLI.get();
     }
 
 }
