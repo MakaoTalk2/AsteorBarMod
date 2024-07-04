@@ -1,5 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.5-SNAPSHOT'
+    id 'fabric-loom' version '1.6.11'
     id 'maven-publish'
 }
 
@@ -11,9 +11,9 @@ repositories {
     // for more information about repositories.
     maven { url "https://maven.shedaniel.me/" }
     maven { url "https://maven.terraformersmc.com/releases/" }
-    maven {
-        url "https://cursemaven.com"
-    }
+    maven { url "https://cursemaven.com" }
+    maven { url "https://jitpack.io" }
+    maven { url 'https://maven.ladysnake.org/releases' }
 }
 
 loom {
@@ -43,6 +43,14 @@ dependencies {
     }
     if (appleskin_version_fabric != "0") {
         modImplementation "curse.maven:appleskin-248787:${appleskin_version_fabric}"
+    }
+    if (origins_apoli_version_fabric != "0") {
+        modImplementation("com.github.apace100:apoli:${origins_apoli_version_fabric}") {
+            exclude(group: "org.quiltmc.parsers")
+            exclude(group: "maven.modrinth")
+            exclude(group: "com.jamieswhiteshirt")
+            exclude(group: "com.github.DaFuqs")
+        }
     }
 }
 

@@ -112,6 +112,7 @@ public class ForgeConfigAdapter implements ConfigAdapter {
         public static final ForgeConfigSpec.BooleanValue HOOK_ORIGINS;
         public static final ForgeConfigSpec.BooleanValue HOOK_TFC;
         public static final ForgeConfigSpec.BooleanValue HOOK_ARS_NOUVEAU;
+        public static final ForgeConfigSpec.BooleanValue HOOK_APOLI;
 
 
         static {
@@ -532,6 +533,10 @@ public class ForgeConfigAdapter implements ConfigAdapter {
                     .comment(ConfigComment.hookArsNouveau)
                     .translation("text.autoconfig.asteorbar.option.hook.hookArsNouveau")
                     .define("arsNouveau", DefaultConfigAdapter.I.hookArsNouveau());
+            HOOK_APOLI = BUILDER
+                    .comment(ConfigComment.hookApoli)
+                    .translation("text.autoconfig.asteorbar.option.hook.hookApoli")
+                    .define("apoli", DefaultConfigAdapter.I.hookApoli());
             BUILDER.pop();
         }
 
@@ -1069,6 +1074,11 @@ public class ForgeConfigAdapter implements ConfigAdapter {
     @Override
     public boolean hookArsNouveau() {
         return Config.HOOK_ARS_NOUVEAU.get();
+    }
+
+    @Override
+    public boolean hookApoli() {
+        return Config.HOOK_APOLI.get();
     }
 
 }

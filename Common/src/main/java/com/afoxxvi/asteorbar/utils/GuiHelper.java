@@ -125,24 +125,24 @@ public class GuiHelper {
 
     //left < right, top < bottom
     public static void renderSolid(VertexConsumer vertexConsumer, PoseStack poseStack, int left, int top, int right, int bottom, int color, float z) {
-        vertexConsumer.vertex(poseStack.last().pose(), left, top, z).color(color).uv(0, 0).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), left, bottom, z).color(color).uv(0, 0.125f).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, bottom, z).color(color).uv(1, 0.125f).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, top, z).color(color).uv(1, 0).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), left, top, z).color(color).uv(0, 0).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), left, bottom, z).color(color).uv(0, 0.125f).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), right, bottom, z).color(color).uv(1, 0.125f).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), right, top, z).color(color).uv(1, 0).uv2(0xff00ff).endVertex();
     }
 
     public static void renderSolidGradient(VertexConsumer vertexConsumer, PoseStack poseStack, int left, int top, int right, int bottom, int color, float z) {
-        vertexConsumer.vertex(poseStack.last().pose(), left, top, z).color(color).uv(0, 0.625f).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), left, bottom, z).color(color).uv(0, 1).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, bottom, z).color(color).uv(1, 1).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, top, z).color(color).uv(1, 0.625f).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), left, top, z).color(color).uv(0, 0.625f).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), left, bottom, z).color(color).uv(0, 1).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), right, bottom, z).color(color).uv(1, 1).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), right, top, z).color(color).uv(1, 0.625f).uv2(0xff00ff).endVertex();
     }
 
     public static void renderSolidGradientUpDown(VertexConsumer vertexConsumer, PoseStack poseStack, int left, int top, int right, int bottom, int color, float z) {
-        vertexConsumer.vertex(poseStack.last().pose(), left, top, z).color(color).uv(0, 0).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), left, bottom, z).color(color).uv(0, 0.375f).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, bottom, z).color(color).uv(1, 0.375f).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, top, z).color(color).uv(1, 0).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), left, top, z).color(color).uv(0, 0).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), left, bottom, z).color(color).uv(0, 0.375f).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), right, bottom, z).color(color).uv(1, 0.375f).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), right, top, z).color(color).uv(1, 0).uv2(0xff00ff).endVertex();
     }
 
     public static void renderString(PoseStack poseStack, MultiBufferSource buffer, String string, float left, float top, int color, boolean shadow) {
