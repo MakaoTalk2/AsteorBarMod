@@ -3,7 +3,6 @@ package com.afoxxvi.asteorbar.overlay;
 import com.afoxxvi.asteorbar.overlay.parts.BaseOverlay;
 import com.afoxxvi.asteorbar.overlay.parts.DehydrationOverlay;
 import com.mojang.blaze3d.vertex.PoseStack;
-import com.afoxxvi.asteorbar.overlay.parts.OriginsOverlay;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 
@@ -21,7 +20,6 @@ public class FabricGuiRegistry {
         REGISTRY.add(Overlays.AIR_LEVEL);
         REGISTRY.add(Overlays.EXPERIENCE_BAR);
         REGISTRY.add(Overlays.ARMOR_LEVEL);
-        REGISTRY.add(new OriginsOverlay());
         REGISTRY.add(Overlays.STRING);
 
     }
