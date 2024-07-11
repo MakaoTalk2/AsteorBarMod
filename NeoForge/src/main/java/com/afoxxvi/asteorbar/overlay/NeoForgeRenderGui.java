@@ -1,6 +1,7 @@
 package com.afoxxvi.asteorbar.overlay;
 
 import com.afoxxvi.asteorbar.overlay.parts.BaseOverlay;
+import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiGraphics;
@@ -47,11 +48,11 @@ public class NeoForgeRenderGui extends RenderGui implements LayeredDraw.Layer {
     }
 
     @Override
-    public void render(@NotNull GuiGraphics guiGraphics, float v) {
+    public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
         final Minecraft mc = Minecraft.getInstance();
         this.gui = mc.gui;
         if (!mc.options.hideGui && (!survival || mc.gameMode.canHurtPlayer())) {
-            overlay.render(this, guiGraphics, v, guiGraphics.guiWidth(), guiGraphics.guiHeight());
+            overlay.render(this, guiGraphics, deltaTracker.getGameTimeDeltaPartialTick(true), guiGraphics.guiWidth(), guiGraphics.guiHeight());
         }
     }
 }

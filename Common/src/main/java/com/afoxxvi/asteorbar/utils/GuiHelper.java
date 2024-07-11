@@ -11,47 +11,45 @@ import net.minecraft.client.renderer.MultiBufferSource;
 @SuppressWarnings("unused")
 public class GuiHelper {
     public static void drawTexturedRect(GuiGraphics guiGraphics, int left, int top, int textureX, int textureY, int width, int height) {
-        drawTexturedRect(guiGraphics, left, top, left + width, top + height, textureX, textureY, textureX + width, textureY + height, 256, 256);
+        drawTexturedRect(guiGraphics, left, top, left + width, top + height, textureX, textureY, textureX + (float) width, textureY + (float) height, 256, 256);
     }
 
     public static void drawTexturedRectColor(GuiGraphics guiGraphics, int left, int top, int textureX, int textureY, int width, int height, int color) {
-        drawTexturedRectColor(guiGraphics, left, top, left + width, top + height, textureX, textureY, textureX + width, textureY + height, 256, 256, color);
+        drawTexturedRectColor(guiGraphics, left, top, left + width, top + height, textureX, textureY, textureX + (float) width, textureY + (float) height, 256, 256, color);
     }
 
     public static void drawTexturedRect(GuiGraphics guiGraphics, int left, int top, int right, int bottom, float uvLeft, float uvTop, float uvRight, float uvBottom, int textureWidth, int textureHeight) {
         RenderSystem.setShader(GameRenderer::getPositionTexShader);
         RenderSystem.enableBlend();
-        BufferBuilder builder = Tesselator.getInstance().getBuilder();
-        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
+        BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX);
         var matrix = guiGraphics.pose().last().pose();
         var z = 0;
         var uv_left = uvLeft / textureWidth;
         var uv_top = uvTop / textureHeight;
         var uv_right = uvRight / textureWidth;
         var uv_bottom = uvBottom / textureHeight;
-        builder.vertex(matrix, (float) left, (float) top, (float) z).uv(uv_left, uv_top).endVertex();
-        builder.vertex(matrix, (float) left, (float) bottom, (float) z).uv(uv_left, uv_bottom).endVertex();
-        builder.vertex(matrix, (float) right, (float) bottom, (float) z).uv(uv_right, uv_bottom).endVertex();
-        builder.vertex(matrix, (float) right, (float) top, (float) z).uv(uv_right, uv_top).endVertex();
-        BufferUploader.drawWithShader(builder.end());
+        builder.addVertex(matrix, left, top, z).setUv(uv_left, uv_top);
+        builder.addVertex(matrix, left, bottom, z).setUv(uv_left, uv_bottom);
+        builder.addVertex(matrix, right, bottom, z).setUv(uv_right, uv_bottom);
+        builder.addVertex(matrix, right, top, z).setUv(uv_right, uv_top);
+        BufferUploader.drawWithShader(builder.buildOrThrow());
         RenderSystem.disableBlend();
     }
 
     public static void drawTexturedRectColor(GuiGraphics guiGraphics, int left, int top, int right, int bottom, float uvLeft, float uvTop, float uvRight, float uvBottom, int textureWidth, int textureHeight, int color) {
-        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.enableBlend();
-        BufferBuilder builder = Tesselator.getInstance().getBuilder();
-        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+        BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         var matrix = guiGraphics.pose().last().pose();
         var uv_left = uvLeft / textureWidth;
         var uv_top = uvTop / textureHeight;
         var uv_right = uvRight / textureWidth;
         var uv_bottom = uvBottom / textureHeight;
-        builder.vertex(matrix, (float) left, (float) top, (float) 0).color(color).uv(uv_left, uv_top).endVertex();
-        builder.vertex(matrix, (float) left, (float) bottom, (float) 0).color(color).uv(uv_left, uv_bottom).endVertex();
-        builder.vertex(matrix, (float) right, (float) bottom, (float) 0).color(color).uv(uv_right, uv_bottom).endVertex();
-        builder.vertex(matrix, (float) right, (float) top, (float) 0).color(color).uv(uv_right, uv_top).endVertex();
-        BufferUploader.drawWithShader(builder.end());
+        builder.addVertex(matrix, left, top, 0).setColor(color).setUv(uv_left, uv_top);
+        builder.addVertex(matrix, left, bottom, 0).setColor(color).setUv(uv_left, uv_bottom);
+        builder.addVertex(matrix, right, bottom, 0).setColor(color).setUv(uv_right, uv_bottom);
+        builder.addVertex(matrix, right, top, 0).setColor(color).setUv(uv_right, uv_top);
+        BufferUploader.drawWithShader(builder.buildOrThrow());
         RenderSystem.disableBlend();
     }
 
@@ -68,22 +66,20 @@ public class GuiHelper {
     }
 
     public static void drawSolidGradient(PoseStack poseStack, int left, int top, int right, int bottom, int color) {
-        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.enableBlend();
-        BufferBuilder builder = Tesselator.getInstance().getBuilder();
-        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+        BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         renderSolidGradient(builder, poseStack, left, top, right, bottom, color, 0);
-        BufferUploader.drawWithShader(builder.end());
+        BufferUploader.drawWithShader(builder.buildOrThrow());
         RenderSystem.disableBlend();
     }
 
     public static void drawSolidGradientUpDown(PoseStack poseStack, int left, int top, int right, int bottom, int color) {
-        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+        RenderSystem.setShader(GameRenderer::getPositionTexColorShader);
         RenderSystem.enableBlend();
-        BufferBuilder builder = Tesselator.getInstance().getBuilder();
-        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+        BufferBuilder builder = Tesselator.getInstance().begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_TEX_COLOR);
         renderSolidGradientUpDown(builder, poseStack, left, top, right, bottom, color, 0);
-        BufferUploader.drawWithShader(builder.end());
+        BufferUploader.drawWithShader(builder.buildOrThrow());
         RenderSystem.disableBlend();
     }
 
@@ -124,33 +120,32 @@ public class GuiHelper {
 
     //left < right, top < bottom
     public static void renderSolid(VertexConsumer vertexConsumer, PoseStack poseStack, int left, int top, int right, int bottom, int color, float z) {
-        vertexConsumer.vertex(poseStack.last().pose(), left, top, z).color(color).uv(0, 0).uv2(0xff00ff).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), left, bottom, z).color(color).uv(0, 0.125f).uv2(0xff00ff).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, bottom, z).color(color).uv(1, 0.125f).uv2(0xff00ff).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, top, z).color(color).uv(1, 0).uv2(0xff00ff).endVertex();
+        vertexConsumer.addVertex(poseStack.last().pose(), left, top, z).setColor(color).setUv(0, 0).setUv2(0xff, 0xff);
+        vertexConsumer.addVertex(poseStack.last().pose(), left, bottom, z).setColor(color).setUv(0, 0.125f).setUv2(0xff, 0xff);
+        vertexConsumer.addVertex(poseStack.last().pose(), right, bottom, z).setColor(color).setUv(1, 0.125f).setUv2(0xff, 0xff);
+        vertexConsumer.addVertex(poseStack.last().pose(), right, top, z).setColor(color).setUv(1, 0).setUv2(0xff, 0xff);
     }
 
     public static void renderSolidGradient(VertexConsumer vertexConsumer, PoseStack poseStack, int left, int top, int right, int bottom, int color, float z) {
-        vertexConsumer.vertex(poseStack.last().pose(), left, top, z).color(color).uv(0, 0.625f).uv2(0xff00ff).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), left, bottom, z).color(color).uv(0, 1).uv2(0xff00ff).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, bottom, z).color(color).uv(1, 1).uv2(0xff00ff).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, top, z).color(color).uv(1, 0.625f).uv2(0xff00ff).endVertex();
+        vertexConsumer.addVertex(poseStack.last().pose(), left, top, z).setColor(color).setUv(0, 0.625f).setUv2(0xff, 0xff);
+        vertexConsumer.addVertex(poseStack.last().pose(), left, bottom, z).setColor(color).setUv(0, 1).setUv2(0xff, 0xff);
+        vertexConsumer.addVertex(poseStack.last().pose(), right, bottom, z).setColor(color).setUv(1, 1).setUv2(0xff, 0xff);
+        vertexConsumer.addVertex(poseStack.last().pose(), right, top, z).setColor(color).setUv(1, 0.625f).setUv2(0xff, 0xff);
     }
 
     public static void renderSolidGradientUpDown(VertexConsumer vertexConsumer, PoseStack poseStack, int left, int top, int right, int bottom, int color, float z) {
-        vertexConsumer.vertex(poseStack.last().pose(), left, top, z).color(color).uv(0, 0).uv2(0xff00ff).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), left, bottom, z).color(color).uv(0, 0.375f).uv2(0xff00ff).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, bottom, z).color(color).uv(1, 0.375f).uv2(0xff00ff).endVertex();
-        vertexConsumer.vertex(poseStack.last().pose(), right, top, z).color(color).uv(1, 0).uv2(0xff00ff).endVertex();
+        vertexConsumer.addVertex(poseStack.last().pose(), left, top, z).setColor(color).setUv(0, 0).setUv2(0xff, 0xff);
+        vertexConsumer.addVertex(poseStack.last().pose(), left, bottom, z).setColor(color).setUv(0, 0.375f).setUv2(0xff, 0xff);
+        vertexConsumer.addVertex(poseStack.last().pose(), right, bottom, z).setColor(color).setUv(1, 0.375f).setUv2(0xff, 0xff);
+        vertexConsumer.addVertex(poseStack.last().pose(), right, top, z).setColor(color).setUv(1, 0).setUv2(0xff, 0xff);
     }
 
     public static void renderString(PoseStack poseStack, MultiBufferSource buffer, String string, float left, float top, int color, boolean shadow) {
-        Minecraft.getInstance().font.drawInBatch(string, left, top, color, shadow, poseStack.last().pose(), buffer,
-                Font.DisplayMode.NORMAL, 0, 0xF000F0);
+        Minecraft.getInstance().font.drawInBatch(string, left, top, color, shadow, poseStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, 0xF000F0);
     }
 
     public static void renderString(PoseStack poseStack, MultiBufferSource buffer, String string, int left, int top, int color) {
-        renderString(poseStack, buffer, string, (float) left, (float) top, color, false);
+        renderString(poseStack, buffer, string, left, top, color, false);
     }
 
     public static void renderCenteredString(PoseStack poseStack, MultiBufferSource buffer, String string, int left, int top, int color) {

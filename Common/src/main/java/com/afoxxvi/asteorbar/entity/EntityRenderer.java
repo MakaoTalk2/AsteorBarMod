@@ -9,6 +9,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.decoration.ArmorStand;
 import net.minecraft.world.entity.player.Player;
+import org.joml.Quaternionf;
+import org.joml.Vector3f;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +65,17 @@ public class EntityRenderer {
         final var alpha = AsteorBar.config.healthBarAlpha();
         poseStack.pushPose();
         poseStack.translate(0, entity.getBbHeight() + AsteorBar.config.healthBarOffsetY(), 0);
-        poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+        /*
+         * What's wrong with rotation?
+         * Old code:
+         * poseStack.mulPose(Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation());
+         */
+        // Start Of Rotation
+        final var cameraEuler = Minecraft.getInstance().getEntityRenderDispatcher().cameraOrientation().getEulerAnglesXYZ(new Vector3f());
+        poseStack.mulPose(new Quaternionf().rotationXYZ(0, (float) Math.PI, 0));
+        poseStack.mulPose(new Quaternionf().rotationXYZ(-cameraEuler.x, cameraEuler.y, -cameraEuler.z));
+        // End Of Rotation
+
         {//render health bar
             poseStack.pushPose();
             var scale = (float) AsteorBar.config.healthBarScale();

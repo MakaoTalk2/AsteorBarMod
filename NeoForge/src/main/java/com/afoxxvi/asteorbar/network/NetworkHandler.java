@@ -23,7 +23,7 @@ import java.util.UUID;
 public class NetworkHandler {
     private static boolean initialized = false;
     //avoid sending packets too frequently
-    private static final ResourceLocation CHANNEL = new ResourceLocation("asteorbar", "network");
+    private static final ResourceLocation CHANNEL = ResourceLocation.fromNamespaceAndPath("asteorbar", "network");
     private static final byte INDEX_EXHAUSTION = 0;
     private static final byte INDEX_SATURATION = 1;
     private static final byte INDEX_ABSORPTION = 2;

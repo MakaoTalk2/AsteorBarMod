@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public class AsteorBarRenderType extends RenderStateShard {
     //If no texture, the bar is not rendered while using shader packs
-    private static final ResourceLocation LIGHTMAP_TEXTURE = new ResourceLocation(AsteorBar.MOD_ID, "textures/ui/lightmap.png");
+    private static final ResourceLocation LIGHTMAP_TEXTURE = ResourceLocation.fromNamespaceAndPath(AsteorBar.MOD_ID, "textures/ui/lightmap.png");
     public static final RenderType RENDER_TYPE = RenderType.create(
             "asteorbar_health_bar",
             DefaultVertexFormat.POSITION_COLOR_TEX_LIGHTMAP,

@@ -4,6 +4,7 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import org.jetbrains.annotations.Nullable;
+import org.slf4j.Logger;
 
 public interface PlatformAdapter {
     boolean isBoss(LivingEntity livingEntity);
@@ -13,6 +14,8 @@ public interface PlatformAdapter {
     RenderType getRenderType();
 
     boolean isModLoaded(String modId);
+
+    Logger getLogger();
 
     @Nullable
     AppleSkinFoodValues getAppleSkinFoodValues(Player player);

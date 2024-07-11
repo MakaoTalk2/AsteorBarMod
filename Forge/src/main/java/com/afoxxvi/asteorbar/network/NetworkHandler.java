@@ -22,7 +22,7 @@ import java.util.UUID;
 public class NetworkHandler {
     private static boolean initialized = false;
     private static final SimpleChannel CHANNEL = ChannelBuilder
-            .named(new ResourceLocation(AsteorBar.MOD_ID, "network"))
+            .named(ResourceLocation.fromNamespaceAndPath(AsteorBar.MOD_ID, "network"))
             .networkProtocolVersion(1)
             .optional()
             .acceptedVersions((status, version) -> true)

@@ -8,8 +8,8 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.ResourceLocation;
 
 public abstract class BaseOverlay {
-    public static final ResourceLocation TEXTURE = new ResourceLocation(AsteorBar.MOD_ID, "textures/gui/overlay.png");
-    public static final ResourceLocation LIGHTMAP_TEXTURE = new ResourceLocation(AsteorBar.MOD_ID, "textures/ui/lightmap.png");
+    public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(AsteorBar.MOD_ID, "textures/gui/overlay.png");
+    public static final ResourceLocation LIGHTMAP_TEXTURE = ResourceLocation.fromNamespaceAndPath(AsteorBar.MOD_ID, "textures/ui/lightmap.png");
     public static final int FILL_FULL_WIDTH_LONG = 180;
     public static final int BOUND_FULL_WIDTH_LONG = 182;
     public static final int BOUND_FULL_WIDTH_SHORT = 81;
