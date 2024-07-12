@@ -1,14 +1,14 @@
 package com.afoxxvi.asteorbar.internal;
 
 import com.afoxxvi.asteorbar.AsteorBar;
-import com.afoxxvi.asteorbar.AsteorBarForge;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraftforge.network.NetworkEvent;
-import net.minecraftforge.network.NetworkRegistry;
-import net.minecraftforge.network.simple.SimpleChannel;
+import net.minecraftforge.event.network.CustomPayloadEvent;
+import net.minecraftforge.network.ChannelBuilder;
+import net.minecraftforge.network.PacketDistributor;
+import net.minecraftforge.network.SimpleChannel;
 
-import java.util.function.Supplier;
+import java.util.function.BiConsumer;
 
 public class InternalNetworkHandler {
     private static final byte INDEX_SERVER_REQUEST_PUB_KEY = 0;
@@ -16,30 +16,89 @@ public class InternalNetworkHandler {
     private static final byte INDEX_SERVER_SEND_CHALLENGE = 2;
     private static final byte INDEX_CLIENT_SEND_RESPONSE = 3;
     private static final byte INDEX_SERVER_SEND_ACTIVATE = 4;
-    public static final SimpleChannel INTERNAL = NetworkRegistry.newSimpleChannel(new ResourceLocation(AsteorBar.MOD_ID, "internal"), () -> "1.0", s -> true, s -> true);
+    public static final SimpleChannel INTERNAL = ChannelBuilder
+            .named(new ResourceLocation(AsteorBar.MOD_ID, "internal"))
+            .networkProtocolVersion(1)
+            .optional()
+            .acceptedVersions((status, version) -> true)
+            .simpleChannel();
 
-    public static final SimpleChannel SECURITY = NetworkRegistry.newSimpleChannel(new ResourceLocation(AsteorBar.MOD_ID, "security"), () -> "1.0", s -> true, s -> true);
+    public static final SimpleChannel SECURITY = ChannelBuilder
+            .named(new ResourceLocation(AsteorBar.MOD_ID, "security"))
+            .networkProtocolVersion(1)
+            .optional()
+            .acceptedVersions((status, version) -> true)
+            .simpleChannel();
 
     public static void init() {
-        INTERNAL.registerMessage(0, Object.class, null, InternalInfo::decodeActivate, InternalNetworkHandler::ignoredHandle);
-        INTERNAL.registerMessage(1, Object.class, null, InternalInfo::decodeStatus, InternalNetworkHandler::ignoredHandle);
-        INTERNAL.registerMessage(2, Object.class, null, InternalInfo::decodeInfo, InternalNetworkHandler::ignoredHandle);
-        INTERNAL.registerMessage(3, Object.class, null, InternalInfo::decodeHelmet, InternalNetworkHandler::ignoredHandle);
-        INTERNAL.registerMessage(4, Object.class, null, InternalInfo::decodeToggle, InternalNetworkHandler::ignoredHandle);
+        INTERNAL.messageBuilder(InternalInfo.InternalActivatePacket.class, 0)
+                .encoder(null)
+                .decoder(InternalInfo::decodeActivate)
+                .consumerNetworkThread(InternalNetworkHandler::ignoredHandle)
+                .add();
+        INTERNAL.messageBuilder(InternalInfo.InternalStatusPacket.class, 1)
+                .encoder(null)
+                .decoder(InternalInfo::decodeStatus)
+                .consumerNetworkThread(InternalNetworkHandler::ignoredHandle)
+                .add();
+        INTERNAL.messageBuilder(InternalInfo.InternalInfoPacket.class, 2)
+                .encoder(null)
+                .decoder(InternalInfo::decodeInfo)
+                .consumerNetworkThread(InternalNetworkHandler::ignoredHandle)
+                .add();
+        INTERNAL.messageBuilder(InternalInfo.InternalHelmetPacket.class, 3)
+                .encoder(null)
+                .decoder(InternalInfo::decodeHelmet)
+                .consumerNetworkThread(InternalNetworkHandler::ignoredHandle)
+                .add();
+        INTERNAL.messageBuilder(InternalInfo.InternalTogglePacket.class, 4)
+                .encoder(null)
+                .decoder(InternalInfo::decodeToggle)
+                .consumerNetworkThread(InternalNetworkHandler::ignoredHandle)
+                .add();
 
-        INTERNAL.registerMessage(128, UseSkillPacket.class, UseSkillPacket::encode, null, null);
-        INTERNAL.registerMessage(129, RushPacket.class, RushPacket::encode, null, null);
+        INTERNAL.messageBuilder(UseSkillPacket.class, 64)
+                .encoder(UseSkillPacket::encode)
+                .decoder(null)
+                .consumerNetworkThread((BiConsumer<UseSkillPacket, CustomPayloadEvent.Context>) (packet, context) -> context.setPacketHandled(true))
+                .add();
+        INTERNAL.messageBuilder(RushPacket.class, 65)
+                .encoder(RushPacket::encode)
+                .decoder(null)
+                .consumerNetworkThread((BiConsumer<RushPacket, CustomPayloadEvent.Context>) (packet, context) -> context.setPacketHandled(true))
+                .add();
 
-        SECURITY.registerMessage(INDEX_SERVER_REQUEST_PUB_KEY, RequestPubKeyPacket.class, null, RequestPubKeyPacket::decode, RequestPubKeyPacket::handle);
-        SECURITY.registerMessage(INDEX_CLIENT_SEND_PUB_KEY, SendPubKeyPacket.class, SendPubKeyPacket::encode, null, null);
-        SECURITY.registerMessage(INDEX_SERVER_SEND_CHALLENGE, ChallengePacket.class, null, ChallengePacket::decode, ChallengePacket::handle);
-        SECURITY.registerMessage(INDEX_CLIENT_SEND_RESPONSE, SendResponsePacket.class, SendResponsePacket::encode, null, null);
-        SECURITY.registerMessage(INDEX_SERVER_SEND_ACTIVATE, ActivatePacket.class, ActivatePacket::encode, ActivatePacket::decode, ActivatePacket::handle);
+
+        SECURITY.messageBuilder(RequestPubKeyPacket.class, INDEX_SERVER_REQUEST_PUB_KEY)
+                .encoder(null)
+                .decoder(RequestPubKeyPacket::decode)
+                .consumerNetworkThread(RequestPubKeyPacket::handle)
+                .add();
+        SECURITY.messageBuilder(SendPubKeyPacket.class, INDEX_CLIENT_SEND_PUB_KEY)
+                .encoder(SendPubKeyPacket::encode)
+                .decoder(null)
+                .consumerNetworkThread((BiConsumer<SendPubKeyPacket, CustomPayloadEvent.Context>) (packet, context) -> context.setPacketHandled(true))
+                .add();
+        SECURITY.messageBuilder(ChallengePacket.class, INDEX_SERVER_SEND_CHALLENGE)
+                .encoder(null)
+                .decoder(ChallengePacket::decode)
+                .consumerNetworkThread(ChallengePacket::handle)
+                .add();
+        SECURITY.messageBuilder(SendResponsePacket.class, INDEX_CLIENT_SEND_RESPONSE)
+                .encoder(SendResponsePacket::encode)
+                .decoder(null)
+                .consumerNetworkThread((BiConsumer<SendResponsePacket, CustomPayloadEvent.Context>) (packet, context) -> context.setPacketHandled(true))
+                .add();
+        SECURITY.messageBuilder(ActivatePacket.class, INDEX_SERVER_SEND_ACTIVATE)
+                .encoder(ActivatePacket::encode)
+                .decoder(ActivatePacket::decode)
+                .consumerNetworkThread(ActivatePacket::handle)
+                .add();
     }
 
     @SuppressWarnings("unused")
-    private static void ignoredHandle(Object packet, Supplier<NetworkEvent.Context> context) {
-        context.get().setPacketHandled(true);
+    private static void ignoredHandle(Object packet, CustomPayloadEvent.Context context) {
+        context.setPacketHandled(true);
     }
 
     public static class ActivatePacket {
@@ -57,12 +116,12 @@ public class InternalNetworkHandler {
             return new ActivatePacket(buffer.readBoolean());
         }
 
-        public static void handle(ActivatePacket packet, Supplier<NetworkEvent.Context> context) {
-            context.get().enqueueWork(() -> {
+        public static void handle(ActivatePacket packet, CustomPayloadEvent.Context context) {
+            context.enqueueWork(() -> {
                 InternalInfo.activated = packet.activated;
-                SECURITY.sendToServer(new ActivatePacket(packet.activated));
+                SECURITY.send(new ActivatePacket(packet.activated), PacketDistributor.SERVER.noArg());
             });
-            context.get().setPacketHandled(true);
+            context.setPacketHandled(true);
         }
     }
 
@@ -77,12 +136,12 @@ public class InternalNetworkHandler {
             return new RequestPubKeyPacket(buffer.readBoolean());
         }
 
-        public static void handle(RequestPubKeyPacket packet, Supplier<NetworkEvent.Context> context) {
-            context.get().enqueueWork(() -> {
+        public static void handle(RequestPubKeyPacket packet, CustomPayloadEvent.Context context) {
+            context.enqueueWork(() -> {
                 byte[] publicKey = SecurityInfo.getPublicKey(packet.regen);
-                SECURITY.sendToServer(new SendPubKeyPacket(publicKey));
+                SECURITY.send(new SendPubKeyPacket(publicKey), PacketDistributor.SERVER.noArg());
             });
-            context.get().setPacketHandled(true);
+            context.setPacketHandled(true);
         }
     }
 
@@ -109,14 +168,12 @@ public class InternalNetworkHandler {
             return new ChallengePacket(buffer.readByteArray());
         }
 
-        public static void handle(ChallengePacket packet, Supplier<NetworkEvent.Context> context) {
-            context.get().enqueueWork(() -> {
-                AsteorBarForge.LOGGER.info("Receiving challenge: " + new String(packet.challenge));
+        public static void handle(ChallengePacket packet, CustomPayloadEvent.Context context) {
+            context.enqueueWork(() -> {
                 byte[] response = SecurityInfo.handleChallenge(packet.challenge);
-                //AsteorBarForge.LOGGER.info("Send back: " + new String(response));
-                SECURITY.sendToServer(new SendResponsePacket(response));
+                SECURITY.send(new SendResponsePacket(response), PacketDistributor.SERVER.noArg());
             });
-            context.get().setPacketHandled(true);
+            context.setPacketHandled(true);
         }
     }
 

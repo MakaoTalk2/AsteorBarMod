@@ -63,7 +63,7 @@ public class ForgeEventListener {
 
     @SubscribeEvent
     public static void onMouse(ScreenEvent.MouseScrolled.Pre event) {
-        Tooltips.addScroll((int) (event.getScrollDelta() * 10));
+        Tooltips.addScroll((int) (event.getDeltaY() * 10));
     }
 
     @SubscribeEvent
@@ -81,10 +81,10 @@ public class ForgeEventListener {
         }
         Tooltips.width = maxWidth;
         Tooltips.checkReset(totalHeight);
-        if (Minecraft.getInstance().options.renderDebug) {
+        if (Minecraft.getInstance().getDebugOverlay().showDebugScreen()) {
             int offset = 0;
             for (var str : Tooltips.getDebugStrings()) {
-                GuiHelper.drawString(event.getPoseStack(), str, 10, 50 + offset, 0xffffff);
+                GuiHelper.drawString(event.getGraphics(), str, 10, 50 + offset, 0xffffff);
                 offset += 10;
             }
             Tooltips.resetDebugStrings();

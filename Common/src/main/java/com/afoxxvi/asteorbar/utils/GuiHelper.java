@@ -14,6 +14,10 @@ public class GuiHelper {
         drawTexturedRect(guiGraphics, left, top, left + width, top + height, textureX, textureY, textureX + width, textureY + height, 256, 256);
     }
 
+    public static void drawTexturedRect(GuiGraphics guiGraphics, int left, int top, int textureX, int textureY, int width, int height, int textureWidth, int textureHeight) {
+        drawTexturedRect(guiGraphics, left, top, left + width, top + height, textureX, textureY, textureX + width, textureY + height, textureWidth, textureHeight);
+    }
+
     public static void drawTexturedRectColor(GuiGraphics guiGraphics, int left, int top, int textureX, int textureY, int width, int height, int color) {
         drawTexturedRectColor(guiGraphics, left, top, left + width, top + height, textureX, textureY, textureX + width, textureY + height, 256, 256, color);
     }
@@ -57,6 +61,24 @@ public class GuiHelper {
 
     public static void drawSolidColor(GuiGraphics guiGraphics, int left, int top, int right, int bottom, int color) {
         guiGraphics.fill(left, top, right, bottom, color);
+    }
+
+    public static void drawGradientVertical(GuiGraphics guiGraphics, int left, int top, int right, int bottom, int topColor, int bottomColor) {
+        drawGradient(guiGraphics, left, top, right, bottom, topColor, topColor, bottomColor, bottomColor);
+    }
+
+    public static void drawGradientHorizontal(GuiGraphics guiGraphics, int left, int top, int right, int bottom, int leftColor, int rightColor) {
+        drawGradient(guiGraphics, left, top, right, bottom, leftColor, rightColor, leftColor, rightColor);
+    }
+
+    public static void drawGradient(GuiGraphics guiGraphics, int left, int top, int right, int bottom, int leftTopColor, int rightTopColor, int leftBottomColor, int rightBottomColor) {
+        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
+        RenderSystem.enableBlend();
+        BufferBuilder builder = Tesselator.getInstance().getBuilder();
+        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
+        renderGradient(builder, guiGraphics.pose(), left, top, right, bottom, leftTopColor, rightTopColor, leftBottomColor, rightBottomColor, 0);
+        BufferUploader.drawWithShader(builder.end());
+        RenderSystem.disableBlend();
     }
 
     public static void drawString(GuiGraphics guiGraphics, String string, int left, int top, int color) {
@@ -130,6 +152,13 @@ public class GuiHelper {
         vertexConsumer.vertex(poseStack.last().pose(), right, top, z).color(color).uv(1, 0).uv2(0xff00ff).endVertex();
     }
 
+    public static void renderGradient(VertexConsumer vertexConsumer, PoseStack poseStack, int left, int top, int right, int bottom, int leftTopColor, int rightTopColor, int leftBottomColor, int rightBottomColor, float z) {
+        vertexConsumer.vertex(poseStack.last().pose(), left, top, z).color(leftTopColor).uv(0, 0).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), left, bottom, z).color(leftBottomColor).uv(0, 0.125f).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), right, bottom, z).color(rightBottomColor).uv(1, 0.125f).uv2(0xff00ff).endVertex();
+        vertexConsumer.vertex(poseStack.last().pose(), right, top, z).color(rightTopColor).uv(1, 0).uv2(0xff00ff).endVertex();
+    }
+
     public static void renderSolidGradient(VertexConsumer vertexConsumer, PoseStack poseStack, int left, int top, int right, int bottom, int color, float z) {
         vertexConsumer.vertex(poseStack.last().pose(), left, top, z).color(color).uv(0, 0.625f).uv2(0xff00ff).endVertex();
         vertexConsumer.vertex(poseStack.last().pose(), left, bottom, z).color(color).uv(0, 1).uv2(0xff00ff).endVertex();
@@ -145,8 +174,7 @@ public class GuiHelper {
     }
 
     public static void renderString(PoseStack poseStack, MultiBufferSource buffer, String string, float left, float top, int color, boolean shadow) {
-        Minecraft.getInstance().font.drawInBatch(string, left, top, color, shadow, poseStack.last().pose(), buffer,
-                Font.DisplayMode.NORMAL, 0, 0xF000F0);
+        Minecraft.getInstance().font.drawInBatch(string, left, top, color, shadow, poseStack.last().pose(), buffer, Font.DisplayMode.NORMAL, 0, 0xF000F0);
     }
 
     public static void renderString(PoseStack poseStack, MultiBufferSource buffer, String string, int left, int top, int color) {

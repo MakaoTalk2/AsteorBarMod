@@ -55,12 +55,6 @@ public class KeyBinding {
 
     public static void handleKeyInput() {
         while (KeyBinding.TOGGLE_OVERLAY.consumeClick()) {
-            if (InternalInfo.activated) {
-                Overlays.style = (Overlays.style + 1) % Overlays.NUM_INTERNAL_STYLES;
-                AsteorBar.config.enableOverlay(Overlays.style != 0);
-                AsteorBar.config.internalOverlayStyle(Overlays.style);
-                return;
-            }
             Overlays.style = (Overlays.style + 1) % Overlays.NUM_STYLES;
             AsteorBar.config.enableOverlay(Overlays.style != 0);
             AsteorBar.config.overlayLayoutStyle(Overlays.style);

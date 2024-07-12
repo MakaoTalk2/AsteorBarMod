@@ -1,6 +1,7 @@
 package com.afoxxvi.asteorbar.utils;
 
 import com.afoxxvi.asteorbar.AsteorBar;
+import com.afoxxvi.asteorbar.AsteorBarForge;
 import com.afoxxvi.asteorbar.entity.AsteorBarRenderType;
 import com.afoxxvi.asteorbar.internal.InternalNetworkHandler;
 import net.minecraft.client.renderer.RenderType;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.common.Tags;
 import net.minecraftforge.fml.ModList;
+import net.minecraftforge.network.PacketDistributor;
 
 public class ForgePlatformAdapter implements PlatformAdapter {
     @Override
@@ -42,11 +44,11 @@ public class ForgePlatformAdapter implements PlatformAdapter {
 
     @Override
     public void sendUseSkillPacket(int skillIndex) {
-        InternalNetworkHandler.INTERNAL.sendToServer(new InternalNetworkHandler.UseSkillPacket(skillIndex));
+        InternalNetworkHandler.INTERNAL.send(new InternalNetworkHandler.UseSkillPacket(skillIndex), PacketDistributor.SERVER.noArg());
     }
 
     @Override
     public void sendRushPacket(int direction) {
-        InternalNetworkHandler.INTERNAL.sendToServer(new InternalNetworkHandler.RushPacket(direction));
+        InternalNetworkHandler.INTERNAL.send(new InternalNetworkHandler.RushPacket(direction), PacketDistributor.SERVER.noArg());
     }
 }

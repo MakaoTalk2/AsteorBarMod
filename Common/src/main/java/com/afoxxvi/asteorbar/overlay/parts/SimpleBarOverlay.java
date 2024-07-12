@@ -188,6 +188,8 @@ public abstract class SimpleBarOverlay extends BaseOverlay {
         int left, top, right;
         if (position == Overlays.Position.UNSPECIFIED) {
             switch (Overlays.style) {
+                default -> position = Overlays.Position.HALF_BOTTOM_LEFT;
+
                 case Overlays.STYLE_ABOVE_HOT_BAR_LONG, Overlays.STYLE_ABOVE_HOT_BAR_SHORT ->
                         position = isLeftSide() ? Overlays.Position.HALF_BOTTOM_LEFT : Overlays.Position.HALF_BOTTOM_RIGHT;
                 case Overlays.STYLE_TOP_LEFT -> position = Overlays.Position.TOP_LEFT;

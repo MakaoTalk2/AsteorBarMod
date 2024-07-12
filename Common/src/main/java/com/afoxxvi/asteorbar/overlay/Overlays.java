@@ -1,7 +1,10 @@
 package com.afoxxvi.asteorbar.overlay;
 
 import com.afoxxvi.asteorbar.AsteorBar;
+import com.afoxxvi.asteorbar.internal.EnergyOverlay;
+import com.afoxxvi.asteorbar.internal.ExpOverlay;
 import com.afoxxvi.asteorbar.internal.InternalInfo;
+import com.afoxxvi.asteorbar.internal.ManaOverlay;
 import com.afoxxvi.asteorbar.overlay.parts.*;
 import com.afoxxvi.asteorbar.utils.GuiHelper;
 import com.afoxxvi.asteorbar.utils.Pair;
@@ -19,12 +22,9 @@ public class Overlays {
     public static final int STYLE_TOP_RIGHT = 4;
     public static final int STYLE_BOTTOM_LEFT = 5;
     public static final int STYLE_BOTTOM_RIGHT = 6;
+    public static final int INTERNAL_STYLE_DEFAULT = 7;
     public static final int NUM_STYLES = 7;
-    public static final int INTERNAL_STYLE_NONE = 0;
-    public static final int INTERNAL_STYLE_ABOVE_HOT_BAR_NORMAL = 1;
-    public static final int INTERNAL_STYLE_ABOVE_HOT_BAR_SHORT = 2;
-    public static final int INTERNAL_STYLE_VERTICAL_ALONGSIDE_BOTTOM = 3;
-    public static final int NUM_INTERNAL_STYLES = 2;
+    public static final int NUM_INTERNAL_STYLES = 8;
     public static final PlayerHealthOverlay PLAYER_HEALTH = new PlayerHealthOverlay();
     public static final FoodLevelOverlay FOOD_LEVEL = new FoodLevelOverlay();
     public static final AirLevelOverlay AIR_LEVEL = new AirLevelOverlay();
@@ -32,6 +32,9 @@ public class Overlays {
     public static final MountHealthOverlay MOUNT_HEALTH = new MountHealthOverlay();
     public static final ArmorLevelOverlay ARMOR_LEVEL = new ArmorLevelOverlay();
     public static final StringOverlay STRING = new StringOverlay();
+    public static final ManaOverlay MANA = new ManaOverlay();
+    public static final EnergyOverlay ENERGY = new EnergyOverlay();
+    public static final ExpOverlay EXP = new ExpOverlay();
     public static int style = 0;
     public static int verticalLeft = 0;
     public static int verticalRight = 0;
@@ -102,6 +105,17 @@ public class Overlays {
             new Pair<>(AIR_LEVEL, Position.BOTTOM_RIGHT)
     );
 
+    public static final List<Pair<SimpleBarOverlay, Position>> ORDER_INTERNAL = List.of(
+            new Pair<>(EXP, Position.HALF_BOTTOM_LEFT),
+            new Pair<>(FOOD_LEVEL, Position.HALF_BOTTOM_RIGHT),
+            new Pair<>(ENERGY, Position.HALF_BOTTOM_LEFT),
+            new Pair<>(MANA, Position.HALF_BOTTOM_RIGHT),
+            new Pair<>(PLAYER_HEALTH, Position.FULL_BOTTOM),
+            new Pair<>(ARMOR_LEVEL, Position.HALF_BOTTOM_LEFT),
+            new Pair<>(MOUNT_HEALTH, Position.HALF_BOTTOM_RIGHT),
+            new Pair<>(AIR_LEVEL, Position.HALF_BOTTOM_RIGHT)
+    );
+
     public static final List<List<Pair<SimpleBarOverlay, Position>>> ORDER = List.of(
             NONE,
             ORDER_ABOVE_HOT_BAR_LONG,
@@ -109,7 +123,8 @@ public class Overlays {
             ORDER_TOP_LEFT,
             ORDER_TOP_RIGHT,
             ORDER_BOTTOM_LEFT,
-            ORDER_BOTTOM_RIGHT
+            ORDER_BOTTOM_RIGHT,
+            ORDER_INTERNAL
     );
 
     public enum Position {

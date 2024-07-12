@@ -1,11 +1,27 @@
 package com.afoxxvi.asteorbar.internal;
 
 import com.afoxxvi.asteorbar.AsteorBar;
+import com.afoxxvi.asteorbar.overlay.Overlays;
 import net.minecraft.network.FriendlyByteBuf;
 
 import java.util.Arrays;
 
 public class InternalInfo {
+    public static class InternalActivatePacket {
+    }
+
+    public static class InternalStatusPacket {
+    }
+
+    public static class InternalInfoPacket {
+    }
+
+    public static class InternalHelmetPacket {
+    }
+
+    public static class InternalTogglePacket {
+    }
+
     //activate start
     public static boolean activated = false;
     //activate end
@@ -43,20 +59,27 @@ public class InternalInfo {
     public static short toggle = 0;
     //toggle end
 
-    private static final Object object = new Object();
+    private static final InternalActivatePacket activatePacket = new InternalActivatePacket();
+    private static final InternalStatusPacket statusPacket = new InternalStatusPacket();
+    private static final InternalInfoPacket infoPacket = new InternalInfoPacket();
+    private static final InternalHelmetPacket helmetPacket = new InternalHelmetPacket();
+    private static final InternalTogglePacket togglePacket = new InternalTogglePacket();
 
     /**
      * Buffer format:
      * activated: boolean
      */
-    public static Object decodeActivate(FriendlyByteBuf buffer) {
+    public static InternalActivatePacket decodeActivate(FriendlyByteBuf buffer) {
         try {
             activated = buffer.readBoolean();
             mod_version = buffer.readShort();
             resource_pack_version = buffer.readShort();
+            if (activated) {
+                AsteorBar.config.internalOverlayStyle(Overlays.INTERNAL_STYLE_DEFAULT);
+            }
         } catch (Exception ignored) {
         }
-        return object;
+        return activatePacket;
     }
 
     /**
@@ -68,7 +91,7 @@ public class InternalInfo {
      * cooldown: byte[16] (if contents & 4)
      * mana: byte[16] (if contents & 8)
      */
-    public static Object decodeStatus(FriendlyByteBuf buffer) {
+    public static InternalStatusPacket decodeStatus(FriendlyByteBuf buffer) {
         try {
             byte contents = buffer.readByte();
             if ((contents & (1)) != 0) {
@@ -93,7 +116,7 @@ public class InternalInfo {
             }
         } catch (Exception ignored) {
         }
-        return object;
+        return statusPacket;
     }
 
     /**
@@ -102,7 +125,7 @@ public class InternalInfo {
      * stringLength: short
      * skillName: String[total]
      */
-    public static Object decodeInfo(FriendlyByteBuf buffer) {
+    public static InternalInfoPacket decodeInfo(FriendlyByteBuf buffer) {
         try {
             byte total = buffer.readByte();
             Arrays.fill(skillName, "null");
@@ -111,7 +134,7 @@ public class InternalInfo {
             }
         } catch (Exception ignored) {
         }
-        return object;
+        return infoPacket;
     }
 
     /**
@@ -125,7 +148,7 @@ public class InternalInfo {
      * energy: short
      * energyMax: short
      */
-    public static Object decodeHelmet(FriendlyByteBuf buffer) {
+    public static InternalHelmetPacket decodeHelmet(FriendlyByteBuf buffer) {
         try {
             mana = buffer.readShort();
             manaMax = buffer.readShort();
@@ -144,18 +167,18 @@ public class InternalInfo {
             }
         } catch (Exception ignored) {
         }
-        return object;
+        return helmetPacket;
     }
 
     /**
      * Buffer format:
      * toggle: short
      */
-    public static Object decodeToggle(FriendlyByteBuf buffer) {
+    public static InternalTogglePacket decodeToggle(FriendlyByteBuf buffer) {
         try {
             toggle = buffer.readShort();
         } catch (Exception ignored) {
         }
-        return object;
+        return togglePacket;
     }
 }
