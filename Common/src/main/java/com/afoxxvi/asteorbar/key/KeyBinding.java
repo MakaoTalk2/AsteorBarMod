@@ -4,7 +4,9 @@ import com.afoxxvi.asteorbar.AsteorBar;
 import com.afoxxvi.asteorbar.internal.InternalInfo;
 import com.afoxxvi.asteorbar.overlay.Overlays;
 import com.afoxxvi.asteorbar.tooltip.Tooltips;
+import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
@@ -32,26 +34,6 @@ public class KeyBinding {
     public static final KeyMapping SCROLL_TOOLTIP_LEFT = new KeyMapping("asteorbar.key.scroll_tooltip_left", GLFW.GLFW_KEY_HOME, "asteorbar.key.category");
     public static final KeyMapping SCROLL_TOOLTIP_RIGHT = new KeyMapping("asteorbar.key.scroll_tooltip_right", GLFW.GLFW_KEY_END, "asteorbar.key.category");
     public static final KeyMapping SCROLL_TOOLTIP_RESET = new KeyMapping("asteorbar.key.scroll_tooltip_reset", GLFW.GLFW_KEY_ENTER, "asteorbar.key.category");
-
-    private static final List<KeyState> KEY_STATES = new ArrayList<>();
-    private static final KeyState ACTIVE_SKILL_WHEEL_STATE = register(CAST_ACTIVE_SKILL_WHEEL);
-    private static final KeyState QUICK_SKILL_WHEEL_STATE = register(CAST_QUICK_SKILL_WHEEL);
-    private static final KeyState RUSH_FORWARD_STATE = register(RUSH_FORWARD);
-    private static final KeyState RUSH_BACKWARD_STATE = register(RUSH_BACKWARD);
-    private static final KeyState RUSH_LEFT_STATE = register(RUSH_LEFT);
-    private static final KeyState RUSH_RIGHT_STATE = register(RUSH_RIGHT);
-
-    private static void update() {
-        for (KeyState k : KEY_STATES) {
-            k.update();
-        }
-    }
-
-    private static KeyState register(KeyMapping key) {
-        var k = new KeyState(key);
-        KEY_STATES.add(k);
-        return k;
-    }
 
     public static void handleKeyInput() {
         while (KeyBinding.TOGGLE_OVERLAY.consumeClick()) {
@@ -83,40 +65,18 @@ public class KeyBinding {
             AsteorBar.platformAdapter.sendUseSkillPacket(3);
             AsteorBar.castSkill = true;
         }
-        /*
-        while (KeyBinding.RUSH_FORWARD.consumeClick()) {
-            if (AsteorBar.rush) continue;
-            AsteorBar.platformAdapter.sendRushPacket(0);
-            AsteorBar.rush = true;
-        }
-        while (KeyBinding.RUSH_BACKWARD.consumeClick()) {
-            if (AsteorBar.rush) continue;
-            AsteorBar.platformAdapter.sendRushPacket(1);
-            AsteorBar.rush = true;
-        }
-        while (KeyBinding.RUSH_LEFT.consumeClick()) {
-            if (AsteorBar.rush) continue;
-            AsteorBar.platformAdapter.sendRushPacket(2);
-            AsteorBar.rush = true;
-        }
-        while (KeyBinding.RUSH_RIGHT.consumeClick()) {
-            if (AsteorBar.rush) continue;
-            AsteorBar.platformAdapter.sendRushPacket(3);
-            AsteorBar.rush = true;
-        }*/
-        update();
         int direction = -2;
         while (KeyBinding.RUSH_INSTANT.consumeClick()) {
             direction = -1;
         }
         if (direction == -1) {
-            if (RUSH_LEFT.isDown()) {
+            if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), RUSH_LEFT.getDefaultKey().getValue())) {
                 direction = 2;
-            } else if (RUSH_RIGHT.isDown()) {
+            } else if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), RUSH_RIGHT.getDefaultKey().getValue())) {
                 direction = 3;
-            } else if (RUSH_FORWARD.isDown()) {
+            } else if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), RUSH_FORWARD.getDefaultKey().getValue())) {
                 direction = 0;
-            } else if (RUSH_BACKWARD.isDown()) {
+            } else if (InputConstants.isKeyDown(Minecraft.getInstance().getWindow().getWindow(), RUSH_BACKWARD.getDefaultKey().getValue())) {
                 direction = 1;
             }
             if (direction != -1) {

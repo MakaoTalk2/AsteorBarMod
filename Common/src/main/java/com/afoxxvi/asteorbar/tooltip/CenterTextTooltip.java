@@ -17,6 +17,10 @@ public class CenterTextTooltip implements TooltipComponent, ClientTooltipCompone
         this.formattedCharSequence = text instanceof Component component ? component.getVisualOrderText() : Language.getInstance().getVisualOrder(text);
     }
 
+    public CenterTextTooltip(FormattedCharSequence formattedCharSequence) {
+        this.formattedCharSequence = formattedCharSequence;
+    }
+
     @Override
     public int getHeight() {
         return 10;

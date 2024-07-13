@@ -7,6 +7,7 @@ import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderType;
 
 @SuppressWarnings("unused")
 public class GuiHelper {
@@ -72,13 +73,9 @@ public class GuiHelper {
     }
 
     public static void drawGradient(GuiGraphics guiGraphics, int left, int top, int right, int bottom, int leftTopColor, int rightTopColor, int leftBottomColor, int rightBottomColor) {
-        RenderSystem.setShader(GameRenderer::getPositionColorTexShader);
-        RenderSystem.enableBlend();
-        BufferBuilder builder = Tesselator.getInstance().getBuilder();
-        builder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.POSITION_COLOR_TEX);
-        renderGradient(builder, guiGraphics.pose(), left, top, right, bottom, leftTopColor, rightTopColor, leftBottomColor, rightBottomColor, 0);
-        BufferUploader.drawWithShader(builder.end());
-        RenderSystem.disableBlend();
+        VertexConsumer vertexConsumer = guiGraphics.bufferSource().getBuffer(RenderType.gui());
+        renderGradient(vertexConsumer, guiGraphics.pose(), left, top, right, bottom, leftTopColor, rightTopColor, leftBottomColor, rightBottomColor, 0);
+        guiGraphics.flush();
     }
 
     public static void drawString(GuiGraphics guiGraphics, String string, int left, int top, int color) {

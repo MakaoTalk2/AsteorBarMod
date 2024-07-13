@@ -10,7 +10,8 @@
     "EntityMixin",
     "GuiMixin",
     "RenderTypeMixin",
-    "ScreenMixin"
+    "ScreenMixin",
+    "TooltipRenderUtilMixin"
   ],
   "server": [],
   "injectors": {

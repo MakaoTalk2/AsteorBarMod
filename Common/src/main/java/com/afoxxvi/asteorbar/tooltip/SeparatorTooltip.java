@@ -29,8 +29,8 @@ public class SeparatorTooltip implements TooltipComponent, ClientTooltipComponen
     public void renderImage(Font font, int x, int y, GuiGraphics guiGraphics) {
         // only draw a text, the line will be rendered, I don't know why
         // this dot can visually be hidden by the line
-        guiGraphics.flush();
-        //GuiHelper.drawString(guiGraphics, ".", x + 1, y - 6, 0x01c8d4fd, false);
+        //guiGraphics.flush();
+        //guiGraphics.fillGradient(x + 1, y, x + Tooltips.width - 1, y + 1, 0xffc8d4fd, 0xffefc7fd);
         GuiHelper.drawGradientHorizontal(guiGraphics, x + 1, y, x + Tooltips.width - 1, y + 1, 0xffc8d4fd, 0xffefc7fd);
     }
 }

@@ -13,6 +13,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.gui.screens.inventory.tooltip.ClientTextTooltip;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.RenderGuiOverlayEvent;
@@ -81,14 +82,6 @@ public class ForgeEventListener {
         }
         Tooltips.width = maxWidth;
         Tooltips.checkReset(totalHeight);
-        if (Minecraft.getInstance().getDebugOverlay().showDebugScreen()) {
-            int offset = 0;
-            for (var str : Tooltips.getDebugStrings()) {
-                GuiHelper.drawString(event.getGraphics(), str, 10, 50 + offset, 0xffffff);
-                offset += 10;
-            }
-            Tooltips.resetDebugStrings();
-        }
     }
 
     @SubscribeEvent
@@ -108,8 +101,10 @@ public class ForgeEventListener {
             return;
         }
         if (event.getTooltipElements().size() == 1) return;
-        event.getTooltipElements().set(0, Either.right(new CenterTextTooltip(first.get())));
-        event.getTooltipElements().add(1, Either.right(new SeparatorTooltip(4)));
+        if (event.getItemStack() != ItemStack.EMPTY) {
+            event.getTooltipElements().set(0, Either.right(new CenterTextTooltip(first.get())));
+            event.getTooltipElements().add(1, Either.right(new SeparatorTooltip(4)));
+        }
         for (int i = 0; i < event.getTooltipElements().size(); i++) {
             var txt = event.getTooltipElements().get(i);
             if (txt.left().isEmpty()) continue;
