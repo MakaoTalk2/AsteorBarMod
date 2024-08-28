@@ -15,7 +15,7 @@ public class DefaultConfigAdapter implements ConfigAdapter {
 
     @Override
     public int overlayLayoutStyle() {
-        return 1;
+        return 2;
     }
 
     @Override
@@ -115,7 +115,7 @@ public class DefaultConfigAdapter implements ConfigAdapter {
 
     @Override
     public int absorptionColor() {
-        return 0xffe5d35c;
+        return 0xffffffff;
     }
 
     @Override
@@ -240,7 +240,7 @@ public class DefaultConfigAdapter implements ConfigAdapter {
 
     @Override
     public boolean shakeHealthAndFoodWhileLow() {
-        return true;
+        return false;
     }
 
     @Override
@@ -270,7 +270,7 @@ public class DefaultConfigAdapter implements ConfigAdapter {
 
     @Override
     public int displayAbsorptionMethod() {
-        return 2;
+        return 1;
     }
 
     @Override
@@ -330,7 +330,7 @@ public class DefaultConfigAdapter implements ConfigAdapter {
 
     @Override
     public boolean enableHealthBar() {
-        return true;
+        return false;
     }
 
     @Override

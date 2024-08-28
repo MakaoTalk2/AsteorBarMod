@@ -7,7 +7,7 @@
     "thrid.ToughAsNailsTemperatureMixin"
   ],
   "client": [
-    "EntityMixin",
+    "AccessorRangedAttribute",
     "GuiMixin",
     "RenderTypeMixin"
   ],

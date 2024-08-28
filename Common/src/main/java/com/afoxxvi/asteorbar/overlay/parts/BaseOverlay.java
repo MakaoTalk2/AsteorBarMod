@@ -142,14 +142,12 @@ public abstract class BaseOverlay {
     }
 
     public void render(RenderGui gui, GuiGraphics guiGraphics, float partialTick, int screenWidth, int screenHeight) {
-        if (AsteorBar.config.enableOverlay()) {
-            tick = gui.gui().getGuiTicks();
-            RenderSystem.setShaderTexture(0, LIGHTMAP_TEXTURE);
-            if (overrideOverlay != null && overrideOverlay.shouldOverride()) {
-                overrideOverlay.render(gui, guiGraphics, partialTick, screenWidth, screenHeight);
-            } else {
-                renderOverlay(gui, guiGraphics, partialTick, screenWidth, screenHeight);
-            }
+        tick = gui.gui().getGuiTicks();
+        RenderSystem.setShaderTexture(0, LIGHTMAP_TEXTURE);
+        if (overrideOverlay != null && overrideOverlay.shouldOverride()) {
+            overrideOverlay.render(gui, guiGraphics, partialTick, screenWidth, screenHeight);
+        } else {
+            renderOverlay(gui, guiGraphics, partialTick, screenWidth, screenHeight);
         }
     }
 
