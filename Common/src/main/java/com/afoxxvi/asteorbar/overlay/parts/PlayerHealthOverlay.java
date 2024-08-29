@@ -9,6 +9,9 @@ import net.minecraft.Util;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.world.effect.MobEffects;
 
+import java.util.Arrays;
+import java.util.List;
+
 
 public class PlayerHealthOverlay extends BaseOverlay {
     public static final int ABSORPTION_MODES = 3;
@@ -17,6 +20,11 @@ public class PlayerHealthOverlay extends BaseOverlay {
     private long healthBlinkTime = 0;
     private long lastHealthTime;
     private float lastHealth;
+    private static final char startChar = '㴀';
+    private static final List<Character> numbersArray = Arrays.asList(
+            '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '/', '(', ')', ',', '.', '+'
+    );
+
 
     private int[] getStackColor(int low, int num) {
         final var colors = AsteorBar.config.stackHealthBarColors().split(",");
@@ -28,14 +36,15 @@ public class PlayerHealthOverlay extends BaseOverlay {
 
     private void draw(GuiGraphics guiGraphics, int left, int top, int right, int bottom, boolean highlight, int healthColor, float health, float absorb, float maxHealth, float flashAlpha, int regenerationOffset, double healthIncrement, long tick, boolean flip) {
         int verticalShift = 0;
-        if (health < maxHealth * AsteorBar.config.lowHealthRate()) {
+        /*if (health < maxHealth * AsteorBar.config.lowHealthRate()) {
             verticalShift = shift[(int) (tick % shift.length)];
             top += verticalShift;
             bottom += verticalShift;
-        }
+        }*/
+        var offset = 1;
         //draw bound
-        drawBound(guiGraphics, left, top, right, bottom, AsteorBar.config.healthBoundColor());
-        drawEmptyFill(guiGraphics, left + 1, top + 1, right - 1, bottom - 1, AsteorBar.config.healthEmptyColor());
+        drawBound(guiGraphics, left, top - 1 - offset, right, bottom + 1 - offset, 0xff000000);
+        drawEmptyFill(guiGraphics, left + 1, top - offset, right - 1, bottom - offset, AsteorBar.config.healthEmptyColor());
         final var outerLength = right - left;
         final var innerLength = outerLength - 2;
         float alpha = (float) Math.cos(tick % 40 / 40.0 * Math.PI * 2) * 0.5F + 0.5F;
@@ -44,10 +53,10 @@ public class PlayerHealthOverlay extends BaseOverlay {
 
         //draw health
         int healthLength = (int) (innerLength * health / maxLength);
-        drawFillFlip(guiGraphics, left + 1, top + 1, right - 1, bottom - 1, healthLength, healthColor, flip);
+        drawFillFlip(guiGraphics, left + 1, top - offset, right - 1, bottom - offset, healthLength, healthColor, flip);
         if (healthIncrement > 0 && health < maxHealth) {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, alpha);
-            drawFillFlip(guiGraphics, left + 1, top + 1, right - 1, bottom - 1, healthLength, healthColor, flip);
+            drawFillFlip(guiGraphics, left + 1, top - offset, right - 1, bottom - offset, healthLength, healthColor, flip);
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
         }
 
@@ -55,7 +64,7 @@ public class PlayerHealthOverlay extends BaseOverlay {
         //draw absorption
         if (absorb > 0) {
             int absorbLength = Math.max((int) (innerLength * absorb / maxLength), 1);
-            drawFillFlip(guiGraphics, left + 1 + healthLength, top + 1, right - 1, bottom - 1, absorbLength + 1, AsteorBar.config.absorptionColor(), flip);
+            drawFillFlip(guiGraphics, left + 1 + healthLength, top - offset, right - 1, bottom - offset, absorbLength + 1, 0xfffff866, flip);
         }
 
         //draw regeneration
@@ -70,10 +79,12 @@ public class PlayerHealthOverlay extends BaseOverlay {
             textureRight = textureLeft + right - left - 2;
             RenderSystem.setShaderTexture(0, TEXTURE);
             if (textureRight > 0) {
-                drawTextureFill(guiGraphics, left + 1, top, -textureLeft, 5, 10 + 180 + textureLeft, Y_REGENERATION_FILL);
-                drawTextureFill(guiGraphics, left + 1 - textureLeft, top, textureRight, 5, 10, Y_REGENERATION_FILL);
+
+
+                drawTextureFill(guiGraphics, left + 1, top - 1, -textureLeft, 5, 10 + 180 + textureLeft, Y_REGENERATION_FILL);
+                drawTextureFill(guiGraphics, left + 1 - textureLeft, top - 1, textureRight, 5, 10, Y_REGENERATION_FILL);
             } else {
-                drawTextureFill(guiGraphics, left + 1, top, right - left - 2, 5, 10 + 180 + textureLeft, Y_REGENERATION_FILL);
+                drawTextureFill(guiGraphics, left + 1, top - 1, right - left - 2, 5, 10 + 180 + textureLeft, Y_REGENERATION_FILL);
             }
             RenderSystem.setShaderTexture(0, LIGHTMAP_TEXTURE);
         }
@@ -85,16 +96,26 @@ public class PlayerHealthOverlay extends BaseOverlay {
                 hp = (Utils.formatNumber(health) + "/" + Utils.formatNumber(maxHealth));
             }
             top -= verticalShift;
-            Overlays.addStringRender((left + right) / 2, top - 2, 0xFFFFFF, hp, Overlays.ALIGN_CENTER, true);
+
+            StringBuilder builder = new StringBuilder();
+
+            hp.chars().forEach((it) -> {
+                char c = Character.toChars(it)[0];
+                var index = numbersArray.indexOf(c);
+                if (index >= 0) builder.append(Character.toChars(startChar + index));
+                else builder.append(c);
+            });
+
+            Overlays.addStringRender((left + right) / 2, top - 2 - offset, 0xffffff, builder.toString(), Overlays.ALIGN_CENTER, false, true, 0x000000);
             top += verticalShift;
         }
-        if (highlight) {
+        /*if (highlight) {
             drawBound(guiGraphics, left, top, right, bottom, AsteorBar.config.healthBoundColorBlink());
         } else if (flashAlpha > 0) {
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, flashAlpha);
             drawBound(guiGraphics, left, top, right, bottom, AsteorBar.config.healthBoundColorLow());
             RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
-        }
+        }*/
     }
 
     @Override
